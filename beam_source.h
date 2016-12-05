@@ -6,7 +6,7 @@
 
 namespace DplSource {
 
-class SourceBeamPrivate;
+class BeamSourcePrivate;
 class SOURCESHARED_EXPORT BeamSource
 {
 public:
@@ -38,7 +38,7 @@ public:
 //    int analog_output1();
 
 private:
-    SourceBeamPrivate *d;
+    BeamSourcePrivate *d;
 };
 
 }

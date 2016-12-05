@@ -5,7 +5,7 @@
 
 namespace DplSource {
 
-class SOURCESHARED_EXPORT SourceGroupPrivate;
+class SOURCESHARED_EXPORT GroupSourcePrivate;
 
 class GroupSource
 {
@@ -16,7 +16,7 @@ public:
     const bool get_beam(int index, BeamSource &beam) const;
 
 private:
-    SourceGroupPrivate *d;
+    GroupSourcePrivate *d;
 };
 
 }

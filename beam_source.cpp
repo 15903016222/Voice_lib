@@ -2,7 +2,7 @@
 
 namespace DplSource {
 
-struct SourceBeamCode
+struct BeamSourceCode
 {
     /* 波型计数器 */
     quint32 focallaw    : 13;   /* 0-12  波型对应聚焦法则的数值 */
@@ -29,17 +29,17 @@ struct SourceBeamCode
     int res1;
 };
 
-class SourceBeamPrivate
+class BeamSourcePrivate
 {
 public:
-    SourceBeamPrivate();
+    BeamSourcePrivate();
 
     const char *m_rawData;
-    const SourceBeamCode *m_code;
+    const BeamSourceCode *m_code;
     int m_pointQty;
 };
 
-SourceBeamPrivate::SourceBeamPrivate()
+BeamSourcePrivate::BeamSourcePrivate()
 {
     m_rawData = NULL;
     m_code = NULL;
@@ -47,14 +47,14 @@ SourceBeamPrivate::SourceBeamPrivate()
 }
 
 BeamSource::BeamSource(const char *data, int size)
-    : d(new SourceBeamPrivate())
+    : d(new BeamSourcePrivate())
 {
     if (size <= 32 || data == NULL) {
         return;
     }
     d->m_pointQty = size - 32;
     d->m_rawData = data;
-    d->m_code = (SourceBeamCode *)(data + pointQty);
+    d->m_code = (BeamSourceCode *)(data + pointQty);
 }
 
 void BeamSource::set_raw_data(const char *data, int size)
@@ -64,7 +64,7 @@ void BeamSource::set_raw_data(const char *data, int size)
     }
 
     d->m_rawData = data;
-    d->m_code = (SourceBeamCode *)(data + d->m_pointQty);
+    d->m_code = (BeamSourceCode *)(data + d->m_pointQty);
     d->m_pointQty = size - 32;
 }
 
