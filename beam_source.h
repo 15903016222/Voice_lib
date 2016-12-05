@@ -1,15 +1,16 @@
-#ifndef __SOURCE_BEAM_H__
-#define __SOURCE_BEAM_H__
+#ifndef __BEAM_SOURCE_H__
+#define __BEAM_SOURCE_H__
 
+#include "source_global.h"
 #include <QObject>
 
 namespace DplSource {
 
 class SourceBeamPrivate;
-class SourceBeam
+class SOURCESHARED_EXPORT BeamSource
 {
 public:
-    SourceBeam(const char *data = NULL, int size = 0);
+    BeamSource(const char *data = NULL, int size = 0);
 
     /**
      * @brief set_raw_data 设置Beam原始数据
@@ -42,4 +43,4 @@ private:
 
 }
 
-#endif // __SOURCE_BEAM_H__
+#endif // __BEAM_SOURCE_H__

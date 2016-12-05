@@ -1,4 +1,4 @@
-#include "source_beam.h"
+#include "beam_source.h"
 
 namespace DplSource {
 
@@ -46,7 +46,7 @@ SourceBeamPrivate::SourceBeamPrivate()
     m_pointQty = 0;
 }
 
-SourceBeam::SourceBeam(const char *data, int size)
+BeamSource::BeamSource(const char *data, int size)
     : d(new SourceBeamPrivate())
 {
     if (size <= 32 || data == NULL) {
@@ -57,7 +57,7 @@ SourceBeam::SourceBeam(const char *data, int size)
     d->m_code = (SourceBeamCode *)(data + pointQty);
 }
 
-void SourceBeam::set_raw_data(const char *data, int size)
+void BeamSource::set_raw_data(const char *data, int size)
 {
     if (size <= 32 || data == NULL) {
         return;
@@ -68,7 +68,7 @@ void SourceBeam::set_raw_data(const char *data, int size)
     d->m_pointQty = size - 32;
 }
 
-bool SourceBeam::get_wave(QByteArray &wave)
+bool BeamSource::get_wave(QByteArray &wave)
 {
     if (d->m_rawData == NULL) {
         return false;
@@ -78,52 +78,52 @@ bool SourceBeam::get_wave(QByteArray &wave)
     return (wave.size() == d->m_pointQty);
 }
 
-int SourceBeam::point_qty()
+int BeamSource::point_qty()
 {
     return d->m_pointQty;
 }
 
-int SourceBeam::index()
+int BeamSource::index()
 {
     return d->m_code->beamIndex;
 }
 
-int SourceBeam::gate_a_height()
+int BeamSource::gate_a_height()
 {
     return d->m_code->gateAHeight;
 }
 
-int SourceBeam::gate_a_position()
+int BeamSource::gate_a_position()
 {
     return d->m_code->gateAPosition;
 }
 
-int SourceBeam::gate_b_height()
+int BeamSource::gate_b_height()
 {
     return d->m_code->gateBHeight;
 }
 
-int SourceBeam::gate_b_position()
+int BeamSource::gate_b_position()
 {
     return d->m_code->gateBPosition;
 }
 
-int SourceBeam::gate_i_height()
+int BeamSource::gate_i_height()
 {
     return d->m_code->gateIHeight;
 }
 
-int SourceBeam::gate_i_position()
+int BeamSource::gate_i_position()
 {
     return d->m_code->gateIPosition;
 }
 
-int SourceBeam::encoder_x()
+int BeamSource::encoder_x()
 {
     return d->m_code->encoderX;
 }
 
-int SourceBeam::encoder_y()
+int BeamSource::encoder_y()
 {
     return d->m_code->encoderY;
 }
