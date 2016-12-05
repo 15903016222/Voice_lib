@@ -32,42 +32,49 @@ struct SourceBeamCode
 class SourceBeamPrivate
 {
 public:
-    SourceBeamPrivate() {}
+    SourceBeamPrivate();
 
-    const char *m_data;
+    const char *m_rawData;
     const SourceBeamCode *m_code;
     int m_pointQty;
 };
 
-SourceBeam::SourceBeam(const int pointQty, const char *data)
-    : d(new SourceBeamPrivate())
+SourceBeamPrivate::SourceBeamPrivate()
 {
-    d->m_pointQty = pointQty;
-    d->m_data = data;
-    if (data != NULL) {
-        d->m_code = (SourceBeamCode *)(data + pointQty);
-    } else {
-        d->m_code = NULL;
-    }
+    m_rawData = NULL;
+    m_code = NULL;
+    m_pointQty = 0;
 }
 
-void SourceBeam::set_raw_data(const char *data)
+SourceBeam::SourceBeam(const char *data, int size)
+    : d(new SourceBeamPrivate())
 {
-    if (data == NULL) {
+    if (size <= 32 || data == NULL) {
+        return;
+    }
+    d->m_pointQty = size - 32;
+    d->m_rawData = data;
+    d->m_code = (SourceBeamCode *)(data + pointQty);
+}
+
+void SourceBeam::set_raw_data(const char *data, int size)
+{
+    if (size <= 32 || data == NULL) {
         return;
     }
 
-    d->m_data = data;
+    d->m_rawData = data;
     d->m_code = (SourceBeamCode *)(data + d->m_pointQty);
+    d->m_pointQty = size - 32;
 }
 
 bool SourceBeam::get_wave(QByteArray &wave)
 {
-    if (d->m_data == NULL) {
+    if (d->m_rawData == NULL) {
         return false;
     }
     wave.clear();
-    wave = QByteArray::fromRawData(d->m_data, d->m_pointQty);
+    wave = QByteArray::fromRawData(d->m_rawData, d->m_pointQty);
     return (wave.size() == d->m_pointQty);
 }
 

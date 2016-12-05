@@ -9,13 +9,13 @@ class SourceBeamPrivate;
 class SourceBeam
 {
 public:
-    SourceBeam(const int pointQty, const char *data = NULL);
+    SourceBeam(const char *data = NULL, int size = 0);
 
     /**
      * @brief set_raw_data 设置Beam原始数据
      * @param data  指向Beam原始数据,调用要维护这个地址,不能删除
      */
-    void set_raw_data(const char *data);
+    void set_raw_data(const char *data, int size);
 
     bool get_wave(QByteArray &wave);
     int point_qty();
