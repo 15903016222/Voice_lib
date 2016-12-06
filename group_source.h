@@ -10,10 +10,17 @@ class SOURCESHARED_EXPORT GroupSourcePrivate;
 class GroupSource
 {
 public:
-    GroupSource(const char *rawData, int size, int beamNum);
+    GroupSource(int beamNum, int pointNum);
+    ~GroupSource();
 
-    int beam_num();
-    const bool get_beam(int index, BeamSource &beam) const;
+    void set_raw_data(const char *rawData);
+
+    void set_beam_number(int number);
+    int beam_number();
+    void set_point_number(int number);
+    int point_number();
+
+    const bool get_beam(int beamNo, BeamSource &beam) const;
 
 private:
     GroupSourcePrivate *d;
