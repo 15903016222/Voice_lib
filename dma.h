@@ -53,8 +53,6 @@ public:
     void set_scan_timmer_circled(int value);
 
     unsigned char get_scan_data_mark(int index) const;
-    unsigned int get_dma_data_addr() const;
-    unsigned int get_store_buffer_addr() const;
 
 protected:
     Dma();

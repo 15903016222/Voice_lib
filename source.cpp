@@ -10,7 +10,7 @@ class SourcePrivate : public QObject
 {
     Q_OBJECT
 public:
-    SourcePrivate(Source *source);
+    SourcePrivate();
 
     QReadWriteLock m_rwlock;
 
@@ -18,20 +18,20 @@ public:
 
     Dma *m_dmaSource;
 
-    Source *m_source;
-
     Source::Type m_type;
 
     QList<GroupSourcePointer> m_groups;
 
-protected slots:
+signals:
+    void update_data();
+
+public slots:
     void do_timeout_event();
+
 };
 
-SourcePrivate::SourcePrivate(Source *source)
+SourcePrivate::SourcePrivate()
 {
-    m_source = source;
-
     m_timer.setInterval(20);
 
     m_dmaSource = Dma::get_instance();
@@ -49,17 +49,19 @@ void SourcePrivate::do_timeout_event()
 
     const char * data = m_dmaSource->get_data_buffer();
 
-    if (data.isEmpty()) {
-        return;
-    }
+//    if (data == NULL) {
+//        return;
+//    }
 
     int offset = 0;
+    m_rwlock.lockForRead();
     for (int i = 0; i < m_groups.size(); ++i) {
         m_groups[i]->set_raw_data(data+offset);
         offset += m_groups[i]->size();
     }
+    m_rwlock.unlock();
 
-    emit m_source->data_event();
+    emit update_data();
 }
 
 /* Source */
@@ -68,6 +70,7 @@ Source *Source::m_source = NULL;
 
 void Source::set_type(Source::Type type)
 {
+    QWriteLocker l(&d->m_rwlock);
     d->m_type = type;
 }
 
@@ -115,11 +118,13 @@ const int Source::MAX_GROUPS = 8;
 
 int Source::groups()
 {
+    QReadLocker l(&d->m_rwlock);
     return d->m_groups.size();
 }
 
 bool Source::create_group(int beamNum, int pointNum)
 {
+    QWriteLocker l(&d->m_rwlock);
     if (d->m_groups.size() >= MAX_GROUPS) {
         return false;
     }
@@ -129,6 +134,7 @@ bool Source::create_group(int beamNum, int pointNum)
 
 bool Source::remove_group()
 {
+    QWriteLocker l(&d->m_rwlock);
     if (d->m_groups.size() == 0) {
         return false;
     }
@@ -138,13 +144,14 @@ bool Source::remove_group()
 
 const GroupSourcePointer &Source::get_group(int index)
 {
+    QReadLocker l(&d->m_rwlock);
     return d->m_groups[index];
 }
 
 Source::Source()
     : d(new SourcePrivate())
 {
-
+    connect(d, SIGNAL(update_data()), this, SIGNAL(data_event()));
 }
 
 Source::~Source()

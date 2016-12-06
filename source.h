@@ -11,6 +11,7 @@ namespace DplSource {
 
 typedef QSharedPointer<GroupSource> GroupSourcePointer;
 class SourcePrivate;
+
 class SOURCESHARED_EXPORT Source : public QObject
 {
     Q_OBJECT
@@ -45,8 +46,6 @@ public:
 
 signals:
     void data_event();
-
-public slots:
 
 protected:
     explicit Source();

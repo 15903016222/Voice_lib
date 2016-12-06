@@ -64,7 +64,7 @@ int GroupSource::size()
     return (d->m_beamSize * d->m_beamNum);
 }
 
-const bool GroupSource::get_beam(int beamNo, BeamSource &beam) const
+bool GroupSource::get_beam(int beamNo, BeamSource &beam) const
 {
     if (beamNo >= d->m_beamNum
             || d->m_rawData == NULL) {

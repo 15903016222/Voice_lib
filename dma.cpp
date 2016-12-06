@@ -117,6 +117,12 @@ const char *Dma::get_data_buffer()
     return d->m_dataBuffer + DMA_DATA_OFFSET + REGION_SIZE * i;
 }
 
+const char *Dma::get_store_buffer()
+{
+    QReadLocker l(&d->m_rwlock);
+    return d->m_storeBuffer;
+}
+
 unsigned int Dma::get_data_dma_counter() const
 {
 	QReadLocker l(&d->m_rwlock);
@@ -239,18 +245,6 @@ unsigned char Dma::get_scan_data_mark(int index) const
 {
     QReadLocker l(&d->m_rwlock);
     return d->m_scanDataMark[index];
-}
-
-unsigned int Dma::get_dma_data_addr() const
-{
-    QReadLocker l(&d->m_rwlock);
-    return d->m_dataBuffer;
-}
-
-unsigned int Dma::get_store_buffer_addr() const
-{
-    QReadLocker l(&d->m_rwlock);
-    return d->m_storeBuffer;
 }
 
 Dma *Dma::get_instance()

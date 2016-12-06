@@ -22,7 +22,7 @@ public:
 
     int size();
 
-    const bool get_beam(int beamNo, BeamSource &beam) const;
+    bool get_beam(int beamNo, BeamSource &beam) const;
 
 private:
     GroupSourcePrivate *d;

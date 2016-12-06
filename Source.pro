@@ -62,5 +62,3 @@ documentation.path  = /include
 documentation.files = source.h source_global.h group_source.h beam_source.h
 
 INSTALLS += target documentation
-
-message($$TARGET)
