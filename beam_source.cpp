@@ -46,26 +46,37 @@ BeamSourcePrivate::BeamSourcePrivate()
     m_pointQty = 0;
 }
 
-BeamSource::BeamSource(const char *data, int size)
+BeamSource::BeamSource()
     : d(new BeamSourcePrivate())
 {
-    if (size <= 32 || data == NULL) {
-        return;
-    }
-    d->m_pointQty = size - 32;
-    d->m_rawData = data;
-    d->m_code = (BeamSourceCode *)(data + pointQty);
 }
 
-void BeamSource::set_raw_data(const char *data, int size)
+BeamSource::~BeamSource()
 {
-    if (size <= 32 || data == NULL) {
+    delete d;
+}
+
+void BeamSource::set_raw_data(const char *data, int pointNum)
+{
+    if (pointNum == 0 || data == NULL) {
         return;
     }
 
     d->m_rawData = data;
-    d->m_code = (BeamSourceCode *)(data + d->m_pointQty);
-    d->m_pointQty = size - 32;
+    d->m_pointQty = pointNum;
+    d->m_code = (BeamSourceCode *)(data + pointNum);
+}
+
+bool BeamSource::has_data()
+{
+    return (d->m_rawData != NULL);
+}
+
+void BeamSource::clean()
+{
+    d->m_rawData = NULL;
+    d->m_pointQty = 0;
+    d->m_code = NULL;
 }
 
 bool BeamSource::get_wave(QByteArray &wave)

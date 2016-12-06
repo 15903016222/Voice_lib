@@ -10,13 +10,17 @@ class BeamSourcePrivate;
 class SOURCESHARED_EXPORT BeamSource
 {
 public:
-    BeamSource(const char *data = NULL, int size = 0);
+    BeamSource();
+    ~BeamSource();
 
     /**
      * @brief set_raw_data 设置Beam原始数据
      * @param data  指向Beam原始数据,调用要维护这个地址,不能删除
+     * @param pointNum 波形点数
      */
-    void set_raw_data(const char *data, int size);
+    void set_raw_data(const char *data, int pointNum);
+    bool has_data();
+    void clean();
 
     bool get_wave(QByteArray &wave);
     int point_qty();
