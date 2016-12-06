@@ -51,6 +51,9 @@ protected:
     explicit Source();
     virtual ~Source();
 
+protected slots:
+    void update();
+
 private:
     static QMutex m_mutex;
     static Source *m_source;

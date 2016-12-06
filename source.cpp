@@ -6,9 +6,8 @@
 
 namespace DplSource {
 
-class SourcePrivate : public QObject
+class SourcePrivate
 {
-    Q_OBJECT
 public:
     SourcePrivate();
 
@@ -21,13 +20,6 @@ public:
     Source::Type m_type;
 
     QList<GroupSourcePointer> m_groups;
-
-signals:
-    void update_data();
-
-public slots:
-    void do_timeout_event();
-
 };
 
 SourcePrivate::SourcePrivate()
@@ -35,33 +27,6 @@ SourcePrivate::SourcePrivate()
     m_timer.setInterval(20);
 
     m_dmaSource = Dma::get_instance();
-
-    connect(&m_timer, SIGNAL(timeout()), this, SLOT(do_timeout_event()));
-}
-
-void SourcePrivate::do_timeout_event()
-{
-    if ( ! m_dmaSource->is_completed() ) {
-        return;
-    }
-
-    m_dmaSource->clean_completed();
-
-    const char * data = m_dmaSource->get_data_buffer();
-
-//    if (data == NULL) {
-//        return;
-//    }
-
-    int offset = 0;
-    m_rwlock.lockForRead();
-    for (int i = 0; i < m_groups.size(); ++i) {
-        m_groups[i]->set_raw_data(data+offset);
-        offset += m_groups[i]->size();
-    }
-    m_rwlock.unlock();
-
-    emit update_data();
 }
 
 /* Source */
@@ -151,12 +116,37 @@ const GroupSourcePointer &Source::get_group(int index)
 Source::Source()
     : d(new SourcePrivate())
 {
-    connect(d, SIGNAL(update_data()), this, SIGNAL(data_event()));
+    connect(&d->m_timer, SIGNAL(timeout()), this, SLOT(update()));
 }
 
 Source::~Source()
 {
     delete d;
+}
+
+void Source::update()
+{
+    if ( ! d->m_dmaSource->is_completed() ) {
+        return;
+    }
+
+    d->m_dmaSource->clean_completed();
+
+    const char * data = d->m_dmaSource->get_data_buffer();
+
+//    if (data == NULL) {
+//        return;
+//    }
+
+    int offset = 0;
+    d->m_rwlock.lockForRead();
+    for (int i = 0; i < d->m_groups.size(); ++i) {
+        d->m_groups[i]->set_raw_data(data+offset);
+        offset += d->m_groups[i]->size();
+    }
+    d->m_rwlock.unlock();
+
+    emit data_event();
 }
 
 }
