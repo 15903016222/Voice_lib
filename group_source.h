@@ -20,6 +20,8 @@ public:
     void set_point_number(int number);
     int point_number();
 
+    int size();
+
     const bool get_beam(int beamNo, BeamSource &beam) const;
 
 private:
