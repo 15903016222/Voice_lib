@@ -19,6 +19,8 @@ public slots:
 
 private:
     DplSource::Source *m_source;
+
+    void show_measure(const DplSource::BeamSource &beam);
 };
 
 #endif // __TEST_SOURCE_H__

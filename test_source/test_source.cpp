@@ -10,22 +10,34 @@ TestSource::TestSource(QObject *parent) : QObject(parent)
 
 void TestSource::start()
 {
-    m_source->set_interval(1000);
+    m_source->set_interval(1);
     m_source->set_freeze(false);
 }
 
 void TestSource::do_source_data_event()
 {
-    qDebug()<<__func__<<__LINE__;
-    DplSource::GroupSourcePointer groupPointer = m_source->get_group(0);
-    qDebug()<<__func__<<__LINE__;
+    DplSource::GroupSourcePointer groupPointer;/* = m_source->get_group(0);*/
     DplSource::BeamSource beam;
-    qDebug()<<__func__<<__LINE__;
-    if ( ! groupPointer->get_beam(0, beam) ) {
-        qDebug()<<__func__<<__LINE__;
-        return;
+
+    for (int i = 0; i < m_source->groups(); ++i) {
+        groupPointer = m_source->get_group(0);
+        qDebug()<<"Beam Information("<<groupPointer->beam_number()<<")";
+        for (int j = 0; j < groupPointer->beam_number(); ++j) {
+            if ( ! groupPointer->get_beam(j, beam) ) {
+                qDebug()<<"out";
+                return;
+            }
+            show_measure(beam);
+        }
+        qDebug("\n\n");
     }
-    qDebug("beam:%d point:%d", groupPointer->beam_number(), beam.point_qty());
-    qDebug()<<"Gate A Height:"<<beam.gate_a_height()/(20.47);
-    qDebug()<<"x:y="<<beam.encoder_x()<<beam.encoder_y();
+}
+
+void TestSource::show_measure(const DplSource::BeamSource &beam)
+{
+    qDebug()<<"Beam Index:"<<beam.index();
+    qDebug("Gate A Height(%f) Position(%d)", beam.gate_a_height()/20.47, beam.gate_a_position());
+    qDebug("Gate B Height(%f) Position(%d)", beam.gate_b_height()/20.47, beam.gate_b_position());
+    qDebug("Gate I Height(%f) Position(%d)", beam.gate_i_height()/20.47, beam.gate_i_position());
+    qDebug("Encoder x:y(%d, %d)", beam.encoder_x(), beam.encoder_y());
 }
