@@ -2,12 +2,12 @@
 
 namespace DplSource {
 
-struct BeamSourceCode
+struct BeamMeasureSource
 {
     /* 波型计数器 */
-    quint32 focallaw    : 13;   /* 0-12  波型对应聚焦法则的数值 */
-    quint32 beamIndex   : 13;   /* 13-25 设置聚焦法则后开始计数的波型数 */
-    quint32 gateStatus  : 6;    /* 26-31 闸门状态 */
+    quint32 focallaw        : 13;   /* 0-12  波型对应聚焦法则的数值 */
+    quint32 beamIndex       : 13;   /* 13-25 设置聚焦法则后开始计数的波型数 */
+    quint32 gateStatus      : 6;    /* 26-31 闸门状态 */
 
     /* Gate A */
     quint32 gateAPosition   : 20;   /* 0-19  闸门位置 */
@@ -35,15 +35,15 @@ public:
     BeamSourcePrivate();
 
     const char *m_rawData;
-    const BeamSourceCode *m_code;
+    BeamMeasureSource m_measure;
     int m_pointQty;
 };
 
 BeamSourcePrivate::BeamSourcePrivate()
 {
     m_rawData = NULL;
-    m_code = NULL;
     m_pointQty = 0;
+    ::memset(&m_measure, 0, sizeof(BeamMeasureSource));
 }
 
 BeamSource::BeamSource()
@@ -64,7 +64,7 @@ void BeamSource::set_raw_data(const char *data, int pointNum)
 
     d->m_rawData = data;
     d->m_pointQty = pointNum;
-    d->m_code = (BeamSourceCode *)(data + pointNum);
+    ::memcpy(&d->m_measure, data+pointNum, sizeof(BeamMeasureSource));
 }
 
 bool BeamSource::has_data()
@@ -76,7 +76,7 @@ void BeamSource::clean()
 {
     d->m_rawData = NULL;
     d->m_pointQty = 0;
-    d->m_code = NULL;
+    ::memset(&d->m_measure, 0, sizeof(BeamMeasureSource));
 }
 
 bool BeamSource::get_wave(QByteArray &wave)
@@ -96,47 +96,47 @@ int BeamSource::point_qty()
 
 int BeamSource::index()
 {
-    return d->m_code->beamIndex;
+    return d->m_measure.beamIndex;
 }
 
 int BeamSource::gate_a_height()
 {
-    return d->m_code->gateAHeight;
+    return d->m_measure.gateAHeight;
 }
 
 int BeamSource::gate_a_position()
 {
-    return d->m_code->gateAPosition;
+    return d->m_measure.gateAPosition;
 }
 
 int BeamSource::gate_b_height()
 {
-    return d->m_code->gateBHeight;
+    return d->m_measure.gateBHeight;
 }
 
 int BeamSource::gate_b_position()
 {
-    return d->m_code->gateBPosition;
+    return d->m_measure.gateBPosition;
 }
 
 int BeamSource::gate_i_height()
 {
-    return d->m_code->gateIHeight;
+    return d->m_measure.gateIHeight;
 }
 
 int BeamSource::gate_i_position()
 {
-    return d->m_code->gateIPosition;
+    return d->m_measure.gateIPosition;
 }
 
 int BeamSource::encoder_x()
 {
-    return d->m_code->encoderX;
+    return d->m_measure.encoderX;
 }
 
 int BeamSource::encoder_y()
 {
-    return d->m_code->encoderY;
+    return d->m_measure.encoderY;
 }
 
 }

@@ -70,7 +70,7 @@ bool GroupSource::get_beam(int beamNo, BeamSource &beam) const
             || d->m_rawData == NULL) {
         return false;
     }
-    beam.set_raw_data(d->m_rawData+beamNo*d->m_beamSize, d->m_beamSize);
+    beam.set_raw_data(d->m_rawData+beamNo*d->m_beamSize, d->m_pointNum);
     return true;
 }
 
