@@ -23,16 +23,16 @@ public:
     void clean();
 
     bool get_wave(QByteArray &wave);
-    int point_qty();
-    int index();
-    int gate_a_height();
-    int gate_a_position();
-    int gate_b_height();
-    int gate_b_position();
-    int gate_i_height();
-    int gate_i_position();
-    int encoder_x();
-    int encoder_y();
+    int point_qty() const;
+    int index() const;
+    int gate_a_height() const;
+    int gate_a_position() const;
+    int gate_b_height() const;
+    int gate_b_position() const;
+    int gate_i_height() const;
+    int gate_i_position() const;
+    int encoder_x() const;
+    int encoder_y() const;
 
 //    bool led0();
 //    bool led1();

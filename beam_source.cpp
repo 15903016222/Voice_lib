@@ -89,52 +89,52 @@ bool BeamSource::get_wave(QByteArray &wave)
     return (wave.size() == d->m_pointQty);
 }
 
-int BeamSource::point_qty()
+int BeamSource::point_qty() const
 {
     return d->m_pointQty;
 }
 
-int BeamSource::index()
+int BeamSource::index() const
 {
     return d->m_measure.beamIndex;
 }
 
-int BeamSource::gate_a_height()
+int BeamSource::gate_a_height() const
 {
     return d->m_measure.gateAHeight;
 }
 
-int BeamSource::gate_a_position()
+int BeamSource::gate_a_position() const
 {
     return d->m_measure.gateAPosition;
 }
 
-int BeamSource::gate_b_height()
+int BeamSource::gate_b_height() const
 {
     return d->m_measure.gateBHeight;
 }
 
-int BeamSource::gate_b_position()
+int BeamSource::gate_b_position() const
 {
     return d->m_measure.gateBPosition;
 }
 
-int BeamSource::gate_i_height()
+int BeamSource::gate_i_height() const
 {
     return d->m_measure.gateIHeight;
 }
 
-int BeamSource::gate_i_position()
+int BeamSource::gate_i_position() const
 {
     return d->m_measure.gateIPosition;
 }
 
-int BeamSource::encoder_x()
+int BeamSource::encoder_x() const
 {
     return d->m_measure.encoderX;
 }
 
-int BeamSource::encoder_y()
+int BeamSource::encoder_y() const
 {
     return d->m_measure.encoderY;
 }
