@@ -95,7 +95,7 @@ bool Source::add_group(int beamQty, int pointQty)
     if (d->m_groups.size() >= MAX_GROUPS) {
         return false;
     }
-    d->m_groups.append(GroupSourcePointer(new Group(beamQty, pointNum)));
+    d->m_groups.append(GroupSourcePointer(new Group(beamQty, pointQty)));
     return true;
 }
 
@@ -106,7 +106,7 @@ bool Source::remove_group(int index)
             || index >= d->m_groups.size() ) {
         return false;
     }
-    d->m_groups.removeAt(id);
+    d->m_groups.removeAt(index);
     return true;
 }
 
