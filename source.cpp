@@ -45,20 +45,22 @@ void Source::set_interval(unsigned int interval)
     d->m_timer.setInterval(interval);
 }
 
-void Source::set_freeze(bool flag)
+void Source::freeze()
 {
     QWriteLocker l(&d->m_rwlock);
-    if (flag) {
-        d->m_timer.stop();
-    } else {
-        d->m_timer.start();
-    }
+    d->m_timer.stop();
 }
 
 bool Source::is_freeze()
 {
     QReadLocker l(&d->m_rwlock);
     return ! d->m_timer.isActive();
+}
+
+void Source::start()
+{
+    QWriteLocker l(&d->m_rwlock);
+    d->m_timer.start();
 }
 
 Source *Source::get_instance()
