@@ -20,9 +20,9 @@ public:
     static void destroyed();
 
     enum Type {
-        SOURCE_DMA,
-        SOURCE_FILE,
-        SOURCE_NET
+        SOURCE_DMA,     /* DMA源 */
+        SOURCE_FILE,    /* 文件源 */
+        SOURCE_NET      /* 网络源 */
     };
 
     /**
