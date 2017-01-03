@@ -61,8 +61,8 @@ public:
 
     static const int MAX_GROUPS;
     int groups();
-    bool create_group(int beamNum, int pointNum);
-    bool remove_group();
+    bool add_group(int beamQty, int pointQty);
+    bool remove_group(int index);
     const GroupSourcePointer &get_group(int index);
 
 //    void set_position(int scanAxis, int indexAxis);

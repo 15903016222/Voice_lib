@@ -89,23 +89,24 @@ int Source::groups()
     return d->m_groups.size();
 }
 
-bool Source::create_group(int beamNum, int pointNum)
+bool Source::add_group(int beamQty, int pointQty)
 {
     QWriteLocker l(&d->m_rwlock);
     if (d->m_groups.size() >= MAX_GROUPS) {
         return false;
     }
-    d->m_groups.append(GroupSourcePointer(new Group(beamNum, pointNum)));
+    d->m_groups.append(GroupSourcePointer(new Group(beamQty, pointNum)));
     return true;
 }
 
-bool Source::remove_group()
+bool Source::remove_group(int index)
 {
     QWriteLocker l(&d->m_rwlock);
-    if (d->m_groups.size() == 0) {
+    if (d->m_groups.isEmpty()
+            || index >= d->m_groups.size() ) {
         return false;
     }
-    d->m_groups.removeLast();
+    d->m_groups.removeAt(id);
     return true;
 }
 
