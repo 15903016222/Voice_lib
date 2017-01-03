@@ -7,11 +7,11 @@
 namespace DplSource {
 
 class BeamSourcePrivate;
-class SOURCESHARED_EXPORT BeamSource
+class SOURCESHARED_EXPORT Beam
 {
 public:
-    BeamSource();
-    ~BeamSource();
+    Beam();
+    ~Beam();
 
     /**
      * @brief set_raw_data 设置Beam原始数据

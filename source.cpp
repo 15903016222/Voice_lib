@@ -95,7 +95,7 @@ bool Source::create_group(int beamNum, int pointNum)
     if (d->m_groups.size() >= MAX_GROUPS) {
         return false;
     }
-    d->m_groups.append(GroupSourcePointer(new GroupSource(beamNum, pointNum)));
+    d->m_groups.append(GroupSourcePointer(new Group(beamNum, pointNum)));
     return true;
 }
 

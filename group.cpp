@@ -1,18 +1,18 @@
-#include "group_source.h"
+#include "group.h"
 
 namespace DplSource {
 
-class GroupSourcePrivate
+class GroupPrivate
 {
 public:
-    GroupSourcePrivate();
+    GroupPrivate();
     const char *m_rawData;
     int m_beamNum;
     int m_beamSize;
     int m_pointNum;
 };
 
-GroupSourcePrivate::GroupSourcePrivate()
+GroupPrivate::GroupPrivate()
 {
     m_rawData = NULL;
     m_beamNum = 0;
@@ -20,51 +20,51 @@ GroupSourcePrivate::GroupSourcePrivate()
     m_pointNum = 0;
 }
 
-GroupSource::GroupSource(int beamNum, int pointNum)
-    :d(new GroupSourcePrivate())
+Group::Group(int beamNum, int pointNum)
+    :d(new GroupPrivate())
 {
     d->m_beamNum = beamNum;
     d->m_beamSize = pointNum + 32;
     d->m_pointNum = pointNum;
 }
 
-GroupSource::~GroupSource()
+Group::~Group()
 {
     delete d;
 }
 
-void GroupSource::set_raw_data(const char *data)
+void Group::set_raw_data(const char *data)
 {
     d->m_rawData = data;
 }
 
-void GroupSource::set_beam_number(int number)
+void Group::set_beam_number(int number)
 {
     d->m_beamNum = number;
 }
 
-int GroupSource::beam_number()
+int Group::beam_number()
 {
     return d->m_beamNum;
 }
 
-void GroupSource::set_point_number(int number)
+void Group::set_point_number(int number)
 {
     d->m_pointNum = number;
     d->m_beamSize = number + 32;
 }
 
-int GroupSource::point_number()
+int Group::point_number()
 {
     return d->m_pointNum;
 }
 
-int GroupSource::size()
+int Group::size()
 {
     return (d->m_beamSize * d->m_beamNum);
 }
 
-bool GroupSource::get_beam(int beamNo, BeamSource &beam) const
+bool Group::get_beam(int beamNo, Beam &beam) const
 {
     if (beamNo >= d->m_beamNum
             || d->m_rawData == NULL) {

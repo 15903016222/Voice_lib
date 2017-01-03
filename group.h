@@ -1,17 +1,17 @@
 #ifndef __GROUP_SOURCE_H__
 #define __GROUP_SOURCE_H__
 
-#include "beam_source.h"
+#include "beam.h"
 
 namespace DplSource {
 
-class SOURCESHARED_EXPORT GroupSourcePrivate;
+class SOURCESHARED_EXPORT GroupPrivate;
 
-class GroupSource
+class Group
 {
 public:
-    GroupSource(int beamNum, int pointNum);
-    ~GroupSource();
+    Group(int beamNum, int pointNum);
+    ~Group();
 
     void set_raw_data(const char *rawData);
 
@@ -22,10 +22,10 @@ public:
 
     int size();
 
-    bool get_beam(int beamNo, BeamSource &beam) const;
+    bool get_beam(int beamNo, Beam &beam) const;
 
 private:
-    GroupSourcePrivate *d;
+    GroupPrivate *d;
 };
 
 }

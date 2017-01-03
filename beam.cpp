@@ -1,4 +1,4 @@
-#include "beam_source.h"
+#include "beam.h"
 
 namespace DplSource {
 
@@ -46,17 +46,17 @@ BeamSourcePrivate::BeamSourcePrivate()
     ::memset(&m_measure, 0, sizeof(BeamMeasureSource));
 }
 
-BeamSource::BeamSource()
+Beam::Beam()
     : d(new BeamSourcePrivate())
 {
 }
 
-BeamSource::~BeamSource()
+Beam::~Beam()
 {
     delete d;
 }
 
-void BeamSource::set_raw_data(const char *data, int pointNum)
+void Beam::set_raw_data(const char *data, int pointNum)
 {
     if (pointNum == 0 || data == NULL) {
         return;
@@ -67,19 +67,19 @@ void BeamSource::set_raw_data(const char *data, int pointNum)
     ::memcpy(&d->m_measure, data+pointNum, sizeof(BeamMeasureSource));
 }
 
-bool BeamSource::has_data()
+bool Beam::has_data()
 {
     return (d->m_rawData != NULL);
 }
 
-void BeamSource::clean()
+void Beam::clean()
 {
     d->m_rawData = NULL;
     d->m_pointQty = 0;
     ::memset(&d->m_measure, 0, sizeof(BeamMeasureSource));
 }
 
-bool BeamSource::get_wave(QByteArray &wave)
+bool Beam::get_wave(QByteArray &wave)
 {
     if (d->m_rawData == NULL) {
         return false;
@@ -89,52 +89,52 @@ bool BeamSource::get_wave(QByteArray &wave)
     return (wave.size() == d->m_pointQty);
 }
 
-int BeamSource::point_qty() const
+int Beam::point_qty() const
 {
     return d->m_pointQty;
 }
 
-int BeamSource::index() const
+int Beam::index() const
 {
     return d->m_measure.beamIndex;
 }
 
-int BeamSource::gate_a_height() const
+int Beam::gate_a_height() const
 {
     return d->m_measure.gateAHeight;
 }
 
-int BeamSource::gate_a_position() const
+int Beam::gate_a_position() const
 {
     return d->m_measure.gateAPosition;
 }
 
-int BeamSource::gate_b_height() const
+int Beam::gate_b_height() const
 {
     return d->m_measure.gateBHeight;
 }
 
-int BeamSource::gate_b_position() const
+int Beam::gate_b_position() const
 {
     return d->m_measure.gateBPosition;
 }
 
-int BeamSource::gate_i_height() const
+int Beam::gate_i_height() const
 {
     return d->m_measure.gateIHeight;
 }
 
-int BeamSource::gate_i_position() const
+int Beam::gate_i_position() const
 {
     return d->m_measure.gateIPosition;
 }
 
-int BeamSource::encoder_x() const
+int Beam::encoder_x() const
 {
     return d->m_measure.encoderX;
 }
 
-int BeamSource::encoder_y() const
+int Beam::encoder_y() const
 {
     return d->m_measure.encoderY;
 }

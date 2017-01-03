@@ -1,7 +1,7 @@
 #ifndef __SOURCE_H__
 #define __SOURCE_H__
 
-#include "group_source.h"
+#include "group.h"
 
 #include <QMutex>
 #include <QObject>
@@ -9,7 +9,7 @@
 
 namespace DplSource {
 
-typedef QSharedPointer<GroupSource> GroupSourcePointer;
+typedef QSharedPointer<Group> GroupSourcePointer;
 class SourcePrivate;
 
 class SOURCESHARED_EXPORT Source : public QObject
