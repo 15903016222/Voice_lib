@@ -59,6 +59,6 @@ HEADERS +=\
 
 target.path = /lib
 documentation.path  = /
-documentation.files = source.h source_global.h group_source.h beam_source.h
+documentation.files = source.h source_global.h group.h beam.h
 
 INSTALLS += target documentation
