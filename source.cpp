@@ -19,7 +19,7 @@ public:
 
     Source::Type m_type;
 
-    QList<GroupSourcePointer> m_groups;
+    QList<GroupPointer> m_groups;
 };
 
 SourcePrivate::SourcePrivate()
@@ -95,7 +95,7 @@ bool Source::add_group(int beamQty, int pointQty)
     if (d->m_groups.size() >= MAX_GROUPS) {
         return false;
     }
-    d->m_groups.append(GroupSourcePointer(new Group(beamQty, pointQty)));
+    d->m_groups.append(GroupPointer(new Group(beamQty, pointQty)));
     return true;
 }
 
@@ -110,7 +110,7 @@ bool Source::remove_group(int index)
     return true;
 }
 
-const GroupSourcePointer &Source::get_group(int index)
+const GroupPointer &Source::get_group(int index)
 {
     QReadLocker l(&d->m_rwlock);
     return d->m_groups[index];

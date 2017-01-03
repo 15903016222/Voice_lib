@@ -9,7 +9,7 @@
 
 namespace DplSource {
 
-typedef QSharedPointer<Group> GroupSourcePointer;
+typedef QSharedPointer<Group> GroupPointer;
 class SourcePrivate;
 
 class SOURCESHARED_EXPORT Source : public QObject
@@ -63,7 +63,7 @@ public:
     int groups();
     bool add_group(int beamQty, int pointQty);
     bool remove_group(int index);
-    const GroupSourcePointer &get_group(int index);
+    const GroupPointer &get_group(int index);
 
 //    void set_position(int scanAxis, int indexAxis);
 
