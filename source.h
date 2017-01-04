@@ -65,7 +65,7 @@ public:
      * @param delay 延迟启动时间，单位(ms)
      *              如果为0，则立即启动；否则延迟delay时间后启动
      */
-    void start(int delay);
+    void start(int delay=0);
 
     static const int MAX_GROUPS;
     int groups();
