@@ -14,6 +14,7 @@ public:
     QReadWriteLock m_rwlock;
 
     QTimer m_timer;
+    int m_interval;
 
     Dma *m_dmaSource;
 
@@ -24,7 +25,8 @@ public:
 
 SourcePrivate::SourcePrivate()
 {
-    m_timer.setInterval(20);
+    m_interval = 20;
+    m_timer.setInterval(m_interval);
 
     m_dmaSource = Dma::get_instance();
 }
@@ -39,28 +41,39 @@ void Source::set_type(Source::Type type)
     d->m_type = type;
 }
 
+int Source::interval()
+{
+    QReadLocker l(&d->m_rwlock);
+    return d->m_interval;
+}
+
 void Source::set_interval(unsigned int interval)
 {
     QWriteLocker l(&d->m_rwlock);
-    d->m_timer.setInterval(interval);
+    d->m_interval = interval;
+    d->m_timer.setInterval(d->m_interval);
 }
 
-void Source::freeze()
+void Source::stop()
 {
     QWriteLocker l(&d->m_rwlock);
     d->m_timer.stop();
 }
 
-bool Source::is_freeze()
+bool Source::is_running()
 {
     QReadLocker l(&d->m_rwlock);
-    return ! d->m_timer.isActive();
+    return d->m_timer.isActive();
 }
 
-void Source::start()
+void Source::start(int delay)
 {
     QWriteLocker l(&d->m_rwlock);
-    d->m_timer.start();
+    if (0 == delay) {
+        d->m_timer.start();
+    } else {
+        d->m_timer.start(delay);
+    }
 }
 
 Source *Source::get_instance()
@@ -137,12 +150,13 @@ void Source::update()
 
     const char * data = d->m_dmaSource->get_data_buffer();
 
-//    if (data == NULL) {
-//        return;
-//    }
-
     int offset = 0;
-    d->m_rwlock.lockForRead();
+    d->m_rwlock.lockForWrite();
+    if (d->m_timer.interval() != d->m_interval) {
+        d->m_timer.setInterval(d->m_interval);
+        d->m_rwlock.unlock();
+        return;
+    }
     for (int i = 0; i < d->m_groups.size(); ++i) {
         d->m_groups[i]->set_raw_data(data+offset);
         offset += d->m_groups[i]->size();

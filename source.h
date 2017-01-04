@@ -38,26 +38,34 @@ public:
     void set_type(Type type);
 
     /**
-     * @brief set_interval  设置上传数据间隔时间
-     * @param interval      间隔时间值
+     * @brief interval  获取上传数据时间间隔
+     * @return          时间间隔，单位(ms)
+     */
+    int interval();
+
+    /**
+     * @brief set_interval  设置上传数据时间间隔
+     * @param interval      时间间隔, 单位(ms)
      */
     void set_interval(unsigned int interval);
 
     /**
-     * @brief set_freeze    设置冻结，停止数据上传
+     * @brief stop  停止数据上传
      */
-    void freeze();
+    void stop();
 
     /**
-     * @brief is_freeze 判断是冻结
-     * @return          已冻结返回true，否则返回false
+     * @brief is_running    判断是否在运行
+     * @return              在运行则返回true，否则为false
      */
-    bool is_freeze();
+    bool is_running();
 
     /**
-     * @brief start 开始工作，数据上传
+     * @brief start 启动数据上传
+     * @param delay 延迟启动时间，单位(ms)
+     *              如果为0，则立即启动；否则延迟delay时间后启动
      */
-    void start();
+    void start(int delay);
 
     static const int MAX_GROUPS;
     int groups();
