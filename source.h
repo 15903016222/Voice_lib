@@ -62,10 +62,8 @@ public:
 
     /**
      * @brief start 启动数据上传
-     * @param delay 延迟启动时间，单位(ms)
-     *              如果为0，则立即启动；否则延迟delay时间后启动
      */
-    void start(int delay=0);
+    void start();
 
     static const int MAX_GROUPS;
     int groups();
@@ -74,6 +72,12 @@ public:
     const GroupPointer &get_group(int index);
 
 //    void set_position(int scanAxis, int indexAxis);
+
+public slots:
+    /**
+     * @brief restart   重新启动数据上传, 会延迟200ms后，启动数据上传
+     */
+    void restart();
 
 signals:
     void data_event();

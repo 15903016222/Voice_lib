@@ -7,8 +7,9 @@ namespace DplSource {
 
 class SOURCESHARED_EXPORT GroupPrivate;
 
-class Group
+class SOURCESHARED_EXPORT Group : public QObject
 {
+    Q_OBJECT
 public:
     Group(int beamNum, int pointNum);
     ~Group();
@@ -32,12 +33,6 @@ public:
     int beam_qty();
 
     /**
-     * @brief set_point_qty 设置一条Beam包含的点数
-     * @param qty           点数
-     */
-    void set_point_qty(int qty);
-
-    /**
      * @brief point_qty 获取一条Beam包含的点数
      * @return          点数
      */
@@ -56,6 +51,13 @@ public:
      * @return          成功返回true，失败返回false
      */
     bool get_beam(int beamNo, Beam &beam) const;
+
+public slots:
+    /**
+     * @brief set_point_qty 设置一条Beam包含的点数
+     * @param qty           点数
+     */
+    void set_point_qty(int qty);
 
 private:
     GroupPrivate *d;

@@ -8,6 +8,7 @@ namespace DplSource {
 
 class SourcePrivate
 {
+    Q_OBJECT
 public:
     SourcePrivate();
 
@@ -68,15 +69,10 @@ bool Source::is_running()
     return d->m_timer.isActive();
 }
 
-void Source::start(int delay)
+void Source::start()
 {
     QWriteLocker l(&d->m_rwlock);
-    if (0 == delay) {
-        d->m_timer.start();
-    } else {
-        d->m_delayFlag = true;
-        d->m_timer.start(delay);
-    }
+    d->m_timer.start();
 }
 
 Source *Source::get_instance()
@@ -130,6 +126,12 @@ const GroupPointer &Source::get_group(int index)
 {
     QReadLocker l(&d->m_rwlock);
     return d->m_groups[index];
+}
+
+void Source::restart()
+{
+    d->m_delayFlag = true;
+    d->m_timer.start(200);
 }
 
 Source::Source()
