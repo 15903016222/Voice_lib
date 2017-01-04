@@ -15,6 +15,7 @@ public:
 
     QTimer m_timer;
     int m_interval;
+    bool m_delayFlag;
 
     Dma *m_dmaSource;
 
@@ -26,6 +27,7 @@ public:
 SourcePrivate::SourcePrivate()
 {
     m_interval = 20;
+    m_delayFlag = false;
     m_timer.setInterval(m_interval);
 
     m_dmaSource = Dma::get_instance();
@@ -72,6 +74,7 @@ void Source::start(int delay)
     if (0 == delay) {
         d->m_timer.start();
     } else {
+        d->m_delayFlag = true;
         d->m_timer.start(delay);
     }
 }
@@ -151,16 +154,21 @@ void Source::update()
     const char * data = d->m_dmaSource->get_data_buffer();
 
     int offset = 0;
+
     d->m_rwlock.lockForWrite();
-    if (d->m_timer.interval() != d->m_interval) {
+
+    if (d->m_delayFlag) {
+        d->m_delayFlag = false;
         d->m_timer.setInterval(d->m_interval);
         d->m_rwlock.unlock();
         return;
     }
+
     for (int i = 0; i < d->m_groups.size(); ++i) {
         d->m_groups[i]->set_raw_data(data+offset);
         offset += d->m_groups[i]->size();
     }
+
     d->m_rwlock.unlock();
 
     emit data_event();
