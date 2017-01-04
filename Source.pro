@@ -17,6 +17,8 @@ QT       -= gui
 TARGET = Source
 TEMPLATE = lib
 
+VERSION = $$system(git describe --tags `git rev-list --tags --max-count=1`)
+
 win32 {
     DEVICE = PC_WIN
     TARGET = Source_Win
