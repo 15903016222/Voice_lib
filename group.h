@@ -5,7 +5,7 @@
 
 namespace DplSource {
 
-class SOURCESHARED_EXPORT GroupPrivate;
+class GroupPrivate;
 
 class SOURCESHARED_EXPORT Group : public QObject
 {

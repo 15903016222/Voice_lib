@@ -8,7 +8,6 @@ namespace DplSource {
 
 class SourcePrivate
 {
-    Q_OBJECT
 public:
     SourcePrivate();
 
