@@ -17,7 +17,7 @@ class BeamGroup : public QObject
     Q_OBJECT
 public:
     explicit BeamGroup(QObject *parent = 0);
-    BeamGroup();
+    ~BeamGroup();
 
     /**
      * @brief get       获取指定Beam数据

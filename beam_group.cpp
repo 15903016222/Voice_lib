@@ -32,7 +32,7 @@ BeamGroup::BeamGroup(QObject *parent) :
     alloter->add(this);
 }
 
-BeamGroup::BeamGroup()
+BeamGroup::~BeamGroup()
 {
     Alloter *alloter = Alloter::get_instance();
     alloter->remove(this);
