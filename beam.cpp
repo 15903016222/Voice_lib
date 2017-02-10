@@ -71,7 +71,7 @@ void Beam::set_raw_data(const char *data, int pointNum)
     ::memcpy(&d->m_measure, data+pointNum, sizeof(Measure));
 }
 
-bool Beam::has_data()
+bool Beam::has_data() const
 {
     return (d->m_rawData != NULL);
 }
@@ -83,7 +83,7 @@ void Beam::clean()
     ::memset(&d->m_measure, 0, sizeof(Measure));
 }
 
-bool Beam::get_wave(QByteArray &wave)
+bool Beam::get_wave(QByteArray &wave) const
 {
     if (d->m_rawData == NULL) {
         return false;

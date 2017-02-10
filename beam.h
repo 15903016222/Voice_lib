@@ -29,7 +29,11 @@ public:
      * @brief has_data  判断是否有数据
      * @return          有数据则返回true，否则返回false
      */
-    bool has_data();
+    bool has_data() const;
+
+    /**
+     * @brief clean 清除数据
+     */
     void clean();
 
     /**
@@ -37,7 +41,7 @@ public:
      * @param wave      波形数据
      * @return          成功返回true，失败返回false
      */
-    bool get_wave(QByteArray &wave);
+    bool get_wave(QByteArray &wave) const;
 
     /**
      * @brief point_qty 获取波形点数

@@ -1,3 +1,10 @@
+/**
+ * @file alloter.cpp
+ * @brief 分配器，分配各BeamGroup的数据资源
+ * @author Jake Yang <yanghuanjie@cndoppler.cn>
+ * @version 0.1
+ * @date 2017-02-10
+ */
 #include "alloter.h"
 #include "dma.h"
 #include "source.h"
