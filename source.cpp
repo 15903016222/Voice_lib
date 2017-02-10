@@ -133,7 +133,6 @@ void Source::update()
             d->m_timer.setInterval(d->m_interval);
             return;
         }
-
     }
 
     if (DMA == type) {

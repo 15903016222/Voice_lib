@@ -33,18 +33,6 @@ public:
     void set_raw_data(const char *data);
 
     /**
-     * @brief set_beam_qty  设置Beam数量
-     * @param qty           数量值
-     */
-    void set_beam_qty(int qty);
-
-    /**
-     * @brief set_point_qty 设置一条Beam的点数量
-     * @param qty           点数量值
-     */
-    void set_point_qty(int qty);
-
-    /**
      * @brief beam_qty  获取Beam数量
      * @return          数量值
      */
@@ -61,6 +49,19 @@ public:
      * @return      大小(Bytes)
      */
     int size();
+
+public slots:
+    /**
+     * @brief set_beam_qty  设置Beam数量
+     * @param qty           数量值
+     */
+    void set_beam_qty(int qty);
+
+    /**
+     * @brief set_point_qty 设置一条Beam的点数量
+     * @param qty           点数量值
+     */
+    void set_point_qty(int qty);
 
 signals:
     void data_event();
