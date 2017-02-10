@@ -3,10 +3,15 @@
 
 #include "source_global.h"
 #include <QObject>
+#include <QSharedPointer>
 
 namespace DplSource {
 
+class Beam;
 class BeamSourcePrivate;
+
+typedef QSharedPointer<Beam> BeamPointer;
+
 class SOURCESHARED_EXPORT Beam
 {
 public:
@@ -54,7 +59,7 @@ public:
 
     /**
      * @brief gate_a_position   获取闸门A内波形峰值对应的位置
-     * @return                  位置
+     * @return                  位置(ns)
      */
     int gate_a_position() const;
 
@@ -66,7 +71,7 @@ public:
 
     /**
      * @brief gate_B_position   获取闸门B内波形峰值对应的位置
-     * @return                  位置
+     * @return                  位置(ns)
      */
     int gate_b_position() const;
 
@@ -101,6 +106,7 @@ public:
 //    int analog_output0();
 //    int analog_output1();
 
+    static const int MEASURE_SIZE;
 private:
     BeamSourcePrivate *d;
 };

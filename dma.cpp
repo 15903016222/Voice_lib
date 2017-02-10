@@ -6,7 +6,6 @@
 #include <sys/mman.h>
 #include <unistd.h>
 #include <string.h>
-#include <QDebug>
 
 #include <QFile>
 #include <QReadWriteLock>

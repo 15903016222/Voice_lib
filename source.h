@@ -1,7 +1,7 @@
 #ifndef __SOURCE_H__
 #define __SOURCE_H__
 
-#include "group.h"
+#include "source_global.h"
 
 #include <QMutex>
 #include <QObject>
@@ -9,7 +9,6 @@
 
 namespace DplSource {
 
-typedef QSharedPointer<Group> GroupPointer;
 class SourcePrivate;
 
 class SOURCESHARED_EXPORT Source : public QObject
@@ -20,9 +19,9 @@ public:
     static void destroyed();
 
     enum Type {
-        SOURCE_DMA,     /* DMA源 */
-        SOURCE_FILE,    /* 文件源 */
-        SOURCE_NET      /* 网络源 */
+        DMA,     /* DMA源 */
+        FILE,    /* 文件源 */
+        NET      /* 网络源 */
     };
 
     /**
@@ -65,12 +64,6 @@ public:
      */
     void start();
 
-    static const int MAX_GROUPS;
-    int groups();
-    bool add_group(int beamQty, int pointQty);
-    bool remove_group(int index);
-    const GroupPointer &get_group(int index);
-
 //    void set_position(int scanAxis, int indexAxis);
 
 public slots:
@@ -80,14 +73,17 @@ public slots:
     void restart();
 
 signals:
-    void data_event();
+    void data_event(const char *data);
+    void type_changed(Source::Type type);
 
 protected:
     explicit Source();
     virtual ~Source();
 
+    void update_dma();
+
 protected slots:
-    void update();
+    virtual void update();
 
 private:
     static QMutex m_mutex;

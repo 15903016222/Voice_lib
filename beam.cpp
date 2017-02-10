@@ -2,7 +2,7 @@
 
 namespace DplSource {
 
-struct BeamMeasureSource
+struct Measure
 {
     /* 波型计数器 */
     quint32 focallaw        : 13;   /* 0-12  波型对应聚焦法则的数值 */
@@ -26,7 +26,7 @@ struct BeamMeasureSource
 
     int res0;       /* 保留 */
 
-    int res1;
+    int res1;       /* 保留 */
 };
 
 class BeamSourcePrivate
@@ -35,7 +35,7 @@ public:
     BeamSourcePrivate();
 
     const char *m_rawData;
-    BeamMeasureSource m_measure;
+    Measure m_measure;
     int m_pointQty;
 };
 
@@ -43,8 +43,12 @@ BeamSourcePrivate::BeamSourcePrivate()
 {
     m_rawData = NULL;
     m_pointQty = 0;
-    ::memset(&m_measure, 0, sizeof(BeamMeasureSource));
+    ::memset(&m_measure, 0, sizeof(Measure));
 }
+
+/* Class Beam */
+
+const int Beam::MEASURE_SIZE = 32;
 
 Beam::Beam()
     : d(new BeamSourcePrivate())
@@ -64,7 +68,7 @@ void Beam::set_raw_data(const char *data, int pointNum)
 
     d->m_rawData = data;
     d->m_pointQty = pointNum;
-    ::memcpy(&d->m_measure, data+pointNum, sizeof(BeamMeasureSource));
+    ::memcpy(&d->m_measure, data+pointNum, sizeof(Measure));
 }
 
 bool Beam::has_data()
@@ -76,7 +80,7 @@ void Beam::clean()
 {
     d->m_rawData = NULL;
     d->m_pointQty = 0;
-    ::memset(&d->m_measure, 0, sizeof(BeamMeasureSource));
+    ::memset(&d->m_measure, 0, sizeof(Measure));
 }
 
 bool Beam::get_wave(QByteArray &wave)

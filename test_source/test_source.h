@@ -3,7 +3,7 @@
 
 #include <QObject>
 
-#include "../source.h"
+#include "../beam_group.h"
 
 class TestSource : public QObject
 {
@@ -15,12 +15,14 @@ public:
 signals:
 
 public slots:
-    void do_source_data_event();
+    void do_beamgrp1_data_event();
+    void do_beamgrp2_data_event();
 
 private:
-    DplSource::Source *m_source;
+    DplSource::BeamGroup *m_beamGrp1;
+    DplSource::BeamGroup *m_beamGrp2;
 
-    void show_measure(const DplSource::BeamSource &beam);
+    void show_measure(const DplSource::BeamPointer &beam);
 };
 
 #endif // __TEST_SOURCE_H__

@@ -49,18 +49,20 @@ CONFIG(debug, debug|release) {
 DEFINES += SOURCE_LIBRARY $$DEVICE
 
 SOURCES += source.cpp \
-    group.cpp \
-    beam.cpp
+    beam.cpp \
+    alloter.cpp \
+    beam_group.cpp
 
 HEADERS +=\
         source_global.h \
     source.h \
-    group.h \
-    beam.h
+    beam.h \
+    alloter.h \
+    beam_group.h
 
 
 target.path = /lib
 documentation.path  = /
-documentation.files = source.h source_global.h group.h beam.h
+documentation.files = beam_group.h beam.h source.h source_global.h
 
 INSTALLS += target documentation

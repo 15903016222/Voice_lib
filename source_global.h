@@ -3,10 +3,11 @@
 
 #include <QtCore/qglobal.h>
 
-#if defined(SOURCE_LIBRARY)
-#  define SOURCESHARED_EXPORT Q_DECL_EXPORT
-#else
-#  define SOURCESHARED_EXPORT Q_DECL_IMPORT
-#endif
+#define SOURCESHARED_EXPORT
+//#if defined(SOURCE_LIBRARY)
+//#  define SOURCESHARED_EXPORT Q_DECL_EXPORT
+//#else
+//#  define SOURCESHARED_EXPORT Q_DECL_IMPORT
+//#endif
 
 #endif // SOURCE_GLOBAL_H

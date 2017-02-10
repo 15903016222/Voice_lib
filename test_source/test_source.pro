@@ -17,13 +17,15 @@ SOURCES += main.cpp \
     test_source.cpp
 
 SOURCES += ../source.cpp \
-    ../group_source.cpp \
-    ../beam_source.cpp \
+    ../beam.cpp \
+    ../beam_group.cpp \
+    ../alloter.cpp \
     ../dma.cpp
 
 HEADERS += ../source_global.h \
     ../source.h \
-    ../beam_source.h \
-    ../group_source.h \
+    ../beam.h \
+    ../beam_group.h \
+    ../alloter.h \
     ../dma.h \
     test_source.h
