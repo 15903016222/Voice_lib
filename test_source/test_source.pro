@@ -1,4 +1,28 @@
-DEVICE = "PHASCAN"
+#------------------------------------------------------------
+# Support Devices:
+#  pcunix     : Qt5.6.0, gcc.4.8.4
+#  pcwin      : Qt5.7.0, MSVC2015
+#  phascan    : Qt4.8.6, arm-angstrom-linux-gnueabi-gcc.4.5.3
+#  phascan_ii : Qt5.4.3, arm-phytec-linux-gnueabi-gcc.4.9.2
+#-------------------------------------------------------------
+win32 {
+    DEVICE = pcwin
+}
+unix {
+    DEVICE = pcunix
+    LIBS += -lX11 -lXtst
+
+    linux-arm-g++ {
+    DEVICE = phascan
+    }
+
+    linux-oe-g++ {
+    DEVICE = phascan_ii
+    }
+}
+
+CONFIG += $$DEVICE
+DEFINES += $$upper($$DEVICE)
 
 QT       -= gui
 
@@ -8,24 +32,15 @@ CONFIG   -= app_bundle
 
 TEMPLATE = app
 
-DEFINES += $$DEVICE
-
 target.path = /home/root
 INSTALLS += target
 
-SOURCES += main.cpp \
+HEADERS += \
+    test_source.h
+
+SOURCES += \
+    main.cpp \
     test_source.cpp
 
-SOURCES += ../source.cpp \
-    ../beam.cpp \
-    ../beam_group.cpp \
-    ../alloter.cpp \
-    ../dma.cpp
-
-HEADERS += ../source_global.h \
-    ../source.h \
-    ../beam.h \
-    ../beam_group.h \
-    ../alloter.h \
-    ../dma.h \
-    test_source.h
+include($$PWD/../src/source-lib.pri)
+INCLUDEPATH += $$PWD/../src/

@@ -3,7 +3,7 @@
 
 #include <QObject>
 
-#include "../beam_group.h"
+#include "beam_group.h"
 
 class TestSource : public QObject
 {

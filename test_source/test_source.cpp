@@ -1,6 +1,6 @@
 #include "test_source.h"
 
-#include "../source.h"
+#include "source.h"
 #include <QDebug>
 
 TestSource::TestSource(QObject *parent) :
