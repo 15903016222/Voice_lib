@@ -11,7 +11,6 @@ class Dma
 {
 public:
     static Dma *instance();
-    static void destroyed();
 
     int get_region_size() const;
 
@@ -59,9 +58,6 @@ protected:
     virtual ~Dma();
 
 private:
-    static QMutex m_mutex;
-    static Dma *m_dma;
-
     DmaPrivate *d;
 };
 

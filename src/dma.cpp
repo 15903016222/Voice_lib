@@ -12,9 +12,6 @@
 
 namespace DplSource {
 
-QMutex Dma::m_mutex;
-Dma *Dma::m_dma = NULL;
-
 static const char *MEM_DEVICE              = "/dev/mem";
 static const quint32 DATA_BUFFER_ADDR      = 0x8f000000;
 static const quint32 STORE_BUFFER_ADDR     = 0x90000000;
@@ -47,10 +44,12 @@ public:
 
 public:
     int m_fd;
+
     volatile DmaParameter *m_param;
+    volatile quint8 *m_scanDataMark;
+
     char *m_dataBuffer;
     char *m_storeBuffer;
-    volatile quint8 *m_scanDataMark;
 
     QReadWriteLock m_rwlock;
 };
@@ -70,7 +69,6 @@ DmaPrivate::DmaPrivate()
     if (MAP_FAILED == m_storeBuffer) {
         qFatal("Mmap 0x%08x failed", STORE_BUFFER_ADDR);
     }
-
 
     m_param = (struct DmaParameter *)(m_dataBuffer + CONFIG_OFFSET);
     m_scanDataMark = (unsigned char *)(m_dataBuffer + SCAN_DATA_MARK_OFFSET);
@@ -248,20 +246,8 @@ unsigned char Dma::get_scan_data_mark(int index) const
 
 Dma *Dma::instance()
 {
-    QMutexLocker locker(&m_mutex);
-    if(m_dma == NULL) {
-        m_dma = new Dma();
-    }
-    return m_dma;
-}
-
-void Dma::destroyed()
-{
-    QMutexLocker locker(&m_mutex);
-    if(m_dma != NULL) {
-        delete m_dma;
-        m_dma = NULL;
-    }
+    static Dma *ins = new Dma();
+    return ins;
 }
 
 Dma::Dma()
