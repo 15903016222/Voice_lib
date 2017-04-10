@@ -57,7 +57,7 @@ void Alloter::do_data_event(const char *data)
 Alloter::Alloter(QObject *parent) :
     QObject(parent)
 {
-    Source *source = Source::get_instance();
+    Source *source = Source::instance();
     connect(source, SIGNAL(data_event(const char*)),
             this, SLOT(do_data_event(const char*)));
 }

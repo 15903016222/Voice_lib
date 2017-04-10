@@ -10,7 +10,7 @@ class DmaPrivate;
 class Dma
 {
 public:
-    static Dma *get_instance();
+    static Dma *instance();
     static void destroyed();
 
     int get_region_size() const;

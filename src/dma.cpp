@@ -246,7 +246,7 @@ unsigned char Dma::get_scan_data_mark(int index) const
     return d->m_scanDataMark[index];
 }
 
-Dma *Dma::get_instance()
+Dma *Dma::instance()
 {
     QMutexLocker locker(&m_mutex);
     if(m_dma == NULL) {
