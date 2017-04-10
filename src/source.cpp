@@ -8,20 +8,31 @@ namespace DplSource {
 
 class SourcePrivate
 {
+    Q_DECLARE_PUBLIC(Source)
 public:
-    SourcePrivate();
+    SourcePrivate(Source *parent);
+    void update_dma();
 
-    QReadWriteLock m_rwlock;
+    /* Attribution */
+    static Source *s_instance;      // Source单例对象指针
+
+    mutable QReadWriteLock m_rwlock;
 
     QTimer m_timer;
-    int m_interval;
+    int m_interval;                 // 上传的间隔时间
     bool m_delayFlag;
     Source::Type m_type;
 
     Dma *m_dmaSource;
+
+private:
+    Source * const q_ptr;
 };
 
-SourcePrivate::SourcePrivate()
+Source *SourcePrivate::s_instance = new Source();
+
+SourcePrivate::SourcePrivate(Source *parent) :
+    q_ptr(parent)
 {
     m_interval  = 20;
     m_delayFlag = false;
@@ -29,27 +40,56 @@ SourcePrivate::SourcePrivate()
 
     m_timer.setInterval(m_interval);
 
-    m_dmaSource = Dma::get_instance();
+    m_dmaSource = Dma::instance();
+}
+
+void SourcePrivate::update_dma()
+{
+    Q_Q(Source);
+    if ( ! m_dmaSource->is_completed() ) {
+        return;
+    }
+
+    m_dmaSource->clean_completed();
+
+    emit q->data_event(m_dmaSource->get_data_buffer());
 }
 
 /* Source */
-QMutex Source::m_mutex;
-Source *Source::m_source = NULL;
+Source *Source::instance()
+{
+    return SourcePrivate::s_instance;
+}
+
+void Source::destroyed()
+{
+    delete SourcePrivate::s_instance;
+}
+
+Source::Type Source::type() const
+{
+    Q_D(const Source);
+    QReadLocker l(&d->m_rwlock);
+    return d->m_type;
+}
 
 void Source::set_type(Source::Type type)
 {
+    Q_D(Source);
     QWriteLocker l(&d->m_rwlock);
     d->m_type = type;
 }
 
-int Source::interval()
+int Source::interval() const
 {
+    Q_D(const Source);
     QReadLocker l(&d->m_rwlock);
     return d->m_interval;
 }
 
 void Source::set_interval(unsigned int interval)
 {
+    Q_D(Source);
     QWriteLocker l(&d->m_rwlock);
     d->m_interval = interval;
     d->m_timer.setInterval(d->m_interval);
@@ -57,71 +97,46 @@ void Source::set_interval(unsigned int interval)
 
 void Source::stop()
 {
+    Q_D(Source);
     QWriteLocker l(&d->m_rwlock);
     d->m_timer.stop();
 }
 
-bool Source::is_running()
+bool Source::is_running() const
 {
+    Q_D(const Source);
     QReadLocker l(&d->m_rwlock);
     return d->m_timer.isActive();
 }
 
 void Source::start()
 {
+    Q_D(Source);
     QWriteLocker l(&d->m_rwlock);
     d->m_timer.start();
 }
 
-Source *Source::get_instance()
-{
-    QMutexLocker locker(&m_mutex);
-    if(m_source == NULL) {
-        m_source= new Source();
-    }
-    return m_source;
-}
-
-void Source::destroyed()
-{
-    QMutexLocker locker(&m_mutex);
-    if(m_source != NULL) {
-        delete m_source;
-        m_source = NULL;
-    }
-}
-
 void Source::restart()
 {
+    Q_D(Source);
     d->m_delayFlag = true;
     d->m_timer.start(200);
 }
 
 Source::Source()
-    : d(new SourcePrivate())
+    : d_ptr(new SourcePrivate(this))
 {
-    connect(&d->m_timer, SIGNAL(timeout()), this, SLOT(update()));
+    connect(&d_ptr->m_timer, SIGNAL(timeout()), this, SLOT(update()));
 }
 
 Source::~Source()
 {
-    delete d;
-}
-
-void Source::update_dma()
-{
-    if ( ! d->m_dmaSource->is_completed() ) {
-        return;
-    }
-
-    d->m_dmaSource->clean_completed();
-
-    emit data_event(d->m_dmaSource->get_data_buffer());
-
+    delete d_ptr;
 }
 
 void Source::update()
 {
+    Q_D(Source);
     Type type;
 
     {
@@ -136,9 +151,8 @@ void Source::update()
     }
 
     if (DMA == type) {
-        update_dma();
+        d->update_dma();
     }
-
 }
 
 }

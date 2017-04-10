@@ -3,19 +3,25 @@
 
 #include "source_global.h"
 
-#include <QMutex>
 #include <QObject>
-#include <QSharedPointer>
 
 namespace DplSource {
 
 class SourcePrivate;
-
 class SOURCESHARED_EXPORT Source : public QObject
 {
+    Q_DECLARE_PRIVATE(Source)
     Q_OBJECT
 public:
-    static Source *get_instance();
+    /**
+     * @brief instance  获取单例对象
+     * @return          单例对象指针
+     */
+    static Source *instance();
+
+    /**
+     * @brief destroyed 销毁单例对象，该行为不可逆
+     */
     static void destroyed();
 
     enum Type {
@@ -28,7 +34,7 @@ public:
      * @brief type  获取数据源类型
      * @return      类型
      */
-    Type type();
+    Type type() const;
 
     /**
      * @brief set_type  设置数据源类型
@@ -40,7 +46,7 @@ public:
      * @brief interval  获取上传数据时间间隔
      * @return          时间间隔，单位(ms)
      */
-    int interval();
+    int interval() const;
 
     /**
      * @brief set_interval  设置上传数据时间间隔
@@ -57,7 +63,7 @@ public:
      * @brief is_running    判断是否在运行
      * @return              在运行则返回true，否则为false
      */
-    bool is_running();
+    bool is_running() const;
 
     /**
      * @brief start 启动数据上传
@@ -80,15 +86,11 @@ protected:
     explicit Source();
     virtual ~Source();
 
-    void update_dma();
-
 protected slots:
     virtual void update();
 
 private:
-    static QMutex m_mutex;
-    static Source *m_source;
-    SourcePrivate *d;
+    SourcePrivate *d_ptr;
 };
 
 }
