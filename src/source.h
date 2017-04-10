@@ -19,11 +19,6 @@ public:
      */
     static Source *instance();
 
-    /**
-     * @brief destroyed 销毁单例对象，该行为不可逆
-     */
-    static void destroyed();
-
     enum Type {
         DMA,     /* DMA源 */
         FILE,    /* 文件源 */
@@ -79,15 +74,24 @@ public slots:
     void restart();
 
 signals:
+    /**
+     * @brief data_event    数据信号
+     * @param data          数据
+     */
     void data_event(const char *data);
+
+    /**
+     * @brief type_changed  源类型改变信号
+     * @param type          源类型
+     */
     void type_changed(Source::Type type);
 
 protected:
     explicit Source();
-    virtual ~Source();
+    ~Source();
 
 protected slots:
-    virtual void update();
+    void update();
 
 private:
     SourcePrivate *d_ptr;

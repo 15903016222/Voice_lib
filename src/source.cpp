@@ -14,8 +14,6 @@ public:
     void update_dma();
 
     /* Attribution */
-    static Source *s_instance;      // Source单例对象指针
-
     mutable QReadWriteLock m_rwlock;
 
     QTimer m_timer;
@@ -29,8 +27,6 @@ private:
     Source * const q_ptr;
 };
 
-Source *SourcePrivate::s_instance = new Source();
-
 SourcePrivate::SourcePrivate(Source *parent) :
     q_ptr(parent)
 {
@@ -39,7 +35,6 @@ SourcePrivate::SourcePrivate(Source *parent) :
     m_type      = Source::DMA;
 
     m_timer.setInterval(m_interval);
-
     m_dmaSource = Dma::instance();
 }
 
@@ -58,12 +53,8 @@ void SourcePrivate::update_dma()
 /* Source */
 Source *Source::instance()
 {
-    return SourcePrivate::s_instance;
-}
-
-void Source::destroyed()
-{
-    delete SourcePrivate::s_instance;
+    static Source *ins = new Source();
+    return ins;
 }
 
 Source::Type Source::type() const

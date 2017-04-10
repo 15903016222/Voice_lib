@@ -20,7 +20,7 @@ TestSource::TestSource(QObject *parent) :
 
 void TestSource::start()
 {
-    DplSource::Source *src = DplSource::Source::get_instance();
+    DplSource::Source *src = DplSource::Source::instance();
     src->set_interval(1);
     src->start();
 }
