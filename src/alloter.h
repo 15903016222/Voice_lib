@@ -18,20 +18,25 @@ class Alloter : public QObject
 {
     Q_OBJECT
 public:
-    static Alloter *get_instance();
-    static void destroyed();
+    static Alloter *instance();
 
     /**
      * @brief add   向分配器注册一个BeamGroup对象
      * @param beams BeamGroup对象指针
      */
-    void add(BeamGroup *beams);
+    void add(BeamGroup *beams)
+    {
+        m_beamGroups.append(beams);
+    }
 
     /**
      * @brief remove    注销一个BeamGroup对象
      * @param beams     BeamGroup对象指针
      */
-    void remove(BeamGroup *beams);
+    void remove(BeamGroup *beams)
+    {
+        m_beamGroups.removeAll(beams);
+    }
 
 public slots:
     void do_data_event(const char *data);
@@ -40,9 +45,6 @@ protected:
     explicit Alloter(QObject *parent = 0);
 
 private:
-    static QMutex s_mutex;
-    static Alloter *s_instance;
-
     QList<BeamGroup *> m_beamGroups;
 };
 
