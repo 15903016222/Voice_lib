@@ -9,7 +9,7 @@
 #define __ALLOTER_H__
 
 #include <QObject>
-#include <QMutex>
+#include <QReadWriteLock>
 #include "beam_group.h"
 
 namespace DplSource {
@@ -24,19 +24,13 @@ public:
      * @brief add   向分配器注册一个BeamGroup对象
      * @param beams BeamGroup对象指针
      */
-    void add(BeamGroup *beams)
-    {
-        m_beamGroups.append(beams);
-    }
+    void add(BeamGroup *beams);
 
     /**
      * @brief remove    注销一个BeamGroup对象
      * @param beams     BeamGroup对象指针
      */
-    void remove(BeamGroup *beams)
-    {
-        m_beamGroups.removeAll(beams);
-    }
+    void remove(BeamGroup *beams);
 
 public slots:
     void do_data_event(const char *data);
@@ -46,6 +40,7 @@ protected:
 
 private:
     QList<BeamGroup *> m_beamGroups;
+    QReadWriteLock m_rwlock;
 };
 
 }
