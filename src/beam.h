@@ -7,15 +7,11 @@
 
 namespace DplSource {
 
-class Beam;
 class BeamSourcePrivate;
-
-typedef QSharedPointer<Beam> BeamPointer;
-
 class SOURCESHARED_EXPORT Beam
 {
 public:
-    Beam();
+    explicit Beam();
     ~Beam();
 
     /**
@@ -110,10 +106,12 @@ public:
 //    int analog_output0();
 //    int analog_output1();
 
-    static const int MEASURE_SIZE;
+    static const uint MEASURE_SIZE;
 private:
     BeamSourcePrivate *d;
 };
+
+typedef QSharedPointer<Beam> BeamPointer;
 
 }
 

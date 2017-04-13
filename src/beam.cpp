@@ -48,7 +48,7 @@ BeamSourcePrivate::BeamSourcePrivate()
 
 /* Class Beam */
 
-const int Beam::MEASURE_SIZE = 32;
+const uint Beam::MEASURE_SIZE = 32;
 
 Beam::Beam()
     : d(new BeamSourcePrivate())

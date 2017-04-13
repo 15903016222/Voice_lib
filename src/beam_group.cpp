@@ -10,6 +10,7 @@ class BeamGroupPrivate
 public:
     BeamGroupPrivate();
 
+    /* Attribution */
     QReadWriteLock m_rwlock;
     const char *m_rawData;
     int m_beamQty;
@@ -28,14 +29,12 @@ BeamGroup::BeamGroup(QObject *parent) :
     QObject(parent),
     d(new BeamGroupPrivate)
 {
-    Alloter *alloter = Alloter::get_instance();
-    alloter->add(this);
+    Alloter::instance()->add(this);
 }
 
 BeamGroup::~BeamGroup()
 {
-    Alloter *alloter = Alloter::get_instance();
-    alloter->remove(this);
+    Alloter::instance()->remove(this);
 }
 
 const BeamPointer BeamGroup::get(int beamNo)
@@ -80,19 +79,19 @@ void BeamGroup::set_point_qty(int qty)
     emit point_qty_changed(qty);
 }
 
-int BeamGroup::beam_qty()
+int BeamGroup::beam_qty() const
 {
     QReadLocker l(&d->m_rwlock);
     return d->m_beamQty;
 }
 
-int BeamGroup::point_qty()
+int BeamGroup::point_qty() const
 {
     QReadLocker l(&d->m_rwlock);
     return d->m_pointQty;
 }
 
-int BeamGroup::size()
+int BeamGroup::size() const
 {
     QReadLocker l(&d->m_rwlock);
     return (d->m_beamQty)*(d->m_pointQty + Beam::MEASURE_SIZE);
