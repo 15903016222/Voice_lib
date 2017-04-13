@@ -83,14 +83,12 @@ void Beam::clean()
     ::memset(&d->m_measure, 0, sizeof(Measure));
 }
 
-bool Beam::get_wave(QByteArray &wave) const
+QByteArray Beam::get_wave() const
 {
     if (d->m_rawData == NULL) {
-        return false;
+        return NULL;
     }
-    wave.clear();
-    wave = QByteArray::fromRawData(d->m_rawData, d->m_pointQty);
-    return (wave.size() == d->m_pointQty);
+    return QByteArray::fromRawData(d->m_rawData, d->m_pointQty);
 }
 
 int Beam::point_qty() const

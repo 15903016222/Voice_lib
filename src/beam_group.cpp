@@ -46,10 +46,10 @@ const BeamPointer BeamGroup::get(int beamNo)
         return BeamPointer();
     }
 
-    BeamPointer beam = BeamPointer(new Beam);
-    beam->set_raw_data(d->m_rawData + beamNo*(d->m_pointQty + Beam::MEASURE_SIZE), d->m_pointQty);
+    BeamPointer beamPtr = BeamPointer(new Beam);
+    beamPtr->set_raw_data(d->m_rawData + beamNo*(d->m_pointQty + Beam::MEASURE_SIZE), d->m_pointQty);
 
-    return beam;
+    return beamPtr;
 }
 
 void BeamGroup::set_raw_data(const char *data)
