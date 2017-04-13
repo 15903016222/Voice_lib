@@ -14,10 +14,7 @@ public:
 
     int get_region_size() const;
 
-    unsigned int is_completed() const;
-    void clean_completed();
-
-    const char *get_data_buffer();
+    const char *read_data();
 
     const char *get_store_buffer();
 

@@ -41,13 +41,11 @@ SourcePrivate::SourcePrivate(Source *parent) :
 void SourcePrivate::update_dma()
 {
     Q_Q(Source);
-    if ( ! m_dmaSource->is_completed() ) {
+    const char *data = m_dmaSource->read_data();
+    if (data == NULL) {
         return;
     }
-
-    m_dmaSource->clean_completed();
-
-    emit q->data_event(m_dmaSource->get_data_buffer());
+    emit q->data_event(data);
 }
 
 /* Source */

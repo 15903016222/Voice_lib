@@ -22,7 +22,7 @@ static const int DMA_DATA_OFFSET           = 2;
 
 struct DmaParameter
 {
-    int completeFlag;           /*DMA完成传输标志,驱动程序置位*/
+    int hasData;           /*DMA完成传输标志,驱动程序置位*/
     int counter;                /*DMA传输次数*/
     int usedBufferIndex;        /*标志使用哪个缓冲区0～3*/
     int scanSource;             /*扫查源: 0,定时器； 1,一维编码器； 2，二维编码器*/
@@ -49,6 +49,8 @@ public:
     volatile quint8 *m_scanDataMark;
 
     char *m_dataBuffer;
+    char *m_data[4];
+
     char *m_storeBuffer;
 
     QReadWriteLock m_rwlock;
@@ -63,6 +65,9 @@ DmaPrivate::DmaPrivate()
     m_dataBuffer = (char *)::mmap (0,  16 * 1024 * 1024, PROT_READ | PROT_WRITE, MAP_SHARED, m_fd, DATA_BUFFER_ADDR);
     if (MAP_FAILED == m_dataBuffer) {
         qFatal("Mmap 0x%08x failed", DATA_BUFFER_ADDR);
+    }
+    for (int i = 0; i < 4; ++i) {
+        m_data[i] = m_dataBuffer + DMA_DATA_OFFSET + REGION_SIZE*i;
     }
 
     m_storeBuffer = (char *)::mmap (0, 256 * 1024 * 1024, PROT_READ | PROT_WRITE, MAP_SHARED, m_fd, STORE_BUFFER_ADDR);
@@ -88,21 +93,14 @@ int Dma::get_region_size() const
     return REGION_SIZE;
 }
 
-unsigned int Dma::is_completed() const
+const char *Dma::read_data()
 {
     QReadLocker l(&d->m_rwlock);
-    return d->m_param->completeFlag;
-}
 
-void Dma::clean_completed()
-{
-    QWriteLocker l(&d->m_rwlock);
-    d->m_param->completeFlag = 0;
-}
-
-const char *Dma::get_data_buffer()
-{
-    QReadLocker l(&d->m_rwlock);
+    if (d->m_param->hasData == 0) {
+        return NULL;
+    }
+    d->m_param->hasData = 0;
 
     int i = (d->m_param->counter + 3) & 0x3;
     if (i == d->m_param->usedBufferIndex) {
@@ -111,7 +109,7 @@ const char *Dma::get_data_buffer()
 
     d->m_param->usedBufferIndex = i;
 
-    return d->m_dataBuffer + DMA_DATA_OFFSET + REGION_SIZE * i;
+    return d->m_data[i];
 }
 
 const char *Dma::get_store_buffer()
