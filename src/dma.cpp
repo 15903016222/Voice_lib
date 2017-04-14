@@ -12,27 +12,30 @@
 
 namespace DplSource {
 
-static const char *MEM_DEVICE              = "/dev/mem";
-static const quint32 DATA_BUFFER_ADDR      = 0x8f000000;
-static const quint32 STORE_BUFFER_ADDR     = 0x90000000;
-static const int CONFIG_OFFSET             = 0x00100000;
-static const int SCAN_DATA_MARK_OFFSET     = 0x00200000;
-static const int REGION_SIZE               = 0x00040000;
-static const int DMA_DATA_OFFSET           = 2;
+static const char *MEM_DEVICE               = "/dev/mem";
+static const quint32 DATA_BUFFER_ADDR       = 0x8f000000;
+static const quint32 STORE_BUFFER_ADDR      = 0x90000000;
+static const int CONFIG_OFFSET              = 0x00100000;
+static const int SCAN_DATA_MARK_OFFSET      = 0x00200000;
+static const int REGION_SIZE                = 0x00040000;
+static const int DMA_DATA_OFFSET            = 2;
+static const int BLOCK_SIZE                 = 1024;
 
 struct DmaParameter
 {
-    int hasData;           /*DMA完成传输标志,驱动程序置位*/
-    int counter;                /*DMA传输次数*/
-    int usedBufferIndex;        /*标志使用哪个缓冲区0～3*/
-    int scanSource;             /*扫查源: 0,定时器； 1,一维编码器； 2，二维编码器*/
-    int frameCount;             /*DMA一次传输多少帧数据，一帧数据大小为1K（驱动设置为1K）*/
-    int encoderOffset;          /*编码器在Beam中的偏移位置（Phascan只有X编码器）*/
-    int stepResolution;         /*编码器分辩率*/
-    int scanZeroIndexOffset;    /*编码器起点*/
-    int maxStoreIndex;          /*最大保存数*/
-    int scanTimmerCounter;      /*保存到storebuffer的次数*/
-    int scanTimmerCircled;      /*定时器搜查源，保存循环次数（保存完整个storebuffer后，从头开始保存）*/
+    int hasData;                // DMA完成传输标志,驱动程序置位
+    int counter;                // DMA传输次数
+    int usedBufferIndex;        // 标志使用哪个缓冲区0～3
+
+    int scanSource;             // 扫查源: 0:定时器； 1:编码器1； 2:编码器2
+    int frameCount;             // DMA一次传输多少帧数据，一帧数据大小为1K（驱动设置为1K）
+    int encoderOffset;          // 编码器在Beam中的偏移位置（Phascan只有X编码器）
+    int stepResolution;         // 编码器分辩率
+    int scanZeroIndexOffset;    // 编码器起点
+    int maxStoreIndex;          // 最大保存数
+
+    int scanTimmerCounter;      // 保存到storebuffer的次数
+    int scanTimmerCircled;      // 定时器搜查源，保存循环次数（保存完整个storebuffer后，从头开始保存）
 };
 
 
@@ -88,7 +91,7 @@ DmaPrivate::~DmaPrivate()
 
 
 /*** DMA ***/
-int Dma::get_region_size() const
+int Dma::region_size() const
 {
     return REGION_SIZE;
 }
@@ -118,30 +121,6 @@ const char *Dma::get_store_buffer()
     return d->m_storeBuffer;
 }
 
-unsigned int Dma::get_data_dma_counter() const
-{
-	QReadLocker l(&d->m_rwlock);
-    return d->m_param->counter;
-}
-
-void Dma::set_data_dma_counter(int value)
-{
-	QWriteLocker l(&d->m_rwlock);
-    d->m_param->counter = value;
-}
-
-unsigned int Dma::get_used_buffer_index() const
-{
-	QReadLocker l(&d->m_rwlock);
-    return d->m_param->usedBufferIndex;
-}
-
-void Dma::set_used_buffer_index(int value)
-{
-	QWriteLocker l(&d->m_rwlock);
-    d->m_param->usedBufferIndex = value;
-}
-
 unsigned int Dma::get_scan_source() const
 {
 	QReadLocker l(&d->m_rwlock);
@@ -157,13 +136,18 @@ void Dma::set_scan_source(int value)
 unsigned int Dma::get_store_frame_count() const
 {
 	QReadLocker l(&d->m_rwlock);
-    return d->m_param->frameCount;
+    return d->m_param->frameCount*BLOCK_SIZE;
 }
 
 void Dma::set_store_frame_count(int value)
 {
 	QWriteLocker l(&d->m_rwlock);
-    d->m_param->frameCount = value;
+
+    if( value % BLOCK_SIZE ) {
+        d->m_param->frameCount = value / BLOCK_SIZE + 1;
+    } else {
+        d->m_param->frameCount = value / BLOCK_SIZE;
+    }
 }
 
 unsigned int Dma::get_encoder_counter_offset() const
