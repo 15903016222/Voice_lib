@@ -133,13 +133,13 @@ void Dma::set_scan_source(int value)
     d->m_param->scanSource = value;
 }
 
-unsigned int Dma::get_store_frame_count() const
+unsigned int Dma::frame_size() const
 {
 	QReadLocker l(&d->m_rwlock);
     return d->m_param->frameCount*BLOCK_SIZE;
 }
 
-void Dma::set_store_frame_count(int value)
+void Dma::set_frame_size(int value)
 {
 	QWriteLocker l(&d->m_rwlock);
 
