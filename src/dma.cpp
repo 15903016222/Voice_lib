@@ -14,25 +14,27 @@ namespace DplSource {
 
 static const char *MEM_DEVICE               = "/dev/mem";
 static const quint32 DATA_BUFFER_ADDR       = 0x8f000000;
+static const int DATA_BUFFER_SIZE           = 16 * 1024 * 1024;     // 16M
 static const quint32 STORE_BUFFER_ADDR      = 0x90000000;
+static const int STORE_BUFFER_SIZE          = 256 * 1024 * 1024;    // 256M
 static const int CONFIG_OFFSET              = 0x00100000;
 static const int SCAN_DATA_MARK_OFFSET      = 0x00200000;
 static const int REGION_SIZE                = 0x00040000;
 static const int DMA_DATA_OFFSET            = 2;
-static const int BLOCK_SIZE                 = 1024;
+static const int FRAME_SIZE                 = 1024;
 
 struct DmaParameter
 {
     int hasData;                // DMA完成传输标志,驱动程序置位
     int counter;                // DMA传输次数
-    int usedBufferIndex;        // 标志使用哪个缓冲区0～3
+    int usedBufferFlag;        // 标志使用哪个缓冲区0～3
 
     int scanSource;             // 扫查源: 0:定时器； 1:编码器1； 2:编码器2
     int frameCount;             // DMA一次传输多少帧数据，一帧数据大小为1K（驱动设置为1K）
     int encoderOffset;          // 编码器在Beam中的偏移位置（Phascan只有X编码器）
     int stepResolution;         // 编码器分辩率
     int scanZeroIndexOffset;    // 编码器起点
-    int maxStoreIndex;          // 最大保存数
+    int maxStoreQty;            // 最大保存数
 
     int scanTimmerCounter;      // 保存到storebuffer的次数
     int scanTimmerCircled;      // 定时器搜查源，保存循环次数（保存完整个storebuffer后，从头开始保存）
@@ -65,7 +67,7 @@ DmaPrivate::DmaPrivate()
         qFatal("open memory device failed");
     }
 
-    m_dataBuffer = (char *)::mmap (0,  16 * 1024 * 1024, PROT_READ | PROT_WRITE, MAP_SHARED, m_fd, DATA_BUFFER_ADDR);
+    m_dataBuffer = (char *)::mmap (0,  DATA_BUFFER_SIZE, PROT_READ | PROT_WRITE, MAP_SHARED, m_fd, DATA_BUFFER_ADDR);
     if (MAP_FAILED == m_dataBuffer) {
         qFatal("Mmap 0x%08x failed", DATA_BUFFER_ADDR);
     }
@@ -73,7 +75,7 @@ DmaPrivate::DmaPrivate()
         m_data[i] = m_dataBuffer + DMA_DATA_OFFSET + REGION_SIZE*i;
     }
 
-    m_storeBuffer = (char *)::mmap (0, 256 * 1024 * 1024, PROT_READ | PROT_WRITE, MAP_SHARED, m_fd, STORE_BUFFER_ADDR);
+    m_storeBuffer = (char *)::mmap (0, STORE_BUFFER_SIZE, PROT_READ | PROT_WRITE, MAP_SHARED, m_fd, STORE_BUFFER_ADDR);
     if (MAP_FAILED == m_storeBuffer) {
         qFatal("Mmap 0x%08x failed", STORE_BUFFER_ADDR);
     }
@@ -84,8 +86,8 @@ DmaPrivate::DmaPrivate()
 
 DmaPrivate::~DmaPrivate()
 {
-    ::munmap((void *)m_dataBuffer,  16 * 1024 * 1024);
-    ::munmap((void *)m_storeBuffer, 256 * 1024 * 1024);
+    ::munmap((void *)m_dataBuffer,  DATA_BUFFER_SIZE);
+    ::munmap((void *)m_storeBuffer, STORE_BUFFER_SIZE);
     ::close(m_fd);
 }
 
@@ -106,11 +108,11 @@ const char *Dma::read_data()
     d->m_param->hasData = 0;
 
     int i = (d->m_param->counter + 3) & 0x3;
-    if (i == d->m_param->usedBufferIndex) {
+    if (i == d->m_param->usedBufferFlag) {
         i = (i+3) & 0x3;
     }
 
-    d->m_param->usedBufferIndex = i;
+    d->m_param->usedBufferFlag = i;
 
     return d->m_data[i];
 }
@@ -133,21 +135,22 @@ void Dma::set_scan_source(int value)
     d->m_param->scanSource = value;
 }
 
-unsigned int Dma::frame_size() const
+int Dma::frame_size() const
 {
-	QReadLocker l(&d->m_rwlock);
-    return d->m_param->frameCount*BLOCK_SIZE;
+    return FRAME_SIZE;
 }
 
-void Dma::set_frame_size(int value)
+int Dma::frame_count() const
+{
+    QReadLocker l(&d->m_rwlock);
+    return d->m_param->frameCount;
+}
+
+void Dma::set_frame_count(int count)
 {
 	QWriteLocker l(&d->m_rwlock);
-
-    if( value % BLOCK_SIZE ) {
-        d->m_param->frameCount = value / BLOCK_SIZE + 1;
-    } else {
-        d->m_param->frameCount = value / BLOCK_SIZE;
-    }
+    d->m_param->frameCount = count;
+    d->m_param->maxStoreQty = qMin( STORE_BUFFER_SIZE / (FRAME_SIZE*count), STORE_BUFFER_SIZE/FRAME_SIZE);
 }
 
 unsigned int Dma::get_encoder_counter_offset() const
@@ -183,17 +186,6 @@ void Dma::set_scan_zero_index_offset(int value)
 {
 	QWriteLocker l(&d->m_rwlock);
     d->m_param->scanZeroIndexOffset = value;
-}
-
-unsigned int Dma::get_max_store_index() const
-{
-	QReadLocker l(&d->m_rwlock);
-    return d->m_param->maxStoreIndex;
-}
-void Dma::set_max_store_index(int value)
-{
-	QWriteLocker l(&d->m_rwlock);
-    d->m_param->maxStoreIndex = value;
 }
 
 unsigned int Dma::get_scan_timmer_counter() const

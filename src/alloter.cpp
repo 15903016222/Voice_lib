@@ -56,7 +56,12 @@ void Alloter::do_beam_group_changed()
 
     Dma *dma = Dma::instance();
     if (dma) {
-        dma->set_frame_size(size);
+        int cnt = size % dma->frame_size();
+        if( size % dma->frame_size() ) {
+            dma->set_frame_count(cnt + 1);
+        } else {
+            dma->set_frame_count(cnt);
+        }
     }
 }
 

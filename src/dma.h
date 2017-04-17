@@ -34,16 +34,22 @@ public:
     void set_scan_source(int value);
 
     /**
-     * @brief frame_size    获取DMA传输一帧数据的大小
+     * @brief frame_size    获取一帧数据的大小
      * @return              数据大小(Bytes)
      */
-    unsigned int frame_size() const;
+    int frame_size() const;
 
     /**
-     * @brief set_frame_size    设置DMA传输一帧数据的大小
-     * @param value             数据大小(Bytes)
+     * @brief frame_count   获取DMA一次传输多少帧数据
+     * @return              数量
      */
-    void set_frame_size(int value);
+    int frame_count() const;
+
+    /**
+     * @brief set_frame_count   设置DMA传输多少帧数据
+     * @param value             数量
+     */
+    void set_frame_count(int count);
 
     unsigned int get_encoder_counter_offset() const;
     void set_encoder_counter_offset(int value);
@@ -53,9 +59,6 @@ public:
 
     unsigned int get_scan_zero_index_offset() const;
     void set_scan_zero_index_offset(int value);
-
-    unsigned int get_max_store_index() const;
-    void set_max_store_index(int value);
 
     unsigned int get_scan_timmer_counter() const;
     void set_scan_timmer_counter(int value);
