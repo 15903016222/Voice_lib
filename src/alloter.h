@@ -34,6 +34,7 @@ public:
 
 public slots:
     void do_data_event(const char *data);
+    void do_beam_group_changed();
 
 protected:
     explicit Alloter(QObject *parent = 0);

@@ -19,14 +19,22 @@ Alloter *Alloter::instance()
 
 void Alloter::add(BeamGroup *beams)
 {
-    QWriteLocker l(&m_rwlock);
-    m_beamGroups.append(beams);
+    {
+        QWriteLocker l(&m_rwlock);
+        m_beamGroups.append(beams);
+        connect(beams, SIGNAL(beam_qty_changed(int)), this, SLOT(do_beam_group_changed()));
+        connect(beams, SIGNAL(point_qty_changed(int)), this, SLOT(do_beam_group_changed()));
+    }
+    do_beam_group_changed();
 }
 
 void Alloter::remove(BeamGroup *beams)
 {
-    QWriteLocker l(&m_rwlock);
-    m_beamGroups.removeAll(beams);
+    {
+        QWriteLocker l(&m_rwlock);
+        m_beamGroups.removeAll(beams);
+    }
+    do_beam_group_changed();
 }
 
 void Alloter::do_data_event(const char *data)
@@ -36,6 +44,19 @@ void Alloter::do_data_event(const char *data)
     for (int i = 0; i < m_beamGroups.size(); ++i) {
         m_beamGroups[i]->set_raw_data(data + offset);
         offset += m_beamGroups[i]->size();
+    }
+}
+
+void Alloter::do_beam_group_changed()
+{
+    int size = 0;
+    for (int i = 0; i < m_beamGroups.size(); ++i) {
+        size += m_beamGroups[i]->size();
+    }
+
+    Dma *dma = Dma::instance();
+    if (dma) {
+        dma->set_frame_size(size);
     }
 }
 
