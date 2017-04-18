@@ -3,7 +3,8 @@ PUBLIC_HEADERS += \
     $$PWD/beam_group.h \
     $$PWD/beam.h \
     $$PWD/source.h \
-    $$PWD/source_global.h
+    $$PWD/source_global.h \
+    $$PWD/encoder.h
 
 PRIVATE_HEADERS += \
     $$PWD/alloter.h
@@ -12,7 +13,8 @@ SOURCES += \
     $$PWD/source.cpp \
     $$PWD/beam.cpp \
     $$PWD/alloter.cpp \
-    $$PWD/beam_group.cpp
+    $$PWD/beam_group.cpp \
+    $$PWD/encoder.cpp
 
 
 phascan {
