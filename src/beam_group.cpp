@@ -1,3 +1,10 @@
+/**
+ * @file beam_group.cpp
+ * @brief Beam组类
+ * @author Jake Yang <yanghuanjie@cndoppler.cn>
+ * @date 2017-04-18
+ */
+
 #include "beam_group.h"
 #include "alloter.h"
 

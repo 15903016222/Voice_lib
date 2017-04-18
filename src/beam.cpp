@@ -1,3 +1,10 @@
+/**
+ * @file beam.cpp
+ * @brief beam类
+ * @author Jake Yang <yanghuanjie@cndoppler.cn>
+ * @date 2017-04-18
+ */
+
 #include "beam.h"
 
 namespace DplSource {

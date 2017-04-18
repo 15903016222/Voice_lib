@@ -1,3 +1,10 @@
+/**
+ * @file beam.h
+ * @brief beam类
+ * @author Jake Yang <yanghuanjie@cndoppler.cn>
+ * @date 2017-04-18
+ */
+
 #ifndef __BEAM_SOURCE_H__
 #define __BEAM_SOURCE_H__
 

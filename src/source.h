@@ -1,3 +1,10 @@
+/**
+ * @file source.h
+ * @brief 数据源类
+ * @author Jake Yang <yanghuanjie@cndoppler.cn>
+ * @date 2017-04-18
+ */
+
 #ifndef __SOURCE_H__
 #define __SOURCE_H__
 

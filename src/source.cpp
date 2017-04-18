@@ -1,3 +1,10 @@
+/**
+ * @file source.cpp
+ * @brief 数据源类
+ * @author Jake Yang <yanghuanjie@cndoppler.cn>
+ * @date 2017-04-18
+ */
+
 #include "source.h"
 #include "dma.h"
 

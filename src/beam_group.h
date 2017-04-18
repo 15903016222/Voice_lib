@@ -1,3 +1,10 @@
+/**
+ * @file beam_group.h
+ * @brief Beam组类
+ * @author Jake Yang <yanghuanjie@cndoppler.cn>
+ * @date 2017-04-18
+ */
+
 #ifndef __BEAM_GROUP_H__
 #define __BEAM_GROUP_H__
 
