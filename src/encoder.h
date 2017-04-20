@@ -5,20 +5,22 @@
  * @date 2017-04-18
  */
 
-#ifndef __ENCODER_H__
-#define __ENCODER_H__
+#ifndef __DPLSOURCE_ENCODER_H__
+#define __DPLSOURCE_ENCODER_H__
 
-#include "source_global.h"
-#include <QSharedPointer>
+#include "driving.h"
+
+namespace DplSource {
 
 class EncoderPrivate;
-class Encoder : public QObject
+class SOURCESHARED_EXPORT Encoder : public Driving
 {
     Q_DECLARE_PRIVATE(Encoder)
-    Q_OBJECT
 public:
     explicit Encoder(QObject *parent = 0);
     ~Encoder();
+
+    virtual Type type() const { return ENCODER; }
 
     enum Polarity {
         NORMAL,     // 正常
@@ -37,23 +39,23 @@ public:
      */
     void set_polarity(Polarity val);
 
-    enum Type {
+    enum Mode {
         QUAD,
         UP,
         DOWN
     };
 
     /**
-     * @brief type  获取类型
+     * @brief mode  获取类型
      * @return      类型
      */
-    Type type() const;
+    Mode mode() const;
 
     /**
-     * @brief set_type  设置类型
-     * @param type      类型
+     * @brief set_mode  设置类型
+     * @param mode      类型
      */
-    void set_type(Type type);
+    void set_mode(Mode mode);
 
     /**
      * @brief resolution    编码器每个毫米包含的计数
@@ -78,9 +80,6 @@ public:
      * @param val           起点值(mm)
      */
     void set_origin(float val);
-signals:
-
-public slots:
 
 private:
     EncoderPrivate *d_ptr;
@@ -88,4 +87,6 @@ private:
 
 typedef QSharedPointer<Encoder> EncoderPointer;
 
-#endif // __ENCODER_H__
+}
+
+#endif // __DPLSOURCE_ENCODER_H__

@@ -7,25 +7,26 @@
 
 #include "encoder.h"
 
+namespace DplSource {
+
 class EncoderPrivate
 {
 public:
     EncoderPrivate()
     {
         m_polarity = Encoder::NORMAL;
-        m_type = Encoder::QUAD;
+        m_mode = Encoder::QUAD;
         m_resolution = 48.0;
         m_origin = 0.0;
     }
 
-    Encoder::Polarity m_polarity;
-    Encoder::Type m_type;
-    float m_resolution;
-    float m_origin;
+    Encoder::Polarity m_polarity;   // 极性
+    Encoder::Mode m_mode;           // 模式
+    float m_resolution;             // 分辨率(steps/mm)
+    float m_origin;                 // 起点(mm)
 };
 
 Encoder::Encoder(QObject *parent) :
-    QObject(parent),
     d_ptr(new EncoderPrivate)
 {
 
@@ -48,16 +49,16 @@ void Encoder::set_polarity(Encoder::Polarity val)
     d->m_polarity = val;
 }
 
-Encoder::Type Encoder::type() const
+Encoder::Mode Encoder::mode() const
 {
     Q_D(const Encoder);
-    return d->m_type;
+    return d->m_mode;
 }
 
-void Encoder::set_type(Encoder::Type type)
+void Encoder::set_mode(Encoder::Mode mode)
 {
     Q_D(Encoder);
-    d->m_type = type;
+    d->m_mode = mode;
 }
 
 float Encoder::resolution() const
@@ -82,4 +83,6 @@ void Encoder::set_origin(float val)
 {
     Q_D(Encoder);
     d->m_origin = val;
+}
+
 }
