@@ -6,8 +6,9 @@
 
 namespace DplSource {
 
-class SOURCESHARED_EXPORT Driving
+class SOURCESHARED_EXPORT Driving : public QObject
 {
+    Q_OBJECT
 public:
     explicit Driving();
 
