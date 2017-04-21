@@ -11,8 +11,7 @@ class SOURCESHARED_EXPORT Scan : public QObject
     Q_OBJECT
     Q_DECLARE_PRIVATE(Scan)
 public:
-    explicit Scan();
-    ~Scan();
+    static Scan *instance();
 
     enum Mode {
         ONELINE,
@@ -58,6 +57,10 @@ public:
     void pause();
 
     bool is_pause();
+
+protected:
+    explicit Scan();
+    ~Scan();
 
 private:
     ScanPrivate *d_ptr;

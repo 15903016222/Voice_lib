@@ -28,6 +28,12 @@ Scan::~Scan()
     delete d_ptr;
 }
 
+Scan *Scan::instance()
+{
+    static Scan *ins = new Scan();
+    return ins;
+}
+
 const Axis *Scan::scan_axis() const
 {
     Q_D(const Scan);
