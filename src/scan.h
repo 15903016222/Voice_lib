@@ -1,7 +1,7 @@
 #ifndef __DPLSOURCE_SCAN_H__
 #define __DPLSOURCE_SCAN_H__
 
-#include "encoder.h"
+#include "axis.h"
 
 namespace DplSource {
 
@@ -20,16 +20,16 @@ public:
     };
 
     /**
-     * @brief scan_axis_driving 获取激励源
-     * @return                  激励源
+     * @brief scan_axis 获取扫查轴
+     * @return          扫查轴
      */
-    const DrivingPointer &scan_axis_driving() const;
+    const Axis *scan_axis() const;
 
     /**
-     * @brief set_scan_axis_driving 设置激励源
-     * @param driving               激励源
+     * @brief index_axis    获取步进轴
+     * @return              步进轴
      */
-    void set_scan_axis_driving(const DrivingPointer &driving);
+    const Axis *index_axis() const;
 
     /**
      * @brief speed 获取扫查速度
@@ -43,44 +43,6 @@ public:
      */
     void set_speed(float val);
 
-    /**
-     * @brief start 获取扫查起点
-     * @return      位置(mm)
-     */
-    float start() const;
-
-    /**
-     * @brief set_start 设置扫查起点
-     * @param val       位置(mm)
-     * @return          设置成功返回true，否则false
-     */
-    bool set_start(float val);
-
-    /**
-     * @brief end   获取扫查终点
-     * @return      位置(mm)
-     */
-    float end() const;
-
-    /**
-     * @brief set_end   设置扫查终点
-     * @param val       位置(mm)
-     * @return          设置成功返回true,否则false
-     */
-    bool set_end(float val);
-
-    /**
-     * @brief resolution    获取分辨率
-     * @return              分辨率(mm)
-     */
-    float resolution() const;
-
-    /**
-     * @brief set_resolution    设置分辨率
-     * @param val               分辨率(mm)
-     * @return                  设置成功返回true,否则false
-     */
-    bool set_resolution(float val);
 
     enum ResetMode {
         ENCODER = 0x01,
@@ -96,9 +58,6 @@ public:
     void pause();
 
     bool is_pause();
-
-signals:
-    void driving_changed(const DrivingPointer &driving);
 
 private:
     ScanPrivate *d_ptr;
