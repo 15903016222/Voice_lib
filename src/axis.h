@@ -68,6 +68,7 @@ public:
 
 
 signals:
+    void driving_changed(const DrivingPointer &driving);
     void resolution_changed(float val);
 
 public slots:

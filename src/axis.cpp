@@ -30,6 +30,21 @@ Axis::~Axis()
     delete d_ptr;
 }
 
+const DrivingPointer &Axis::driving() const
+{
+    Q_D(const Axis);
+    return d->m_drivingPtr;
+}
+
+void Axis::set_driving(const DrivingPointer &driving)
+{
+    Q_D(const Axis);
+    if (driving && driving != d->m_drivingPtr) {
+        d->m_drivingPtr = driving;
+        emit driving_changed(driving);
+    }
+}
+
 float Axis::start() const
 {
     Q_D(const Axis);
