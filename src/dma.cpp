@@ -27,15 +27,15 @@ struct DmaParameter
 {
     int hasData;                // DMA完成传输标志,驱动程序置位
     int counter;                // DMA传输次数
-    int usedBufferFlag;        // 标志使用哪个缓冲区0～3
+    int usedBufferFlag;         // 标志使用哪个缓冲区0～3
 
-    int scanSource;             // 扫查源: 0:定时器； 1:编码器1； 2:编码器2
+    int drivingType;             // 扫查源: 0:定时器； 1:编码器1； 2:编码器2
     int frameCount;             // DMA一次传输多少帧数据，一帧数据大小为1K（驱动设置为1K）
     int encoderOffset;          // 编码器在Beam中的偏移位置（Phascan只有X编码器）
     int stepResolution;         // 编码器分辩率
-    int scanZeroIndexOffset;    // 编码器起点
-    int maxStoreQty;            // 最大保存数
+    int startOffset;    // 编码器起点
 
+    int maxStoreQty;            // 最大保存数
     int scanTimmerCounter;      // 保存到storebuffer的次数
     int scanTimmerCircled;      // 定时器搜查源，保存循环次数（保存完整个storebuffer后，从头开始保存）
 };
@@ -123,16 +123,16 @@ const char *Dma::get_store_buffer()
     return d->m_storeBuffer;
 }
 
-unsigned int Dma::get_scan_source() const
+unsigned int Dma::driving_type() const
 {
 	QReadLocker l(&d->m_rwlock);
-    return d->m_param->scanSource;
+    return d->m_param->drivingType;
 }
 
-void Dma::set_scan_source(int value)
+void Dma::set_driving_type(DrivingType type)
 {
 	QWriteLocker l(&d->m_rwlock);
-    d->m_param->scanSource = value;
+    d->m_param->drivingType = type;
 }
 
 int Dma::frame_size() const
@@ -153,42 +153,42 @@ void Dma::set_frame_count(int count)
     d->m_param->maxStoreQty = qMin( STORE_BUFFER_SIZE / (FRAME_SIZE*count), STORE_BUFFER_SIZE/FRAME_SIZE);
 }
 
-unsigned int Dma::get_encoder_counter_offset() const
+unsigned int Dma::encoder_offset() const
 {
 	QReadLocker l(&d->m_rwlock);
     return d->m_param->encoderOffset;
 }
 
-void Dma::set_encoder_counter_offset(int value)
+void Dma::set_encoder_offset(int value)
 {
 	QWriteLocker l(&d->m_rwlock);
     d->m_param->encoderOffset = value;
 }
 
-unsigned int Dma::get_steps_per_resolution() const
+unsigned int Dma::steps_resolution() const
 {
 	QReadLocker l(&d->m_rwlock);
     return d->m_param->stepResolution;
 }
-void Dma::set_steps_per_resolution(int value)
+void Dma::set_steps_resolution(int value)
 {
 	QWriteLocker l(&d->m_rwlock);
     d->m_param->stepResolution = value;
 }
 
-unsigned int Dma::get_scan_zero_index_offset() const
+unsigned int Dma::start_offset() const
 {
 	QReadLocker l(&d->m_rwlock);
-    return d->m_param->scanZeroIndexOffset;
+    return d->m_param->startOffset;
 }
 
-void Dma::set_scan_zero_index_offset(int value)
+void Dma::set_start_offset(int value)
 {
 	QWriteLocker l(&d->m_rwlock);
-    d->m_param->scanZeroIndexOffset = value;
+    d->m_param->startOffset = value;
 }
 
-unsigned int Dma::get_scan_timmer_counter() const
+unsigned int Dma::scan_timmer_counter() const
 {
 	QReadLocker l(&d->m_rwlock);
     return d->m_param->scanTimmerCounter;
