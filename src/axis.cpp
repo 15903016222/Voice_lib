@@ -56,6 +56,7 @@ bool Axis::set_start(float val)
     Q_D(Axis);
     if (val < d->m_end) {
         d->m_start = val;
+        emit start_changed(val);
         return true;
     }
     return false;
