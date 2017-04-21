@@ -14,12 +14,14 @@ class EncoderPrivate
 public:
     EncoderPrivate()
     {
+        m_index = 1;
         m_polarity = Encoder::NORMAL;
         m_mode = Encoder::QUAD;
         m_resolution = 48.0;
         m_origin = 0.0;
     }
 
+    int m_index;
     Encoder::Polarity m_polarity;   // 极性
     Encoder::Mode m_mode;           // 模式
     float m_resolution;             // 分辨率(steps/mm)
@@ -35,6 +37,21 @@ Encoder::Encoder(QObject *parent) :
 Encoder::~Encoder()
 {
     delete d_ptr;
+}
+
+int Encoder::index() const
+{
+    Q_D(const Encoder);
+    return d->m_index;
+}
+
+void Encoder::set_index(int i)
+{
+    Q_D(Encoder);
+
+    if (i==1 || i==2) {
+        d->m_index = i;
+    }
 }
 
 Encoder::Polarity Encoder::polarity() const
@@ -71,6 +88,7 @@ void Encoder::set_resolution(float val)
 {
     Q_D(Encoder);
     d->m_resolution = val;
+    emit resolution_changed(val);
 }
 
 float Encoder::origin() const

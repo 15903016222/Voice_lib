@@ -15,12 +15,25 @@ namespace DplSource {
 class EncoderPrivate;
 class SOURCESHARED_EXPORT Encoder : public Driving
 {
+    Q_OBJECT
     Q_DECLARE_PRIVATE(Encoder)
 public:
     explicit Encoder(QObject *parent = 0);
     ~Encoder();
 
     virtual Type type() const { return ENCODER; }
+
+    /**
+     * @brief index 获取编码器序号(1,2)
+     * @return      序号
+     */
+    int index() const;
+
+    /**
+     * @brief set_index 设置编码器序号(1,2)
+     * @param i         序号
+     */
+    void set_index(int i);
 
     enum Polarity {
         NORMAL,     // 正常
@@ -80,6 +93,9 @@ public:
      * @param val           起点值(mm)
      */
     void set_origin(float val);
+
+signals:
+    void resolution_changed(float val);
 
 private:
     EncoderPrivate *d_ptr;
