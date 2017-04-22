@@ -118,9 +118,6 @@ void Source::restart()
 
     QWriteLocker l(&d->m_rwlock);
     if (DMA == d->m_type) {
-
-//        _ScanZeroIndexOffset  =    pp->ScanInfor.ScanZeroOffset      ;
-
         d->m_dma->set_scan_timmer_counter(0);
         d->m_dma->set_scan_timmer_circled(0);
     }

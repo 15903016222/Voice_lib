@@ -34,16 +34,16 @@ public:
      */
     void remove(BeamGroup *beams);
 
-public slots:
-    void do_data_event(const char *data);
-    void do_scan_axis_driving_changed(const DrivingPointer &drivingPtr);
-    void do_beam_group_changed();
-    void do_point_qty_changed(int qty);
-    void set_dma_steps_resolution();
-    void set_dma_start_offset();
-
 protected:
     explicit Alloter(QObject *parent = 0);
+
+private slots:
+    void do_data_event(const char *data);
+    void set_dma_driving_type(const DrivingPointer &drivingPtr);
+    void set_dma_frame_count();
+    void set_dma_encoder_offset(int qty);
+    void set_dma_steps_resolution();
+    void set_dma_start_offset();
 
 private:
     QList<BeamGroup *> m_beamGroups;

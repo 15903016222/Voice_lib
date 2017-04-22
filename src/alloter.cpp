@@ -22,14 +22,15 @@ void Alloter::add(BeamGroup *beams)
     {
         QWriteLocker l(&m_rwlock);
         m_beamGroups.append(beams);
-        connect(beams, SIGNAL(beam_qty_changed(int)), this, SLOT(do_beam_group_changed()));
-        connect(beams, SIGNAL(point_qty_changed(int)), this, SLOT(do_beam_group_changed()));
+        connect(beams, SIGNAL(beam_qty_changed(int)), this, SLOT(set_dma_frame_count()));
+        connect(beams, SIGNAL(point_qty_changed(int)), this, SLOT(set_dma_frame_count()));
         if (m_beamGroups.size() == 1) {
             connect(beams, SIGNAL(point_qty_changed(int)),
-                    this, SLOT(do_point_qty_changed(int)));
+                    this, SLOT(set_dma_encoder_offset(int)));
+            set_dma_encoder_offset(beams->point_qty());
         }
     }
-    do_beam_group_changed();
+    set_dma_frame_count();
 }
 
 void Alloter::remove(BeamGroup *beams)
@@ -38,7 +39,7 @@ void Alloter::remove(BeamGroup *beams)
         QWriteLocker l(&m_rwlock);
         m_beamGroups.removeAll(beams);
     }
-    do_beam_group_changed();
+    set_dma_frame_count();
 }
 
 void Alloter::do_data_event(const char *data)
@@ -51,7 +52,7 @@ void Alloter::do_data_event(const char *data)
     }
 }
 
-void Alloter::do_scan_axis_driving_changed(const DrivingPointer &drivingPtr)
+void Alloter::set_dma_driving_type(const DrivingPointer &drivingPtr)
 {
     Dma *dma = Dma::instance();
 
@@ -75,7 +76,7 @@ void Alloter::do_scan_axis_driving_changed(const DrivingPointer &drivingPtr)
     }
 }
 
-void Alloter::do_beam_group_changed()
+void Alloter::set_dma_frame_count()
 {
     int size = 0;
     for (int i = 0; i < m_beamGroups.size(); ++i) {
@@ -93,7 +94,7 @@ void Alloter::do_beam_group_changed()
     }
 }
 
-void Alloter::do_point_qty_changed(int qty)
+void Alloter::set_dma_encoder_offset(int qty)
 {
     Axis *axis = Scan::instance()->scan_axis();
     if (axis->driving()->type() == Driving::TIMER) {
@@ -136,13 +137,14 @@ Alloter::Alloter(QObject *parent) :
     connect(scanAxis, SIGNAL(resolution_changed(float)),
             this, SLOT(set_dma_steps_resolution()));
     connect(scanAxis, SIGNAL(driving_changed(DrivingPointer)),
-            this, SLOT(do_scan_axis_driving_changed(DrivingPointer)));
+            this, SLOT(set_dma_driving_type(DrivingPointer)));
     connect(scanAxis, SIGNAL(start_changed(float)),
             this, SLOT(set_dma_start_offset()));
     connect(scanAxis, SIGNAL(resolution_changed(float)),
             this, SLOT(set_dma_start_offset()));
 
-    do_scan_axis_driving_changed(scanAxis->driving());
+    set_dma_driving_type(scanAxis->driving());
+    set_dma_start_offset();
 }
 
 }
