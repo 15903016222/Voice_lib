@@ -4,8 +4,6 @@
  * @author Jake Yang <yanghuanjie@cndoppler.cn>
  * @date 2017-04-18
  */
-
-#include "beam_group.h"
 #include "alloter.h"
 
 #include <QReadWriteLock>
@@ -15,7 +13,12 @@ namespace DplSource {
 class BeamGroupPrivate
 {
 public:
-    BeamGroupPrivate();
+    BeamGroupPrivate()
+    {
+        m_rawData = NULL;
+        m_beamQty = 0;
+        m_pointQty = 0;
+    }
 
     /* Attribution */
     QReadWriteLock m_rwlock;
@@ -24,24 +27,16 @@ public:
     int m_pointQty;
 };
 
-BeamGroupPrivate::BeamGroupPrivate()
-{
-    m_rawData = NULL;
-    m_beamQty = 0;
-    m_pointQty = 0;
-}
-
-
 BeamGroup::BeamGroup(QObject *parent) :
     QObject(parent),
     d(new BeamGroupPrivate)
 {
-    Alloter::instance()->add(this);
+//    Alloter::instance()->add(this);
 }
 
 BeamGroup::~BeamGroup()
 {
-    Alloter::instance()->remove(this);
+//    Alloter::instance()->remove(this);
 }
 
 const BeamPointer BeamGroup::get(int beamNo)

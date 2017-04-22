@@ -6,15 +6,15 @@
  * @date 2017-02-10
  */
 #include "alloter.h"
-#include "dma.h"
 #include "source.h"
+#include "dma.h"
 
 namespace DplSource {
 
 Alloter *Alloter::instance()
 {
-    static Alloter *instance = new Alloter();
-    return instance;
+    static Alloter *ins = new Alloter();
+    return ins;
 }
 
 void Alloter::add(BeamGroup *beams)
@@ -24,6 +24,10 @@ void Alloter::add(BeamGroup *beams)
         m_beamGroups.append(beams);
         connect(beams, SIGNAL(beam_qty_changed(int)), this, SLOT(do_beam_group_changed()));
         connect(beams, SIGNAL(point_qty_changed(int)), this, SLOT(do_beam_group_changed()));
+        if (m_beamGroups.size() == 1) {
+            connect(beams, SIGNAL(point_qty_changed(int)),
+                    this, SLOT(do_point_qty_changed(int)));
+        }
     }
     do_beam_group_changed();
 }
@@ -47,6 +51,30 @@ void Alloter::do_data_event(const char *data)
     }
 }
 
+void Alloter::do_scan_axis_driving_changed(const DrivingPointer &drivingPtr)
+{
+    Dma *dma = Dma::instance();
+
+    if (dma != NULL) {
+        return;
+    }
+
+    if (drivingPtr->type() == Driving::TIMER) {
+        dma->set_driving_type(Dma::TIMER);
+    } else {
+        EncoderPointer enc = drivingPtr.staticCast<Encoder>();
+
+        if (enc->index() == 1) {
+            dma->set_driving_type(Dma::ENCODER1);
+        } else if (enc->index() == 2) {
+            dma->set_driving_type(Dma::ENCODER2);
+        }
+        set_dma_steps_resolution();
+        connect(static_cast<Encoder*>(enc.data()), SIGNAL(resolution_changed(float)),
+                this, SLOT(set_dma_steps_resolution()));
+    }
+}
+
 void Alloter::do_beam_group_changed()
 {
     int size = 0;
@@ -65,12 +93,56 @@ void Alloter::do_beam_group_changed()
     }
 }
 
+void Alloter::do_point_qty_changed(int qty)
+{
+    Axis *axis = Scan::instance()->scan_axis();
+    if (axis->driving()->type() == Driving::TIMER) {
+        return;
+    }
+
+    EncoderPointer enc = axis->driving().staticCast<Encoder>();
+    if (enc->index() == 1) {
+        Dma::instance()->set_encoder_offset(qty+4*sizeof(int));
+    } else {
+        Dma::instance()->set_encoder_offset(qty+5*sizeof(int));
+    }
+}
+
+void Alloter::set_dma_steps_resolution()
+{
+    Axis *scanAxis = Scan::instance()->scan_axis();
+    if (scanAxis->driving()->type() == Driving::TIMER) {
+        return;
+    }
+
+    EncoderPointer enc = scanAxis->driving().staticCast<Encoder>();
+    Dma::instance()->set_steps_resolution(scanAxis->resolution() * enc->resolution());
+}
+
+void Alloter::set_dma_start_offset()
+{
+    Axis *scanAxis = Scan::instance()->scan_axis();
+    Dma::instance()->set_start_offset(-(scanAxis->start()/scanAxis->resolution()));
+}
+
 Alloter::Alloter(QObject *parent) :
     QObject(parent)
 {
     Source *source = Source::instance();
     connect(source, SIGNAL(data_event(const char*)),
             this, SLOT(do_data_event(const char*)));
+
+    Axis *scanAxis = Scan::instance()->scan_axis();
+    connect(scanAxis, SIGNAL(resolution_changed(float)),
+            this, SLOT(set_dma_steps_resolution()));
+    connect(scanAxis, SIGNAL(driving_changed(DrivingPointer)),
+            this, SLOT(do_scan_axis_driving_changed(DrivingPointer)));
+    connect(scanAxis, SIGNAL(start_changed(float)),
+            this, SLOT(set_dma_start_offset()));
+    connect(scanAxis, SIGNAL(resolution_changed(float)),
+            this, SLOT(set_dma_start_offset()));
+
+    do_scan_axis_driving_changed(scanAxis->driving());
 }
 
 }

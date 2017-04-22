@@ -5,17 +5,19 @@
  * @date 2017-04-18
  */
 
-#ifndef __BEAM_GROUP_H__
-#define __BEAM_GROUP_H__
+#ifndef __DPLSOURCE_BEAM_GROUP_H__
+#define __DPLSOURCE_BEAM_GROUP_H__
 
 #include <QObject>
 #include <QSharedPointer>
 #include "beam.h"
 
+#include "source_global.h"
+
 namespace DplSource {
 
 class BeamGroupPrivate;
-class BeamGroup : public QObject
+class SOURCESHARED_EXPORT BeamGroup : public QObject
 {
     Q_OBJECT
 public:
@@ -48,8 +50,8 @@ public:
      */
     int size() const;
 
-protected:
-    friend class Alloter;
+//protected:
+//    friend class Alloter;
     /**
      * @brief set_raw_data  设置原始数据
      * @param data          原始数据
@@ -81,4 +83,5 @@ private:
 typedef QSharedPointer<BeamGroup> BeamGroupPointer;
 
 }
-#endif // __BEAM_GROUP_H__
+
+#endif // __DPLSOURCE_BEAM_GROUP_H__

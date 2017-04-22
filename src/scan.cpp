@@ -17,7 +17,8 @@ public:
     Axis *m_indexAxis;    // 步进轴
 };
 
-Scan::Scan() :
+Scan::Scan(QObject *parent) :
+    QObject(parent),
     d_ptr(new ScanPrivate)
 {
 
@@ -34,13 +35,13 @@ Scan *Scan::instance()
     return ins;
 }
 
-const Axis *Scan::scan_axis() const
+Axis *Scan::scan_axis() const
 {
     Q_D(const Scan);
     return d->m_scanAxis;
 }
 
-const Axis *Scan::index_axis() const
+Axis *Scan::index_axis() const
 {
     Q_D(const Scan);
     return d->m_indexAxis;

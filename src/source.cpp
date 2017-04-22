@@ -118,18 +118,7 @@ void Source::restart()
 
     QWriteLocker l(&d->m_rwlock);
     if (DMA == d->m_type) {
-//        _ScanSource       = _nScanSource   ;
 
-//        if(_nScanSource == 1)
-//        {
-//            _EncoderCounterOffset =  GROUP_VAL_POS(0 , point_qty) + DMA_DATA_OFFSET + 4 * sizeof(int);
-//        }
-//        if(_nScanSource == 2)
-//        {
-//            _EncoderCounterOffset =  GROUP_VAL_POS(0 , point_qty) + DMA_DATA_OFFSET + 5 * sizeof(int) ;
-//        }
-
-//        _StepsPerResolution   =    pp->ScanInfor.StepsPerResolution  ;
 //        _ScanZeroIndexOffset  =    pp->ScanInfor.ScanZeroOffset      ;
 
         d->m_dma->set_scan_timmer_counter(0);

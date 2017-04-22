@@ -38,7 +38,7 @@ const DrivingPointer &Axis::driving() const
 
 void Axis::set_driving(const DrivingPointer &driving)
 {
-    Q_D(const Axis);
+    Q_D(Axis);
     if (driving && driving != d->m_drivingPtr) {
         d->m_drivingPtr = driving;
         emit driving_changed(driving);
@@ -87,7 +87,11 @@ float Axis::resolution() const
 bool Axis::set_resolution(float val)
 {
     Q_D(Axis);
-    d->m_resolution = val;
-    emit resolution_changed(val);
+    if (val > 0) {
+        d->m_resolution = val;
+        emit resolution_changed(val);
+        return true;
+    }
+    return false;
 }
 }

@@ -10,7 +10,7 @@ class SOURCESHARED_EXPORT Driving : public QObject
 {
     Q_OBJECT
 public:
-    explicit Driving();
+    explicit Driving(QObject *parent = 0);
 
     enum Type {
         TIMER,
@@ -21,5 +21,7 @@ public:
 };
 
 typedef QSharedPointer<Driving> DrivingPointer;
+
+}
 
 #endif // __DPLSOURCE_DRIVING_H__

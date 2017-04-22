@@ -2,7 +2,8 @@
 
 namespace DplSource {
 
-Driving::Driving()
+Driving::Driving(QObject *parent) :
+    QObject(parent)
 {
 
 }

@@ -7,9 +7,9 @@ namespace DplSource {
 
 class ScanPrivate;
 class SOURCESHARED_EXPORT Scan : public QObject
-{
-    Q_OBJECT
+{    
     Q_DECLARE_PRIVATE(Scan)
+    Q_OBJECT
 public:
     static Scan *instance();
 
@@ -22,13 +22,13 @@ public:
      * @brief scan_axis 获取扫查轴
      * @return          扫查轴
      */
-    const Axis *scan_axis() const;
+    Axis *scan_axis() const;
 
     /**
      * @brief index_axis    获取步进轴
      * @return              步进轴
      */
-    const Axis *index_axis() const;
+    Axis *index_axis() const;
 
     /**
      * @brief speed 获取扫查速度
@@ -59,7 +59,7 @@ public:
     bool is_pause();
 
 protected:
-    explicit Scan();
+    explicit Scan(QObject *parent = 0);
     ~Scan();
 
 private:

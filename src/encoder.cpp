@@ -29,6 +29,7 @@ public:
 };
 
 Encoder::Encoder(QObject *parent) :
+    Driving(parent),
     d_ptr(new EncoderPrivate)
 {
 

@@ -1,10 +1,13 @@
 
 PUBLIC_HEADERS += \
-    $$PWD/beam_group.h \
-    $$PWD/beam.h \
     $$PWD/source.h \
+    $$PWD/beam.h \
+    $$PWD/beam_group.h \
     $$PWD/source_global.h \
-    $$PWD/encoder.h
+    $$PWD/encoder.h \
+    $$PWD/scan.h \
+    $$PWD/driving.h \
+    $$PWD/axis.h
 
 PRIVATE_HEADERS += \
     $$PWD/alloter.h
@@ -12,9 +15,12 @@ PRIVATE_HEADERS += \
 SOURCES += \
     $$PWD/source.cpp \
     $$PWD/beam.cpp \
-    $$PWD/alloter.cpp \
     $$PWD/beam_group.cpp \
-    $$PWD/encoder.cpp
+    $$PWD/alloter.cpp \
+    $$PWD/encoder.cpp \
+    $$PWD/scan.cpp \
+    $$PWD/driving.cpp \
+    $$PWD/axis.cpp
 
 
 phascan {

@@ -5,12 +5,14 @@
  * @version 0.1
  * @date 2017-02-10
  */
-#ifndef __ALLOTER_H__
-#define __ALLOTER_H__
+#ifndef __DPLSOURCE_ALLOTER_H__
+#define __DPLSOURCE_ALLOTER_H__
 
-#include <QObject>
 #include <QReadWriteLock>
+
 #include "beam_group.h"
+
+#include "scan.h"
 
 namespace DplSource {
 
@@ -34,7 +36,11 @@ public:
 
 public slots:
     void do_data_event(const char *data);
+    void do_scan_axis_driving_changed(const DrivingPointer &drivingPtr);
     void do_beam_group_changed();
+    void do_point_qty_changed(int qty);
+    void set_dma_steps_resolution();
+    void set_dma_start_offset();
 
 protected:
     explicit Alloter(QObject *parent = 0);
@@ -46,4 +52,4 @@ private:
 
 }
 
-#endif // __ALLOTER_H__
+#endif // __DPLSOURCE_ALLOTER_H__
