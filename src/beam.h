@@ -5,16 +5,17 @@
  * @date 2017-04-18
  */
 
-#ifndef __BEAM_SOURCE_H__
-#define __BEAM_SOURCE_H__
+#ifndef __DPLSOURCE_BEAM_H__
+#define __DPLSOURCE_BEAM_H__
 
 #include "source_global.h"
+
 #include <QObject>
 #include <QSharedPointer>
 
 namespace DplSource {
 
-class BeamSourcePrivate;
+class BeamPrivate;
 class SOURCESHARED_EXPORT Beam
 {
 public:
@@ -118,11 +119,11 @@ protected:
     void set_raw_data(const char *data, int pointNum);
 
 private:
-    BeamSourcePrivate *d;
+    BeamPrivate *d;
 };
 
 typedef QSharedPointer<Beam> BeamPointer;
 
 }
 
-#endif // __BEAM_SOURCE_H__
+#endif // __DPLSOURCE_BEAM_H__

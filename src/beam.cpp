@@ -36,29 +36,27 @@ struct Measure
     int res1;       /* 保留 */
 };
 
-class BeamSourcePrivate
+class BeamPrivate
 {
 public:
-    BeamSourcePrivate();
+    BeamPrivate()
+    {
+        m_rawData = NULL;
+        m_pointQty = 0;
+        ::memset(&m_measure, 0, sizeof(Measure));
+    }
 
     const char *m_rawData;
     Measure m_measure;
     int m_pointQty;
 };
 
-BeamSourcePrivate::BeamSourcePrivate()
-{
-    m_rawData = NULL;
-    m_pointQty = 0;
-    ::memset(&m_measure, 0, sizeof(Measure));
-}
-
 /* Class Beam */
 
 const uint Beam::MEASURE_SIZE = 32;
 
 Beam::Beam()
-    : d(new BeamSourcePrivate())
+    : d(new BeamPrivate())
 {
 }
 
