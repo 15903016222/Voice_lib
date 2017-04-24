@@ -31,12 +31,12 @@ BeamGroup::BeamGroup(QObject *parent) :
     QObject(parent),
     d(new BeamGroupPrivate)
 {
-//    Alloter::instance()->add(this);
+    Alloter::instance()->add(this);
 }
 
 BeamGroup::~BeamGroup()
 {
-//    Alloter::instance()->remove(this);
+    Alloter::instance()->remove(this);
 }
 
 const BeamPointer BeamGroup::get(int beamNo)
