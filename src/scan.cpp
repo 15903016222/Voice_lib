@@ -1,3 +1,10 @@
+/**
+ * @file scan.cpp
+ * @brief 扫查配置类
+ * @author Jake Yang <yanghuanjie@cndoppler.cn>
+ * @date 2017-04-24
+ */
+
 #include "scan.h"
 
 namespace DplSource {

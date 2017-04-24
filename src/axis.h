@@ -1,3 +1,9 @@
+/**
+ * @file axis.h
+ * @brief 轴类
+ * @author Jake Yang <yanghuanjie@cndoppler.cn>
+ * @date 2017-04-24
+ */
 #ifndef __DPLSOURCE_AXIS_H__
 #define __DPLSOURCE_AXIS_H__
 

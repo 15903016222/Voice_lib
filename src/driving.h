@@ -1,3 +1,10 @@
+/**
+ * @file driving.h
+ * @brief 激励源类
+ * @author Jake Yang <yanghuanjie@cndoppler.cn>
+ * @date 2017-04-24
+ */
+
 #ifndef __DPLSOURCE_DRIVING_H__
 #define __DPLSOURCE_DRIVING_H__
 

@@ -1,3 +1,10 @@
+/**
+ * @file axis.cpp
+ * @brief 轴类
+ * @author Jake Yang <yanghuanjie@cndoppler.cn>
+ * @date 2017-04-24
+ */
+
 #include "axis.h"
 
 namespace DplSource {

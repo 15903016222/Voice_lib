@@ -1,3 +1,10 @@
+/**
+ * @file scan.h
+ * @brief 扫查配置类
+ * @author Jake Yang <yanghuanjie@cndoppler.cn>
+ * @date 2017-04-24
+ */
+
 #ifndef __DPLSOURCE_SCAN_H__
 #define __DPLSOURCE_SCAN_H__
 
