@@ -85,7 +85,7 @@ void Alloter::set_dma_frame_count()
 
     Dma *dma = Dma::instance();
     if (dma) {
-        int cnt = size % dma->frame_size();
+        int cnt = size / dma->frame_size();
         if( size % dma->frame_size() ) {
             dma->set_frame_count(cnt + 1);
         } else {
