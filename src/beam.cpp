@@ -57,20 +57,15 @@ struct Measure
 class BeamPrivate
 {
 public:
-    BeamPrivate();
+    BeamPrivate() :
+        m_rawData(NULL),
+        m_measure(NULL),
+        m_pointQty(0) {}
 
     const char *m_rawData;
     const Measure *m_measure;
     int m_pointQty;
 };
-
-BeamPrivate::BeamPrivate() :
-    m_rawData(NULL),
-    m_measure(NULL),
-    m_pointQty(0)
-{
-
-}
 
 /* Class Beam */
 

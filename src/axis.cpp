@@ -13,12 +13,11 @@ class AxisPrivate
 {
 public:
     AxisPrivate() :
-        m_drivingPtr(new Driving)
-    {
-        m_start = 0.0;
-        m_end   = 800.0;
-        m_resolution = 1.0;
-    }
+        m_drivingPtr(new Driving),
+        m_start(0.0),
+        m_end(800.0),
+        m_resolution(1.0) {}
+
     DrivingPointer m_drivingPtr;
     float m_start;                  // 扫查起点(mm)
     float m_end;                    // 扫查终点(mm)

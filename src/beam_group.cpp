@@ -13,12 +13,10 @@ namespace DplSource {
 class BeamGroupPrivate
 {
 public:
-    BeamGroupPrivate()
-    {
-        m_rawData = NULL;
-        m_beamQty = 0;
-        m_pointQty = 0;
-    }
+    BeamGroupPrivate() :
+        m_rawData(NULL),
+        m_beamQty(0),
+        m_pointQty(0) {}
 
     /* Attribution */
     QReadWriteLock m_rwlock;
