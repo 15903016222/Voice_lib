@@ -50,8 +50,8 @@ public:
      */
     int size() const;
 
-//protected:
-//    friend class Alloter;
+protected:
+    friend class Alloter;
     /**
      * @brief set_raw_data  设置原始数据
      * @param data          原始数据
