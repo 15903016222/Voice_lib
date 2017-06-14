@@ -46,9 +46,9 @@ void Alloter::do_data_event(const char *data)
 {
     int offset = 0;
     QReadLocker l(&m_rwlock);
-    for (int i = 0; i < m_beamGroups.size(); ++i) {
-        m_beamGroups[i]->set_raw_data(data + offset);
-        offset += m_beamGroups[i]->size();
+    foreach (BeamGroup *beamGrp, m_beamGroups) {
+        beamGrp->set_raw_data(data + offset);
+        offset += beamGrp->size();
     }
 }
 
