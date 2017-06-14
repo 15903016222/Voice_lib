@@ -19,6 +19,9 @@ class BeamPrivate;
 class SOURCESHARED_EXPORT Beam
 {
 public:
+    static const int MEASURE_SIZE = 32;
+    static const float MAX_GATE_HEIGHT;
+
     explicit Beam();
     ~Beam();
 
@@ -100,14 +103,34 @@ public:
      */
     int encoder_y() const;
 
+    /**
+     * @brief The GateType enum 闸门类型
+     */
+    enum GateType {
+        GATE_A,
+        GATE_B,
+        GATE_I
+    };
+
+    /**
+     * @brief gate_a_peak
+     *
+     * @return
+     */
+    /**
+     * @brief gate_peak     获取指定闸门内测得信号的峰值波幅
+     * @param gate          闸门类型
+     * @param rf            射频标志
+     * @return              波幅(%)
+     */
+    float gate_peak(GateType gate, bool rf) const;
+
 //    bool led0();
 //    bool led1();
 //    bool led2();
 //    bool buzzer();
 //    int analog_output0();
 //    int analog_output1();
-
-    static const uint MEASURE_SIZE;
 
 protected:
     friend class BeamGroup;

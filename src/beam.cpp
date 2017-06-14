@@ -9,6 +9,17 @@
 
 namespace DplSource {
 
+struct GateData {
+    quint32 position    : 20;   // 0-19 闸门检测数据的位置
+    quint32 height      : 12;   // 20-31 闸门检测数据的高度
+};
+
+struct GateRFData {
+    quint32 positon     : 16;   // 0-15 射频模式中闸门检测数据的位置
+    quint32 height      : 16;   // 16-31 射频模式中闸门检测数据的高度
+};
+
+#pragma pack(1)
 struct Measure
 {
     /* 波型计数器 */
@@ -17,16 +28,22 @@ struct Measure
     quint32 gateStatus      : 6;    /* 26-31 闸门状态 */
 
     /* Gate A */
-    quint32 gateAPosition   : 20;   /* 0-19  闸门位置 */
-    quint32 gateAHeight     : 12;   /* 20-31 闸门高度 */
+    union {
+        GateData gateA;
+        GateRFData gateARF;
+    };
 
     /* Gate B */
-    quint32 gateBPosition   : 20;   /* 0-19  闸门位置 */
-    quint32 gateBHeight     : 12;   /* 20-31 闸门高度 */
+    union {
+        GateData gateB;
+        GateRFData gateBRF;
+    };
 
     /* Gate I */
-    quint32 gateIPosition   : 20;   /* 0-19  闸门位置 */
-    quint32 gateIHeight     : 12;   /* 20-31 闸门高度 */
+    union {
+        GateData gateI;
+        GateRFData gateIRF;
+    };
 
     int encoderX;   /* 编码器X */
     int encoderY;   /* 编码器Y */
@@ -35,25 +52,30 @@ struct Measure
 
     int res1;       /* 保留 */
 };
+#pragma pack()
 
 class BeamPrivate
 {
 public:
-    BeamPrivate()
-    {
-        m_rawData = NULL;
-        m_pointQty = 0;
-        ::memset(&m_measure, 0, sizeof(Measure));
-    }
+    BeamPrivate();
 
     const char *m_rawData;
-    Measure m_measure;
+    const Measure *m_measure;
     int m_pointQty;
 };
 
+BeamPrivate::BeamPrivate() :
+    m_rawData(NULL),
+    m_measure(NULL),
+    m_pointQty(0)
+{
+
+}
+
 /* Class Beam */
 
-const uint Beam::MEASURE_SIZE = 32;
+const int Beam::MEASURE_SIZE;
+const float Beam::MAX_GATE_HEIGHT = 4095.0;
 
 Beam::Beam()
     : d(new BeamPrivate())
@@ -73,7 +95,7 @@ void Beam::set_raw_data(const char *data, int pointNum)
 
     d->m_rawData = data;
     d->m_pointQty = pointNum;
-    ::memcpy(&d->m_measure, data+pointNum, sizeof(Measure));
+    d->m_measure = (const Measure *)(data + pointNum);
 }
 
 bool Beam::has_data() const
@@ -84,8 +106,8 @@ bool Beam::has_data() const
 void Beam::clean()
 {
     d->m_rawData = NULL;
+    d->m_measure = NULL;
     d->m_pointQty = 0;
-    ::memset(&d->m_measure, 0, sizeof(Measure));
 }
 
 QByteArray Beam::get_wave() const
@@ -103,47 +125,82 @@ int Beam::point_qty() const
 
 int Beam::index() const
 {
-    return d->m_measure.beamIndex;
+    return d->m_measure->beamIndex;
 }
 
 int Beam::gate_a_height() const
 {
-    return d->m_measure.gateAHeight;
+    return d->m_measure->gateA.height;
 }
 
 int Beam::gate_a_position() const
 {
-    return d->m_measure.gateAPosition;
+    return d->m_measure->gateA.position;
 }
 
 int Beam::gate_b_height() const
 {
-    return d->m_measure.gateBHeight;
+    return d->m_measure->gateB.height;
 }
 
 int Beam::gate_b_position() const
 {
-    return d->m_measure.gateBPosition;
+    return d->m_measure->gateB.position;
 }
 
 int Beam::gate_i_height() const
 {
-    return d->m_measure.gateIHeight;
+    return d->m_measure->gateI.height;
 }
 
 int Beam::gate_i_position() const
 {
-    return d->m_measure.gateIPosition;
+    return d->m_measure->gateI.position;
 }
 
 int Beam::encoder_x() const
 {
-    return d->m_measure.encoderX;
+    return d->m_measure->encoderX;
 }
 
 int Beam::encoder_y() const
 {
-    return d->m_measure.encoderY;
+    return d->m_measure->encoderY;
+}
+
+float Beam::gate_peak(Beam::GateType gate, bool rf) const
+{
+    float peak = 0.0;
+    switch (gate) {
+    case GATE_A:
+        if (rf) {
+            peak = d->m_measure->gateARF.height;
+        } else {
+            peak = d->m_measure->gateA.height;
+        }
+        break;
+    case GATE_B:
+        if (rf) {
+            peak = d->m_measure->gateBRF.height;
+        } else {
+            peak = d->m_measure->gateB.height;
+        }
+        break;
+    case GATE_I:
+    default:
+        if (rf) {
+            peak = d->m_measure->gateIRF.height;
+        } else {
+            peak = d->m_measure->gateI.height;
+        }
+        break;
+    }
+    if (rf) {
+        peak /= (10.24*16);
+    } else {
+        peak /= 20.47;          // 满屏时200%, peak/(4095/2)*100
+    }
+    return peak;
 }
 
 }
