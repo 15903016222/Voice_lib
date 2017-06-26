@@ -133,7 +133,7 @@ public:
 //    int analog_output1();
 
 protected:
-    friend class BeamGroup;
+    friend class Beams;
     /**
      * @brief set_raw_data  设置Beam原始数据
      * @param data          指向Beam原始数据,调用者要维护这个地址,不能删除

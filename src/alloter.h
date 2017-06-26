@@ -1,6 +1,6 @@
 /**
  * @file alloter.h
- * @brief 分配器，分配各BeamGroup的数据资源
+ * @brief 分配器，分配各Beams的数据资源
  * @author Jake Yang <yanghuanjie@cndoppler.cn>
  * @version 0.1
  * @date 2017-02-10
@@ -10,7 +10,7 @@
 
 #include <QReadWriteLock>
 
-#include "beam_group.h"
+#include "beams.h"
 
 #include "scan.h"
 
@@ -23,16 +23,16 @@ public:
     static Alloter *instance();
 
     /**
-     * @brief add   向分配器注册一个BeamGroup对象
-     * @param beams BeamGroup对象指针
+     * @brief add   向分配器注册一个Beams对象
+     * @param beams Beams对象指针
      */
-    void add(BeamGroup *beams);
+    void add(Beams *beams);
 
     /**
-     * @brief remove    注销一个BeamGroup对象
-     * @param beams     BeamGroup对象指针
+     * @brief remove    注销一个Beams对象
+     * @param beams     Beams对象指针
      */
-    void remove(BeamGroup *beams);
+    void remove(Beams *beams);
 
 protected:
     explicit Alloter(QObject *parent = 0);
@@ -46,7 +46,7 @@ private slots:
     void set_dma_start_offset();
 
 private:
-    QList<BeamGroup *> m_beamGroups;
+    QList<Beams *> m_beamsList;
     QReadWriteLock m_rwlock;
 };
 

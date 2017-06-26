@@ -62,6 +62,7 @@ public:
         m_measure(NULL),
         m_pointQty(0) {}
 
+    /* Attribution */
     const char *m_rawData;
     const Measure *m_measure;
     int m_pointQty;

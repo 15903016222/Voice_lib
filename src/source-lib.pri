@@ -2,7 +2,7 @@
 PUBLIC_HEADERS += \
     $$PWD/source.h \
     $$PWD/beam.h \
-    $$PWD/beam_group.h \
+    $$PWD/beams.h \
     $$PWD/source_global.h \
     $$PWD/encoder.h \
     $$PWD/scan.h \
@@ -15,7 +15,7 @@ PRIVATE_HEADERS += \
 SOURCES += \
     $$PWD/source.cpp \
     $$PWD/beam.cpp \
-    $$PWD/beam_group.cpp \
+    $$PWD/beams.cpp \
     $$PWD/alloter.cpp \
     $$PWD/encoder.cpp \
     $$PWD/scan.cpp \

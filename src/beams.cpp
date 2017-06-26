@@ -10,10 +10,10 @@
 
 namespace DplSource {
 
-class BeamGroupPrivate
+class BeamsPrivate
 {
 public:
-    BeamGroupPrivate() :
+    BeamsPrivate() :
         m_rawData(NULL),
         m_beamQty(0),
         m_pointQty(0) {}
@@ -25,19 +25,19 @@ public:
     int m_pointQty;
 };
 
-BeamGroup::BeamGroup(QObject *parent) :
+Beams::Beams(QObject *parent) :
     QObject(parent),
-    d(new BeamGroupPrivate)
+    d(new BeamsPrivate)
 {
     Alloter::instance()->add(this);
 }
 
-BeamGroup::~BeamGroup()
+Beams::~Beams()
 {
     Alloter::instance()->remove(this);
 }
 
-const BeamPointer BeamGroup::get(int beamNo)
+const BeamPointer Beams::get(int beamNo)
 {
     QReadLocker l(&d->m_rwlock);
 
@@ -52,7 +52,7 @@ const BeamPointer BeamGroup::get(int beamNo)
     return beamPtr;
 }
 
-void BeamGroup::set_raw_data(const char *data)
+void Beams::set_raw_data(const char *data)
 {
     {
         QWriteLocker l(&d->m_rwlock);
@@ -61,7 +61,7 @@ void BeamGroup::set_raw_data(const char *data)
     emit data_event();
 }
 
-void BeamGroup::set_beam_qty(int qty)
+void Beams::set_beam_qty(int qty)
 {
     {
         QWriteLocker l(&d->m_rwlock);
@@ -70,7 +70,7 @@ void BeamGroup::set_beam_qty(int qty)
     emit beam_qty_changed(qty);
 }
 
-void BeamGroup::set_point_qty(int qty)
+void Beams::set_point_qty(int qty)
 {
     {
         QWriteLocker l(&d->m_rwlock);
@@ -79,19 +79,19 @@ void BeamGroup::set_point_qty(int qty)
     emit point_qty_changed(qty);
 }
 
-int BeamGroup::beam_qty() const
+int Beams::beam_qty() const
 {
     QReadLocker l(&d->m_rwlock);
     return d->m_beamQty;
 }
 
-int BeamGroup::point_qty() const
+int Beams::point_qty() const
 {
     QReadLocker l(&d->m_rwlock);
     return d->m_pointQty;
 }
 
-int BeamGroup::size() const
+int Beams::size() const
 {
     QReadLocker l(&d->m_rwlock);
     return (d->m_beamQty)*(d->m_pointQty + Beam::MEASURE_SIZE);

@@ -1,6 +1,6 @@
 /**
  * @file alloter.cpp
- * @brief 分配器，分配各BeamGroup的数据资源
+ * @brief 分配器，分配各Beams的数据资源
  * @author Jake Yang <yanghuanjie@cndoppler.cn>
  * @version 0.1
  * @date 2017-02-10
@@ -17,14 +17,14 @@ Alloter *Alloter::instance()
     return ins;
 }
 
-void Alloter::add(BeamGroup *beams)
+void Alloter::add(Beams *beams)
 {
     {
         QWriteLocker l(&m_rwlock);
-        m_beamGroups.append(beams);
+        m_beamsList.append(beams);
         connect(beams, SIGNAL(beam_qty_changed(int)), this, SLOT(set_dma_frame_count()));
         connect(beams, SIGNAL(point_qty_changed(int)), this, SLOT(set_dma_frame_count()));
-        if (m_beamGroups.size() == 1) {
+        if (m_beamsList.size() == 1) {
             connect(beams, SIGNAL(point_qty_changed(int)),
                     this, SLOT(set_dma_encoder_offset(int)));
             set_dma_encoder_offset(beams->point_qty());
@@ -33,11 +33,11 @@ void Alloter::add(BeamGroup *beams)
     set_dma_frame_count();
 }
 
-void Alloter::remove(BeamGroup *beams)
+void Alloter::remove(Beams *beams)
 {
     {
         QWriteLocker l(&m_rwlock);
-        m_beamGroups.removeAll(beams);
+        m_beamsList.removeAll(beams);
     }
     set_dma_frame_count();
 }
@@ -46,7 +46,7 @@ void Alloter::do_data_event(const char *data)
 {
     int offset = 0;
     QReadLocker l(&m_rwlock);
-    foreach (BeamGroup *beamGrp, m_beamGroups) {
+    foreach (Beams *beamGrp, m_beamsList) {
         beamGrp->set_raw_data(data + offset);
         offset += beamGrp->size();
     }
@@ -79,8 +79,8 @@ void Alloter::set_dma_driving_type(const DrivingPointer &drivingPtr)
 void Alloter::set_dma_frame_count()
 {
     int size = 0;
-    for (int i = 0; i < m_beamGroups.size(); ++i) {
-        size += m_beamGroups[i]->size();
+    for (int i = 0; i < m_beamsList.size(); ++i) {
+        size += m_beamsList[i]->size();
     }
 
     Dma *dma = Dma::instance();

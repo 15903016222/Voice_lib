@@ -5,8 +5,8 @@
  * @date 2017-04-18
  */
 
-#ifndef __DPLSOURCE_BEAM_GROUP_H__
-#define __DPLSOURCE_BEAM_GROUP_H__
+#ifndef __DPLSOURCE_BEAMS_H__
+#define __DPLSOURCE_BEAMS_H__
 
 #include <QObject>
 #include <QSharedPointer>
@@ -16,13 +16,13 @@
 
 namespace DplSource {
 
-class BeamGroupPrivate;
-class SOURCESHARED_EXPORT BeamGroup : public QObject
+class BeamsPrivate;
+class SOURCESHARED_EXPORT Beams : public QObject
 {
     Q_OBJECT
 public:
-    explicit BeamGroup(QObject *parent = 0);
-    ~BeamGroup();
+    explicit Beams(QObject *parent = 0);
+    ~Beams();
 
     /**
      * @brief get       获取指定Beam数据
@@ -77,11 +77,11 @@ signals:
     void point_qty_changed(int qty);
 
 private:
-    BeamGroupPrivate *d;
+    BeamsPrivate *d;
 };
 
-typedef QSharedPointer<BeamGroup> BeamGroupPointer;
+typedef QSharedPointer<Beams> BeamsPointer;
 
 }
 
-#endif // __DPLSOURCE_BEAM_GROUP_H__
+#endif // __DPLSOURCE_BEAMS_H__
