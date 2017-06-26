@@ -5,17 +5,17 @@
 
 TestSource::TestSource(QObject *parent) :
     QObject(parent),
-    m_beamGrp1(new DplSource::BeamGroup(parent)),
-    m_beamGrp2(new DplSource::BeamGroup(parent))
+    m_beams1(new DplSource::Beams(parent)),
+    m_beams2(new DplSource::Beams(parent))
 {
-    m_beamGrp1->set_beam_qty(2);
-    m_beamGrp1->set_point_qty(605);
+    m_beams1->set_beam_qty(2);
+    m_beams1->set_point_qty(605);
 
-    m_beamGrp2->set_beam_qty(2);
-    m_beamGrp2->set_point_qty(605);
+    m_beams2->set_beam_qty(2);
+    m_beams2->set_point_qty(605);
 
-    connect(m_beamGrp1, SIGNAL(data_event()), this, SLOT(do_beamgrp1_data_event()));
-    connect(m_beamGrp2, SIGNAL(data_event()), this, SLOT(do_beamgrp2_data_event()));
+    connect(m_beams1, SIGNAL(data_event()), this, SLOT(do_beamgrp1_data_event()));
+    connect(m_beams2, SIGNAL(data_event()), this, SLOT(do_beamgrp2_data_event()));
 }
 
 void TestSource::start()
@@ -29,8 +29,8 @@ void TestSource::do_beamgrp1_data_event()
 {
     qDebug()<<"BeamGroup 1";
     DplSource::BeamPointer beamPtr;
-    for (int i = 0; i < m_beamGrp1->beam_qty(); ++i) {
-        beamPtr = m_beamGrp1->get(i);
+    for (int i = 0; i < m_beams1->beam_qty(); ++i) {
+        beamPtr = m_beams1->get(i);
         show_measure(beamPtr);
     }
     qDebug("\n");
@@ -40,8 +40,8 @@ void TestSource::do_beamgrp2_data_event()
 {
     qDebug()<<"BeamGroup 2";
     DplSource::BeamPointer beamPtr;
-    for (int i = 0; i < m_beamGrp2->beam_qty(); ++i) {
-        beamPtr = m_beamGrp2->get(i);
+    for (int i = 0; i < m_beams2->beam_qty(); ++i) {
+        beamPtr = m_beams2->get(i);
         show_measure(beamPtr);
     }
     qDebug("\n");
