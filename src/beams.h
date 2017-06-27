@@ -29,8 +29,19 @@ public:
      * @param index     Beam ID
      * @return          指向Beam数据的指针
      */
-    const BeamPointer get(int index);
+    const BeamPointer get(int index) const;
 
+    /**
+     * @brief current_beam  获取当前Beam
+     * @return              返回当前Beam
+     */
+    BeamPointer current_beam() const;
+
+    /**
+     * @brief set_current_beam_index    设置当前Beam
+     * @param index                     Beam序列号
+     */
+    void set_current_beam_index(int index);
 
     /**
      * @brief beam_qty  获取Beam数量
@@ -49,6 +60,18 @@ public:
      * @return      大小(Bytes)
      */
     int size() const;
+
+    /**
+     * @brief rf    获取是否为射频模式
+     * @return      如果是射频，则返回true
+     */
+    bool rf() const;
+
+    /**
+     * @brief set_rf    设置射频
+     * @param flag      true为射频
+     */
+    void set_rf(bool flag);
 
 protected:
     friend class Alloter;

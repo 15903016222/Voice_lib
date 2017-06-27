@@ -7,6 +7,8 @@
 
 #include "beam.h"
 
+#include <qmath.h>
+
 namespace DplSource {
 
 struct GateData {
@@ -16,7 +18,7 @@ struct GateData {
 
 struct GateRFData {
     quint32 positon     : 16;   // 0-15 射频模式中闸门检测数据的位置
-    quint32 height      : 16;   // 16-31 射频模式中闸门检测数据的高度
+    qint32 height       : 16;   // 16-31 射频模式中闸门检测数据的高度
 };
 
 #pragma pack(1)
@@ -60,12 +62,14 @@ public:
     BeamPrivate() :
         m_rawData(NULL),
         m_measure(NULL),
-        m_pointQty(0) {}
+        m_pointQty(0),
+        m_rf(false) {}
 
     /* Attribution */
     const char *m_rawData;
     const Measure *m_measure;
     int m_pointQty;
+    bool m_rf;
 };
 
 /* Class Beam */
@@ -83,7 +87,7 @@ Beam::~Beam()
     delete d;
 }
 
-void Beam::set_raw_data(const char *data, int pointNum)
+void Beam::set_raw_data(const char *data, int pointNum, bool rf)
 {
     if (pointNum == 0 || data == NULL) {
         return;
@@ -92,6 +96,7 @@ void Beam::set_raw_data(const char *data, int pointNum)
     d->m_rawData = data;
     d->m_pointQty = pointNum;
     d->m_measure = (const Measure *)(data + pointNum);
+    d->m_rf = rf;
 }
 
 bool Beam::has_data() const
@@ -164,19 +169,19 @@ int Beam::encoder_y() const
     return d->m_measure->encoderY;
 }
 
-float Beam::gate_peak(Beam::GateType gate, bool rf) const
+float Beam::gate_peak(Beam::GateType gate) const
 {
     float peak = 0.0;
     switch (gate) {
     case GATE_A:
-        if (rf) {
+        if (d->m_rf) {
             peak = d->m_measure->gateARF.height;
         } else {
             peak = d->m_measure->gateA.height;
         }
         break;
     case GATE_B:
-        if (rf) {
+        if (d->m_rf) {
             peak = d->m_measure->gateBRF.height;
         } else {
             peak = d->m_measure->gateB.height;
@@ -184,19 +189,59 @@ float Beam::gate_peak(Beam::GateType gate, bool rf) const
         break;
     case GATE_I:
     default:
-        if (rf) {
+        if (d->m_rf) {
             peak = d->m_measure->gateIRF.height;
         } else {
             peak = d->m_measure->gateI.height;
         }
         break;
     }
-    if (rf) {
-        peak /= (10.24*16);
+    if (d->m_rf) {
+        peak /= 163.84;     // 满屏时(+-)200%, peak/((2^16)/4)*100
     } else {
-        peak /= 20.47;          // 满屏时200%, peak/(4095/2)*100
+        peak /= 20.47;      // 满屏时200%, peak/((2^12-1)/2)*100
     }
     return peak;
 }
+
+float Beam::gate_minus(Beam::GateType gate, int height)
+{
+    if (height == 0) {
+        height = 1;
+    }
+
+    return 20 * log10(gate_peak(gate)/height);
+}
+
+int Beam::gate_peak_position(DplSource::Beam::GateType gate)
+{
+    switch (gate) {
+    case GATE_A:
+        if (d->m_rf) {
+            return d->m_measure->gateARF.positon;
+        } else {
+            return d->m_measure->gateA.position;
+        }
+        break;
+    case GATE_B:
+        if (d->m_rf) {
+            return d->m_measure->gateBRF.positon;
+        } else {
+            return d->m_measure->gateB.position;
+        }
+        break;
+    case GATE_I:
+        if (d->m_rf) {
+            return d->m_measure->gateIRF.positon;
+        } else {
+            return d->m_measure->gateI.position;
+        }
+        break;
+    default:
+        break;
+    }
+    return 0;
+}
+
 
 }

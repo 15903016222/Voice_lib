@@ -120,10 +120,24 @@ public:
     /**
      * @brief gate_peak     获取指定闸门内测得信号的峰值波幅
      * @param gate          闸门类型
-     * @param rf            射频标志
      * @return              波幅(%)
      */
-    float gate_peak(GateType gate, bool rf) const;
+    float gate_peak(GateType gate) const;
+
+    /**
+     * @brief gate_minus    计算指定闸门内的峰值与闸门阈值幅度之差
+     * @param gate          闸门类型
+     * @param height        闸门阈值幅度
+     * @return              差值(dB)
+     */
+    float gate_minus(GateType gate, int height);
+
+    /**
+     * @brief gate_peak_position    获取指定闸门内测得信号的峰值位置
+     * @param gate                  闸门类型
+     * @return                      位置(ns)
+     */
+    int gate_peak_position(GateType gate);
 
 //    bool led0();
 //    bool led1();
@@ -137,9 +151,10 @@ protected:
     /**
      * @brief set_raw_data  设置Beam原始数据
      * @param data          指向Beam原始数据,调用者要维护这个地址,不能删除
+     * @param rf            射频标志
      * @param pointNum      波形点数
      */
-    void set_raw_data(const char *data, int pointNum);
+    void set_raw_data(const char *data, int pointNum, bool rf = false);
 
 private:
     BeamPrivate *d;
