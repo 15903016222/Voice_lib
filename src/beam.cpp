@@ -16,43 +16,22 @@ struct GateData {
     quint32 height      : 12;   // 20-31 闸门检测数据的高度
 };
 
-struct GateRFData {
-    quint32 positon     : 16;   // 0-15 射频模式中闸门检测数据的位置
-    qint32 height       : 16;   // 16-31 射频模式中闸门检测数据的高度
-};
-
 #pragma pack(1)
 struct Measure
 {
     /* 波型计数器 */
-    quint32 focallaw        : 13;   /* 0-12  波型对应聚焦法则的数值 */
-    quint32 beamIndex       : 13;   /* 13-25 设置聚焦法则后开始计数的波型数 */
-    quint32 gateStatus      : 6;    /* 26-31 闸门状态 */
+    quint32 focallaw        : 13;   // 0-12  波型对应聚焦法则的数值
+    quint32 beamIndex       : 13;   // 13-25 设置聚焦法则后开始计数的波型数
+    quint32 gateStatus      : 6;    // 26-31 闸门状态
 
-    /* Gate A */
-    union {
-        GateData gateA;
-        GateRFData gateARF;
-    };
+    GateData gate[3];               // Gate A/B/I
 
-    /* Gate B */
-    union {
-        GateData gateB;
-        GateRFData gateBRF;
-    };
+    int encoderX;                   // 编码器X
+    int encoderY;                   // 编码器Y
 
-    /* Gate I */
-    union {
-        GateData gateI;
-        GateRFData gateIRF;
-    };
+    int res0;                       // 保留
 
-    int encoderX;   /* 编码器X */
-    int encoderY;   /* 编码器Y */
-
-    int res0;       /* 保留 */
-
-    int res1;       /* 保留 */
+    int res1;                       // 保留
 };
 #pragma pack()
 
@@ -129,36 +108,6 @@ int Beam::index() const
     return d->m_measure->beamIndex;
 }
 
-int Beam::gate_a_height() const
-{
-    return d->m_measure->gateA.height;
-}
-
-int Beam::gate_a_position() const
-{
-    return d->m_measure->gateA.position;
-}
-
-int Beam::gate_b_height() const
-{
-    return d->m_measure->gateB.height;
-}
-
-int Beam::gate_b_position() const
-{
-    return d->m_measure->gateB.position;
-}
-
-int Beam::gate_i_height() const
-{
-    return d->m_measure->gateI.height;
-}
-
-int Beam::gate_i_position() const
-{
-    return d->m_measure->gateI.position;
-}
-
 int Beam::encoder_x() const
 {
     return d->m_measure->encoderX;
@@ -171,37 +120,12 @@ int Beam::encoder_y() const
 
 float Beam::gate_peak(Beam::GateType gate) const
 {
-    float peak = 0.0;
-    switch (gate) {
-    case GATE_A:
-        if (d->m_rf) {
-            peak = d->m_measure->gateARF.height;
-        } else {
-            peak = d->m_measure->gateA.height;
-        }
-        break;
-    case GATE_B:
-        if (d->m_rf) {
-            peak = d->m_measure->gateBRF.height;
-        } else {
-            peak = d->m_measure->gateB.height;
-        }
-        break;
-    case GATE_I:
-    default:
-        if (d->m_rf) {
-            peak = d->m_measure->gateIRF.height;
-        } else {
-            peak = d->m_measure->gateI.height;
-        }
-        break;
+    Q_ASSERT( gate >= GATE_A && gate <= GATE_I );
+	if ( d->m_rf) {
+        return static_cast<qint16>(d->m_measure->gate[gate].height) / 10.24;    // 满屏时200%, peak/((2^12)/4)*100
+	} else {
+        return d->m_measure->gate[gate].height / 20.47;                         // 满屏时200%, peak/((2^12-1)/2)*100
     }
-    if (d->m_rf) {
-        peak /= 163.84;     // 满屏时(+-)200%, peak/((2^16)/4)*100
-    } else {
-        peak /= 20.47;      // 满屏时200%, peak/((2^12-1)/2)*100
-    }
-    return peak;
 }
 
 float Beam::gate_minus(Beam::GateType gate, int height)
@@ -215,32 +139,8 @@ float Beam::gate_minus(Beam::GateType gate, int height)
 
 int Beam::gate_peak_position(DplSource::Beam::GateType gate)
 {
-    switch (gate) {
-    case GATE_A:
-        if (d->m_rf) {
-            return d->m_measure->gateARF.positon;
-        } else {
-            return d->m_measure->gateA.position;
-        }
-        break;
-    case GATE_B:
-        if (d->m_rf) {
-            return d->m_measure->gateBRF.positon;
-        } else {
-            return d->m_measure->gateB.position;
-        }
-        break;
-    case GATE_I:
-        if (d->m_rf) {
-            return d->m_measure->gateIRF.positon;
-        } else {
-            return d->m_measure->gateI.position;
-        }
-        break;
-    default:
-        break;
-    }
-    return 0;
+    Q_ASSERT( gate >= GATE_A && gate <= GATE_I );
+    return d->m_measure->gate[gate].position;
 }
 
 
