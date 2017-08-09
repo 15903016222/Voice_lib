@@ -39,15 +39,12 @@ class BeamPrivate
 {
 public:
     BeamPrivate() :
-        m_rawData(NULL),
         m_measure(NULL),
-        m_pointQty(0),
         m_rf(false) {}
 
     /* Attribution */
-    const char *m_rawData;
+    QByteArray m_wave;
     const Measure *m_measure;
-    int m_pointQty;
     bool m_rf;
 };
 
@@ -72,35 +69,24 @@ void Beam::set_raw_data(const char *data, int pointNum, bool rf)
         return;
     }
 
-    d->m_rawData = data;
-    d->m_pointQty = pointNum;
+    d->m_wave.setRawData(data, pointNum);
     d->m_measure = (const Measure *)(data + pointNum);
     d->m_rf = rf;
 }
 
-bool Beam::has_data() const
-{
-    return (d->m_rawData != NULL);
-}
-
 void Beam::clean()
 {
-    d->m_rawData = NULL;
     d->m_measure = NULL;
-    d->m_pointQty = 0;
 }
 
-QByteArray Beam::get_wave() const
+const QByteArray &Beam::wave() const
 {
-    if (d->m_rawData == NULL) {
-        return NULL;
-    }
-    return QByteArray::fromRawData(d->m_rawData, d->m_pointQty);
+    return d->m_wave;
 }
 
 int Beam::point_qty() const
 {
-    return d->m_pointQty;
+    return d->m_wave.size();
 }
 
 int Beam::index() const

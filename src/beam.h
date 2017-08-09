@@ -26,22 +26,15 @@ public:
     ~Beam();
 
     /**
-     * @brief has_data  判断是否有数据
-     * @return          有数据则返回true，否则返回false
-     */
-    bool has_data() const;
-
-    /**
      * @brief clean 清除数据
      */
     void clean();
 
     /**
-     * @brief get_wave  获取波形数据
-     * @param wave      波形数据
-     * @return          成功返回true，失败返回false
+     * @brief wave      获取波形数据
+     * @return          波形数据
      */
-    QByteArray get_wave() const;
+    const QByteArray &wave() const;
 
     /**
      * @brief point_qty 获取波形点数
