@@ -124,4 +124,10 @@ void Beams::set_rf(bool flag)
     d->m_rf = flag;
 }
 
+const char *Beams::raw_data() const
+{
+    QReadLocker l(&d->m_rwlock);
+    return d->m_rawData;
+}
+
 }

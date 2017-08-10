@@ -73,6 +73,12 @@ public:
      */
     void set_rf(bool flag);
 
+    /**
+     * @brief raw_data  获取原始数据
+     * @return          原始数据
+     */
+    const char *raw_data() const;
+
 protected:
     friend class Alloter;
     /**
