@@ -5,55 +5,9 @@
  * @date 2017-04-18
  */
 
-#include "source.h"
-#include "dma.h"
-
-#include <QTimer>
-#include <QReadWriteLock>
+#include "source_p.h"
 
 namespace DplSource {
-
-class SourcePrivate
-{
-    Q_DECLARE_PUBLIC(Source)
-public:
-    SourcePrivate(Source *parent);
-    void update_dma();
-
-    /* Attribution */
-    mutable QReadWriteLock m_rwlock;
-
-    QTimer m_timer;
-    int m_interval;                 // 上传的间隔时间
-    bool m_delayFlag;
-    Source::Type m_type;
-
-    Dma *m_dma;
-
-private:
-    Source * const q_ptr;
-};
-
-SourcePrivate::SourcePrivate(Source *parent) :
-    q_ptr(parent)
-{
-    m_interval  = 20;
-    m_delayFlag = false;
-    m_type      = Source::DMA;
-
-    m_timer.setInterval(m_interval);
-    m_dma = Dma::instance();
-}
-
-void SourcePrivate::update_dma()
-{
-    Q_Q(Source);
-    const char *data = m_dma->read_data();
-    if (data == NULL) {
-        return;
-    }
-    emit q->data_event(data);
-}
 
 /* Source */
 Source *Source::instance()
@@ -154,7 +108,7 @@ void Source::update()
     }
 
     if (DMA == type) {
-        d->update_dma();
+        d->update_current_data();
     }
 }
 
