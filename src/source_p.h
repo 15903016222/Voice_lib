@@ -27,9 +27,8 @@ struct GroupInfo
 
 class SourcePrivate
 {
-    Q_DECLARE_PUBLIC(Source)
 public:
-    SourcePrivate(Source *parent);
+    SourcePrivate();
 
     void update_current_data();
     void update_offset();
@@ -46,9 +45,7 @@ public:
 
     GroupInfo m_groups[MAX_GROUP];
     int m_frameSize;                // 帧大小(Bytes)
-
-private:
-    Source * const q_ptr;
+    const char *m_curData;          // 指向当前数据
 };
 
 }

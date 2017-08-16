@@ -13,10 +13,10 @@ namespace DplSource {
 class BeamsPrivate
 {
 public:
-    BeamsPrivate() :
-        m_rawData(NULL),
-        m_beamQty(0),
-        m_pointQty(0),
+    BeamsPrivate(int beamQty, int pointQty, const char *data) :
+        m_rawData(data),
+        m_beamQty(beamQty),
+        m_pointQty(pointQty),
         m_curIndex(0),
         m_rf(false) {}
 
@@ -28,13 +28,15 @@ public:
     bool m_rf;
 };
 
-Beams::Beams() :
-    d(new BeamsPrivate)
+Beams::Beams(int beamQty, int pointQty, const char *data) :
+    d(new BeamsPrivate(beamQty, pointQty, data))
 {
+
 }
 
 Beams::~Beams()
 {
+    delete d;
 }
 
 const BeamPointer Beams::get(int beamNo) const

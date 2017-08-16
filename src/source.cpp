@@ -45,10 +45,22 @@ bool Source::edit_group(int grp, int beamQty, int pointQty)
     if (grp < MAX_GROUP && d->m_groups[grp].valid) {
         d->m_groups[grp].beamQty = beamQty;
         d->m_groups[grp].pointQty = pointQty;
-        d->refresh_offset();
+        d->update_offset();
         return true;
     }
     return false;
+}
+
+BeamsPointer Source::current_beams(int grp)
+{
+    Q_D(Source);
+    if (grp < MAX_GROUP && d->m_groups[grp].valid) {
+        BeamsPointer beams(new Beams(d->m_groups[grp].beamQty,
+                                     d->m_groups[grp].pointQty,
+                                     d->m_curData + d->m_groups[grp].offset));
+        return beams;
+    }
+    return BeamsPointer();
 }
 
 Source::Type Source::type() const
@@ -116,7 +128,7 @@ void Source::restart()
 }
 
 Source::Source()
-    : d_ptr(new SourcePrivate(this))
+    : d_ptr(new SourcePrivate())
 {
     connect(&d_ptr->m_timer, SIGNAL(timeout()), this, SLOT(update()));
 }

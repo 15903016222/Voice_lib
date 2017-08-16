@@ -16,7 +16,8 @@ class BeamsPrivate;
 class SOURCESHARED_EXPORT Beams
 {
 public:
-    explicit Beams();
+    explicit Beams(int beamQty, int pointQty, const char* data);
+
     ~Beams();
 
     /**

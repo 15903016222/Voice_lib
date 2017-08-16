@@ -2,8 +2,7 @@
 
 namespace DplSource {
 
-SourcePrivate::SourcePrivate(Source *parent) :
-    q_ptr(parent),
+SourcePrivate::SourcePrivate() :
     m_interval(20),
     m_delayFlag(false),
     m_type(Source::DMA),
@@ -14,12 +13,7 @@ SourcePrivate::SourcePrivate(Source *parent) :
 
 void SourcePrivate::update_current_data()
 {
-    Q_Q(Source);
-    const char *data = m_dma->read_data();
-    if (data == NULL) {
-        return;
-    }
-    emit q->data_event(data);
+    m_curData = m_dma->read_data();
 }
 
 void SourcePrivate::update_offset()
