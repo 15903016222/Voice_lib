@@ -16,6 +16,29 @@ Source *Source::instance()
     return ins;
 }
 
+bool Source::register_group(int grp, int beamQty, int pointQty)
+{
+    Q_D(Source);
+    if (grp < MAX_GROUP && !d->m_groups[grp].valid) {
+        d->m_groups[grp].valid = true;
+        d->m_groups[grp].beamQty = beamQty;
+        d->m_groups[grp].pointQty = pointQty;
+        d->update_offset();
+        return true;
+    }
+    return false;
+}
+
+bool Source::unregister_group(int grp)
+{
+    Q_D(Source);
+    if (grp < MAX_GROUP && d->m_groups[grp].valid) {
+        d->m_groups[grp].valid = false;
+        return false;
+    }
+    return true;
+}
+
 Source::Type Source::type() const
 {
     Q_D(const Source);

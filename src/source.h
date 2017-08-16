@@ -8,9 +8,7 @@
 #ifndef __DPLSOURCE_SOURCE_H__
 #define __DPLSOURCE_SOURCE_H__
 
-#include "source_global.h"
-
-#include <QObject>
+#include "beams.h"
 
 namespace DplSource {
 
@@ -25,6 +23,55 @@ public:
      * @return          单例对象指针
      */
     static Source *instance();
+
+    /**
+     * @brief register_group    向数据源注册一组数据
+     * @param grp               组号,从0开始
+     * @param beamQty           聚焦数
+     * @param pointQty          采样点数
+     * @return                  注册成功返回true，否则返回false
+     */
+    bool register_group(int grp, int beamQty, int pointQty);
+
+    /**
+     * @brief unregister_group  向数据源注销一组数据
+     *@param grp               组号,从0开始
+     *@return                  成功返回true，否则返回false
+     */
+    bool unregister_group(int grp);
+
+    /**
+     *@brief edit_group    修改注册组信息
+     *@param grp           组号
+     *@param beamQty       聚焦数
+     *@param pointQty      采样点数
+     *@return              成功返回true，失败返回false
+     */
+    bool edit_group(int grp, int beamQty, int pointQty);
+
+    /**
+     *@brief current_beams 获取当前指定组数据Beams
+     *@param grp           组号
+     *@return              返回Beams
+     */
+    BeamsPointer current_beams(int grp);
+
+    /**
+     *@brief beams         获取指定帧号的组数据
+     *@param grp           组号，从0开始
+     *@param frameIndex    帧号，从0开始
+     *@return              返回Beams
+     */
+    BeamsPointer beams(int grp, int frameIndex);
+
+    /**
+     *@brief beams 获取指定编码器位置的组数据
+     *@param grp   组号
+     *@param x     x坐标(mm)
+     *@param y     y坐标(mm)
+     *@return      返回Bemas
+     */
+    BeamsPointer beams(int grp, int x, int y);
 
     enum Type {
         DMA,     /* DMA源 */
