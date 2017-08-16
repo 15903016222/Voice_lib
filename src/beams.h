@@ -8,20 +8,15 @@
 #ifndef __DPLSOURCE_BEAMS_H__
 #define __DPLSOURCE_BEAMS_H__
 
-#include <QObject>
-#include <QSharedPointer>
 #include "beam.h"
-
-#include "source_global.h"
 
 namespace DplSource {
 
 class BeamsPrivate;
-class SOURCESHARED_EXPORT Beams : public QObject
+class SOURCESHARED_EXPORT Beams
 {
-    Q_OBJECT
 public:
-    explicit Beams(QObject *parent = 0);
+    explicit Beams();
     ~Beams();
 
     /**
@@ -30,18 +25,6 @@ public:
      * @return          指向Beam数据的指针
      */
     const BeamPointer get(int index) const;
-
-    /**
-     * @brief current_beam  获取当前Beam
-     * @return              返回当前Beam
-     */
-    BeamPointer current_beam() const;
-
-    /**
-     * @brief set_current_beam_index    设置当前Beam
-     * @param index                     Beam序列号
-     */
-    void set_current_beam_index(int index);
 
     /**
      * @brief beam_qty  获取Beam数量
@@ -79,31 +62,11 @@ public:
      */
     const char *raw_data() const;
 
-protected:
-    friend class Alloter;
     /**
      * @brief set_raw_data  设置原始数据
      * @param data          原始数据
      */
     void set_raw_data(const char *data);
-
-public slots:
-    /**
-     * @brief set_beam_qty  设置Beam数量
-     * @param qty           数量值
-     */
-    void set_beam_qty(int qty);
-
-    /**
-     * @brief set_point_qty 设置一条Beam的点数量
-     * @param qty           点数量值
-     */
-    void set_point_qty(int qty);
-
-signals:
-    void data_event();
-    void beam_qty_changed(int qty);
-    void point_qty_changed(int qty);
 
 private:
     BeamsPrivate *d;

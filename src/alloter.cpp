@@ -22,11 +22,11 @@ void Alloter::add(Beams *beams)
     {
         QWriteLocker l(&m_rwlock);
         m_beamsList.append(beams);
-        connect(beams, SIGNAL(beam_qty_changed(int)), this, SLOT(set_dma_frame_count()));
-        connect(beams, SIGNAL(point_qty_changed(int)), this, SLOT(set_dma_frame_count()));
+//        connect(beams, SIGNAL(beam_qty_changed(int)), this, SLOT(set_dma_frame_count()));
+//        connect(beams, SIGNAL(point_qty_changed(int)), this, SLOT(set_dma_frame_count()));
         if (m_beamsList.size() == 1) {
-            connect(beams, SIGNAL(point_qty_changed(int)),
-                    this, SLOT(set_dma_encoder_offset(int)));
+//            connect(beams, SIGNAL(point_qty_changed(int)),
+//                    this, SLOT(set_dma_encoder_offset(int)));
             set_dma_encoder_offset(beams->point_qty());
         }
     }
