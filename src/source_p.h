@@ -32,6 +32,7 @@ public:
     SourcePrivate(Source *parent);
 
     void update_current_data();
+    void update_offset();
 
     /* Attribution */
     mutable QReadWriteLock m_rwlock;
@@ -42,6 +43,9 @@ public:
     Source::Type m_type;
 
     Dma *m_dma;
+
+    GroupInfo m_groups[MAX_GROUP];
+    int m_frameSize;                // 帧大小(Bytes)
 
 private:
     Source * const q_ptr;

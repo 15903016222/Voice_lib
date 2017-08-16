@@ -48,9 +48,3 @@ target.path = /lib
 documentation.path  = /
 
 INSTALLS += target documentation
-
-HEADERS += \
-    src/source_p.h
-
-SOURCES += \
-    src/source_p.cpp

@@ -10,10 +10,12 @@ PUBLIC_HEADERS += \
     $$PWD/axis.h
 
 PRIVATE_HEADERS += \
-    $$PWD/alloter.h
+    $$PWD/alloter.h \
+    $$PWD/source_p.h
 
 SOURCES += \
     $$PWD/source.cpp \
+    $$PWD/source_p.cpp \
     $$PWD/beam.cpp \
     $$PWD/beams.cpp \
     $$PWD/alloter.cpp \
@@ -21,7 +23,6 @@ SOURCES += \
     $$PWD/scan.cpp \
     $$PWD/driving.cpp \
     $$PWD/axis.cpp
-
 
 phascan {
     PRIVATE_HEADERS += \
