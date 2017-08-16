@@ -9,6 +9,22 @@
 
 namespace DplSource {
 
+static const int MAX_GROUP = 8;
+struct GroupInfo
+{
+    GroupInfo(int beamQty = 0, int pointQty = 0) :
+        beamQty(beamQty),
+        pointQty(pointQty),
+        offset(0),
+        valid(false)
+    {}
+
+    int beamQty;
+    int pointQty;
+    int offset;     // 数据在当前帧的偏移位置
+    bool valid;     // 标志该组是否启用
+};
+
 class SourcePrivate
 {
     Q_DECLARE_PUBLIC(Source)
