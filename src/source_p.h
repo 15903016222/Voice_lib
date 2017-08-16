@@ -46,6 +46,7 @@ public:
     GroupInfo m_groups[MAX_GROUP];
     int m_frameSize;                // 帧大小(Bytes)
     const char *m_curData;          // 指向当前数据
+    const char *m_data;             // 指向全部数据
 };
 
 }
