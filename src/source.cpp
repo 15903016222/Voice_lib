@@ -101,28 +101,21 @@ void Source::set_interval(unsigned int interval)
     Q_D(Source);
     QWriteLocker l(&d->m_rwlock);
     d->m_interval = interval;
-    d->m_timer.setInterval(d->m_interval);
 }
 
 void Source::stop()
 {
     Q_D(Source);
-    QWriteLocker l(&d->m_rwlock);
-    d->m_timer.stop();
 }
 
 bool Source::is_running() const
 {
     Q_D(const Source);
-    QReadLocker l(&d->m_rwlock);
-    return d->m_timer.isActive();
 }
 
 void Source::start()
 {
     Q_D(Source);
-    QWriteLocker l(&d->m_rwlock);
-    d->m_timer.start();
 }
 
 void Source::restart()
@@ -134,15 +127,11 @@ void Source::restart()
         d->m_dma->set_scan_timmer_counter(0);
         d->m_dma->set_scan_timmer_circled(0);
     }
-
-    d->m_delayFlag = true;
-    d->m_timer.start(200);
 }
 
 Source::Source()
     : d_ptr(new SourcePrivate())
 {
-    connect(&d_ptr->m_timer, SIGNAL(timeout()), this, SLOT(update()));
 }
 
 Source::~Source()
@@ -153,20 +142,7 @@ Source::~Source()
 void Source::update()
 {
     Q_D(Source);
-    Type type;
-
-    {
-        QWriteLocker l(&d->m_rwlock);
-        type = d->m_type;
-
-        if (d->m_delayFlag) {
-            d->m_delayFlag = false;
-            d->m_timer.setInterval(d->m_interval);
-            return;
-        }
-    }
-
-    if (DMA == type) {
+    if (DMA == d->m_type) {
         d->update_current_data();
     }
 }

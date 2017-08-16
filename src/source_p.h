@@ -36,9 +36,7 @@ public:
     /* Attribution */
     mutable QReadWriteLock m_rwlock;
 
-    QTimer m_timer;
     int m_interval;                 // 上传的间隔时间
-    bool m_delayFlag;
     Source::Type m_type;
 
     Dma *m_dma;
