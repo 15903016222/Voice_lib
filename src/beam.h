@@ -49,42 +49,6 @@ public:
     int index() const;
 
     /**
-     * @brief gate_a_height 获取闸门A内波形峰值
-     * @return              峰值
-     */
-    int gate_a_height() const;
-
-    /**
-     * @brief gate_a_position   获取闸门A内波形峰值对应的位置
-     * @return                  位置(ns)
-     */
-    int gate_a_position() const;
-
-    /**
-     * @brief gate_b_height 获取闸门B内波形峰值
-     * @return              峰值
-     */
-    int gate_b_height() const;
-
-    /**
-     * @brief gate_B_position   获取闸门B内波形峰值对应的位置
-     * @return                  位置(ns)
-     */
-    int gate_b_position() const;
-
-    /**
-     * @brief gate_i_height 获取闸门I内波形峰值
-     * @return              峰值
-     */
-    int gate_i_height() const;
-
-    /**
-     * @brief gate_i_position   获取闸门i内波形峰值对应的位置
-     * @return                  位置
-     */
-    int gate_i_position() const;
-
-    /**
      * @brief encoder_x 获取编码器X值
      * @return          编码器X数据
      */
