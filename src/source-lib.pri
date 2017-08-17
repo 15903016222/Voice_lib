@@ -10,7 +10,6 @@ PUBLIC_HEADERS += \
     $$PWD/axis.h
 
 PRIVATE_HEADERS += \
-    $$PWD/alloter.h \
     $$PWD/source_p.h
 
 SOURCES += \

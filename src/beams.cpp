@@ -30,7 +30,6 @@ public:
 Beams::Beams(int beamQty, int pointQty, const char *data) :
     d(new BeamsPrivate(beamQty, pointQty, data))
 {
-
 }
 
 Beams::~Beams()
@@ -38,7 +37,7 @@ Beams::~Beams()
     delete d;
 }
 
-const BeamPointer Beams::get(int beamNo) const
+BeamPointer Beams::get(int beamNo) const
 {
     if (beamNo >= d->m_beamQty
             || d->m_rawData == NULL) {

@@ -3,6 +3,7 @@
 
 #include "source.h"
 #include "dma.h"
+#include "driving.h"
 
 #include <QThread>
 #include <QReadWriteLock>
@@ -34,12 +35,17 @@ public:
     void update_current_data();
     void update_offset();
 
+public slots:
+    void update_dma_driving_type(const DrivingPointer &driving);
     void update_dma_encoder_offset(int qty);
     void update_dma_steps_resolution();
     void update_dma_start_offset();
 
 protected:
     void run();
+
+private:
+    Source *q_ptr;
 
 public:
     /* Attribution */
@@ -55,8 +61,6 @@ public:
     const char *m_curData;          // 指向当前数据
     const char *m_data;             // 指向全部数据
 
-private:
-    Source *q_ptr;
 };
 
 }

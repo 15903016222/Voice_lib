@@ -9,8 +9,19 @@ SourcePrivate::SourcePrivate(Source *source) : QThread(),
     m_type(Source::DMA),
     m_dma(Dma::instance()),
     m_data(Dma::instance()->get_store_buffer())
-{
-    Scan::instance();
+{    
+    Axis *scanAxis = Scan::instance()->scan_axis();
+    connect(scanAxis, SIGNAL(resolution_changed(float)),
+            this, SLOT(update_dma_steps_resolution()));
+    connect(scanAxis, SIGNAL(driving_changed(DrivingPointer)),
+            this, SLOT(update_dma_driving_type(DrivingPointer)));
+    connect(scanAxis, SIGNAL(start_changed(float)),
+            this, SLOT(update_dma_start_offset()));
+    connect(scanAxis, SIGNAL(resolution_changed(float)),
+            this, SLOT(update_dma_start_offset()));
+
+    update_dma_driving_type(scanAxis->driving());
+    update_dma_start_offset();
 }
 
 void SourcePrivate::update_current_data()
@@ -36,6 +47,24 @@ void SourcePrivate::update_offset()
         dma->set_frame_count(cnt);
     }
     m_frameSize = cnt * dma->frame_size();
+}
+
+void SourcePrivate::update_dma_driving_type(const DrivingPointer &driving)
+{
+    if (driving->type() == Driving::TIMER) {
+        m_dma->set_driving_type(Dma::TIMER);
+    } else {
+        EncoderPointer enc = driving.staticCast<Encoder>();
+
+        if (enc->index() == 1) {
+            m_dma->set_driving_type(Dma::ENCODER1);
+        } else if (enc->index() == 2) {
+            m_dma->set_driving_type(Dma::ENCODER2);
+        }
+        update_dma_steps_resolution();
+        connect(static_cast<Encoder*>(enc.data()), SIGNAL(resolution_changed(float)),
+                this, SLOT(update_dma_steps_resolution()));
+    }
 }
 
 void SourcePrivate::update_dma_encoder_offset(int qty)
@@ -72,10 +101,10 @@ void SourcePrivate::update_dma_start_offset()
 void SourcePrivate::run()
 {
     while (true) {
-        qDebug("%s[%d]: ",__func__, __LINE__);
         m_curData = m_dma->read_data();
-        emit q_ptr->data_event();
-        qDebug("%s[%d]: ",__func__, __LINE__);
+        if (m_curData) {
+            emit q_ptr->data_event();
+        }
         QThread::msleep(m_interval);
     }
 }

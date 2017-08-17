@@ -132,7 +132,6 @@ unsigned int Dma::driving_type() const
 void Dma::set_driving_type(DrivingType type)
 {
 	QWriteLocker l(&d->m_rwlock);
-    qDebug("%s[%d]: drivingType(%d)",__func__, __LINE__, type);
     d->m_param->drivingType = type;
 }
 
@@ -155,9 +154,6 @@ void Dma::set_frame_count(int count)
 	QWriteLocker l(&d->m_rwlock);
     d->m_param->frameCount = count;
     d->m_param->maxStoreQty = qMin( STORE_BUFFER_SIZE / (FRAME_SIZE*count), STORE_BUFFER_SIZE/FRAME_SIZE);
-
-    qDebug("%s[%d]: framecount(%d) maxStoreQty(%d)",__func__,__LINE__,
-           d->m_param->frameCount, d->m_param->maxStoreQty);
 }
 
 unsigned int Dma::encoder_offset() const
@@ -169,7 +165,6 @@ unsigned int Dma::encoder_offset() const
 void Dma::set_encoder_offset(int value)
 {
 	QWriteLocker l(&d->m_rwlock);
-    qDebug("%s[%d]: encoderOffset(%d)",__func__, __LINE__, value);
     d->m_param->encoderOffset = value;
 }
 
@@ -181,7 +176,6 @@ unsigned int Dma::steps_resolution() const
 void Dma::set_steps_resolution(int value)
 {
 	QWriteLocker l(&d->m_rwlock);
-    qDebug("%s[%d]: stepsResolution(%d)",__func__,__LINE__, value);
     d->m_param->stepResolution = value;
 }
 
@@ -194,7 +188,6 @@ unsigned int Dma::start_offset() const
 void Dma::set_start_offset(int value)
 {
 	QWriteLocker l(&d->m_rwlock);
-    qDebug("%s[%d]: startOffset(%d)",__func__,__LINE__, value);
     d->m_param->startOffset = value;
 }
 
@@ -207,7 +200,6 @@ unsigned int Dma::scan_timmer_counter() const
 void Dma::set_scan_timmer_counter(int value)
 {
 	QWriteLocker l(&d->m_rwlock);
-    qDebug("%s[%d]: scanTimerCounter(%d)",__func__,__LINE__, value);
     d->m_param->scanTimmerCounter = value;
 }
 
@@ -220,7 +212,6 @@ unsigned int Dma::get_scan_timmer_circled() const
 void Dma::set_scan_timmer_circled(int value)
 {
 	QWriteLocker l(&d->m_rwlock);
-    qDebug("%s[%d]: scanTimerCircled(%d)",__func__,__LINE__, value);
     d->m_param->scanTimmerCircled = value;
 }
 

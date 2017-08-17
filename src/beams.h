@@ -25,7 +25,7 @@ public:
      * @param index     Beam ID
      * @return          指向Beam数据的指针
      */
-    const BeamPointer get(int index) const;
+    BeamPointer get(int index) const;
 
     /**
      * @brief beam_qty  获取Beam数量
