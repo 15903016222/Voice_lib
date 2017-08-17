@@ -27,11 +27,16 @@ struct GroupInfo
 
 class SourcePrivate : public QThread
 {
+    Q_OBJECT
 public:
     SourcePrivate(Source *source);
 
     void update_current_data();
     void update_offset();
+
+    void update_dma_encoder_offset(int qty);
+    void update_dma_steps_resolution();
+    void update_dma_start_offset();
 
 protected:
     void run();

@@ -4,9 +4,8 @@
  * @author Jake Yang <yanghuanjie@cndoppler.cn>
  * @date 2017-04-18
  */
-#include "alloter.h"
 
-#include <QReadWriteLock>
+#include "beams.h"
 
 namespace DplSource {
 

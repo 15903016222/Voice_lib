@@ -18,7 +18,6 @@ SOURCES += \
     $$PWD/source_p.cpp \
     $$PWD/beam.cpp \
     $$PWD/beams.cpp \
-    $$PWD/alloter.cpp \
     $$PWD/encoder.cpp \
     $$PWD/scan.cpp \
     $$PWD/driving.cpp \
