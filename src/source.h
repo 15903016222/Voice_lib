@@ -54,7 +54,7 @@ public:
      *@param grp           组号
      *@return              返回Beams
      */
-    BeamsPointer current_beams(int grp);
+    BeamsPointer current_beams(int grp) const;
 
     /**
      *@brief beams         获取指定帧号的组数据
@@ -62,7 +62,7 @@ public:
      *@param frameIndex    帧号，从0开始
      *@return              返回Beams
      */
-    BeamsPointer beams(int grp, int frameIndex);
+    BeamsPointer beams(int grp, int frameIndex) const;
 
     /**
      *@brief beams 获取指定编码器位置的组数据
@@ -71,7 +71,7 @@ public:
      *@param y     y坐标(mm)
      *@return      返回Bemas
      */
-    BeamsPointer beams(int grp, int x, int y);
+    BeamsPointer beams(int grp, int x, int y) const;
 
     enum Type {
         DMA,     /* DMA源 */

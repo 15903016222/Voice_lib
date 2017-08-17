@@ -51,9 +51,9 @@ bool Source::edit_group(int grp, int beamQty, int pointQty)
     return false;
 }
 
-BeamsPointer Source::current_beams(int grp)
+BeamsPointer Source::current_beams(int grp) const
 {
-    Q_D(Source);
+    Q_D(const Source);
     if (grp < MAX_GROUP && d->m_groups[grp].valid) {
         BeamsPointer beams(new Beams(d->m_groups[grp].beamQty,
                                      d->m_groups[grp].pointQty,
@@ -63,9 +63,9 @@ BeamsPointer Source::current_beams(int grp)
     return BeamsPointer();
 }
 
-BeamsPointer Source::beams(int grp, int frameIndex)
+BeamsPointer Source::beams(int grp, int frameIndex) const
 {
-    Q_D(Source);
+    Q_D(const Source);
     if (grp < MAX_GROUP && d->m_groups[frameIndex].valid) {
         BeamsPointer beams(new Beams(d->m_groups[frameIndex].beamQty,
                                      d->m_groups[frameIndex].pointQty,
