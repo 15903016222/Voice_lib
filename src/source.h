@@ -119,8 +119,6 @@ public:
      */
     void start();
 
-//    void set_position(int scanAxis, int indexAxis);
-
 public slots:
     /**
      * @brief restart   重新启动数据上传, 会延迟200ms后，启动数据上传
@@ -130,9 +128,8 @@ public slots:
 signals:
     /**
      * @brief data_event    数据信号
-     * @param data          数据
      */
-    void data_event(const char *data);
+    void data_event();
 
     /**
      * @brief type_changed  源类型改变
@@ -143,9 +140,6 @@ signals:
 protected:
     explicit Source();
     ~Source();
-
-protected slots:
-    void update();
 
 private:
     SourcePrivate *d_ptr;

@@ -4,7 +4,7 @@
 #include "source.h"
 #include "dma.h"
 
-#include <QTimer>
+#include <QThread>
 #include <QReadWriteLock>
 
 namespace DplSource {
@@ -25,18 +25,22 @@ struct GroupInfo
     bool valid;     // 标志该组是否启用
 };
 
-class SourcePrivate
+class SourcePrivate : public QThread
 {
 public:
-    SourcePrivate();
+    SourcePrivate(Source *source);
 
     void update_current_data();
     void update_offset();
 
+protected:
+    void run();
+
+public:
     /* Attribution */
     mutable QReadWriteLock m_rwlock;
 
-    int m_interval;                 // 上传的间隔时间
+    int m_interval;                 // 上传的间隔时间(ms)
     Source::Type m_type;
 
     Dma *m_dma;
@@ -45,6 +49,9 @@ public:
     int m_frameSize;                // 帧大小(Bytes)
     const char *m_curData;          // 指向当前数据
     const char *m_data;             // 指向全部数据
+
+private:
+    Source *q_ptr;
 };
 
 }

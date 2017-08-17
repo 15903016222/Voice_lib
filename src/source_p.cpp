@@ -2,8 +2,9 @@
 
 namespace DplSource {
 
-SourcePrivate::SourcePrivate() :
-    m_interval(20),
+SourcePrivate::SourcePrivate(Source *source) : QThread(),
+    q_ptr(source),
+    m_interval(1),
     m_type(Source::DMA),
     m_dma(Dma::instance()),
     m_data(Dma::instance()->get_store_buffer())
@@ -25,6 +26,15 @@ void SourcePrivate::update_offset()
         }
     }
     m_frameSize = offset/1024 * 1024;
+}
+
+void SourcePrivate::run()
+{
+    while (true) {
+        m_curData = m_dma->read_data();
+        emit q_ptr->data_event();
+        QThread::msleep(m_interval);
+    }
 }
 
 }

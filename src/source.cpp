@@ -111,11 +111,13 @@ void Source::stop()
 bool Source::is_running() const
 {
     Q_D(const Source);
+    return d->isRunning();
 }
 
 void Source::start()
 {
     Q_D(Source);
+    d->start();
 }
 
 void Source::restart()
@@ -130,21 +132,13 @@ void Source::restart()
 }
 
 Source::Source()
-    : d_ptr(new SourcePrivate())
+    : d_ptr(new SourcePrivate(this))
 {
 }
 
 Source::~Source()
 {
     delete d_ptr;
-}
-
-void Source::update()
-{
-    Q_D(Source);
-    if (DMA == d->m_type) {
-        d->update_current_data();
-    }
 }
 
 }
