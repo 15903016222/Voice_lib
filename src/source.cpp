@@ -66,10 +66,10 @@ BeamsPointer Source::current_beams(int grp) const
 BeamsPointer Source::beams(int grp, int frameIndex) const
 {
     Q_D(const Source);
-    if (grp < MAX_GROUP && d->m_groups[frameIndex].valid) {
-        BeamsPointer beams(new Beams(d->m_groups[frameIndex].beamQty,
-                                     d->m_groups[frameIndex].pointQty,
-                                     d->m_data + d->m_frameSize*frameIndex + d->m_groups[frameIndex].offset));
+    if (grp < MAX_GROUP && d->m_groups[grp].valid) {
+        BeamsPointer beams(new Beams(d->m_groups[grp].beamQty,
+                                     d->m_groups[grp].pointQty,
+                                     d->m_data + d->m_frameSize*frameIndex + d->m_groups[grp].offset));
         return beams;
     }
     return BeamsPointer();
