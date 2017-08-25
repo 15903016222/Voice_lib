@@ -42,10 +42,11 @@ void SourcePrivate::update_offset()
     Dma *dma = Dma::instance();
     int cnt = offset / dma->frame_size();
     if (offset % dma->frame_size()) {
-        dma->set_frame_count(cnt + 1);
-    } else {
-        dma->set_frame_count(cnt);
+        ++cnt;
     }
+
+    dma->set_frame_count(cnt);
+
     m_frameSize = cnt * dma->frame_size();
 }
 
