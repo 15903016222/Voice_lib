@@ -26,6 +26,18 @@ public:
     };
 
     /**
+     * @brief mode  获取检测模式
+     * @return      检测模式
+     */
+    Mode mode() const;
+
+    /**
+     * @brief set_mode  设置检测模式
+     * @param mode      检测模式
+     */
+    void set_mode(Mode mode);
+
+    /**
      * @brief scan_axis 获取扫查轴
      * @return          扫查轴
      */
@@ -41,13 +53,17 @@ public:
      * @brief speed 获取扫查速度
      * @return      扫查速度(mm/s)
      */
-    float speed() const;
+    double speed() const;
 
+public slots:
     /**
      * @brief set_speed 设置扫查速度
      * @param val       扫查速度(mm/s)
      */
-    void set_speed(float val);
+    void set_speed(double val);
+
+signals:
+    void mode_changed(Mode mode);
 
 protected:
     explicit Scan(QObject *parent = 0);
