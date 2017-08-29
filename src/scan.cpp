@@ -12,12 +12,11 @@ namespace DplSource {
 class ScanPrivate
 {
 public:
-    ScanPrivate()
-    {
-        m_speed = 20.0;
-        m_scanAxis = new Axis;
-        m_indexAxis = new Axis;
-    }
+    ScanPrivate() :
+        m_speed(20.0),
+        m_scanAxis(new Axis),
+        m_indexAxis(new Axis)
+    {}
 
     float m_speed;      // 扫查速度(mm/s)
     Axis *m_scanAxis;     // 扫查轴
