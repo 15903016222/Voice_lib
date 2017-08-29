@@ -120,7 +120,7 @@ const char *Dma::read_data()
 const char *Dma::get_store_buffer()
 {
     QReadLocker l(&d->m_rwlock);
-    return d->m_storeBuffer;
+    return d->m_storeBuffer+2;
 }
 
 unsigned int Dma::driving_type() const
