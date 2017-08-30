@@ -54,10 +54,10 @@ public:
     void set_polarity(Polarity val);
 
     enum Mode {
-        OFF,
-        QUAD,
-        UP,
-        DOWN
+        OFF     = 0b000,
+        DOWN    = 0b001,
+        UP      = 0b010,
+        QUAD    = 0b011
     };
 
     /**
