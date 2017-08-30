@@ -75,7 +75,10 @@ Encoder::Mode Encoder::mode() const
 void Encoder::set_mode(Encoder::Mode mode)
 {
     Q_D(Encoder);
-    d->m_mode = mode;
+    if (d->m_mode != mode) {
+        d->m_mode = mode;
+        emit mode_changed(mode);
+    }
 }
 
 float Encoder::resolution() const
