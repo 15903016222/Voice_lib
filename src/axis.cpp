@@ -13,12 +13,12 @@ class AxisPrivate
 {
 public:
     AxisPrivate() :
-        m_drivingPtr(new Driving),
+        m_encPtr(new Encoder),
         m_start(0.0),
         m_end(800.0),
         m_resolution(1.0) {}
 
-    DrivingPointer m_drivingPtr;
+    EncoderPointer m_encPtr;
     float m_start;                  // 扫查起点(mm)
     float m_end;                    // 扫查终点(mm)
     float m_resolution;             // 扫查分辨率(mm)
@@ -36,19 +36,10 @@ Axis::~Axis()
     delete d_ptr;
 }
 
-const DrivingPointer &Axis::driving() const
+const EncoderPointer &Axis::encoder() const
 {
     Q_D(const Axis);
-    return d->m_drivingPtr;
-}
-
-void Axis::set_driving(const DrivingPointer &driving)
-{
-    Q_D(Axis);
-    if (driving && driving != d->m_drivingPtr) {
-        d->m_drivingPtr = driving;
-        emit driving_changed(driving);
-    }
+    return d->m_encPtr;
 }
 
 float Axis::start() const

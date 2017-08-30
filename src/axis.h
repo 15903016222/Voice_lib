@@ -22,16 +22,10 @@ public:
     ~Axis();
 
     /**
-     * @brief driving 获取激励源
-     * @return        激励源
+     * @brief encoder 获取编码器
+     * @return        编码器
      */
-    const DrivingPointer &driving() const;
-
-    /**
-     * @brief set_driving   设置激励源
-     * @param driving       激励源
-     */
-    void set_driving(const DrivingPointer &driving);
+    const EncoderPointer &encoder() const;
 
     /**
      * @brief start 获取扫查起点
@@ -75,14 +69,13 @@ public:
 
 signals:
     void start_changed(float start);
-    void driving_changed(const DrivingPointer &driving);
     void resolution_changed(float val);
-
-public slots:
 
 private:
     AxisPrivate *d_ptr;
 };
+
+typedef QSharedPointer<Axis> AxisPointer;
 
 }
 
