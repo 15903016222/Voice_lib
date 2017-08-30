@@ -12,14 +12,13 @@ namespace DplSource {
 class EncoderPrivate
 {
 public:
-    EncoderPrivate()
-    {
-        m_index = 1;
-        m_polarity = Encoder::NORMAL;
-        m_mode = Encoder::QUAD;
-        m_resolution = 48.0;
-        m_origin = 0.0;
-    }
+    EncoderPrivate(int id) :
+        m_index(id),
+        m_polarity(Encoder::NORMAL),
+        m_mode(Encoder::QUAD),
+        m_resolution(48.0),
+        m_origin(0.0)
+    {}
 
     int m_index;
     Encoder::Polarity m_polarity;   // 极性
@@ -28,9 +27,9 @@ public:
     float m_origin;                 // 起点(mm)
 };
 
-Encoder::Encoder(QObject *parent) :
+Encoder::Encoder(int id, QObject *parent) :
     Driving(parent),
-    d_ptr(new EncoderPrivate)
+    d_ptr(new EncoderPrivate(id))
 {
 
 }

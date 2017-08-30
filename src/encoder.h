@@ -18,7 +18,7 @@ class SOURCESHARED_EXPORT Encoder : public Driving
     Q_OBJECT
     Q_DECLARE_PRIVATE(Encoder)
 public:
-    explicit Encoder(QObject *parent = 0);
+    explicit Encoder(int id = 1, QObject *parent = 0);
     ~Encoder();
 
     virtual Type type() const { return ENCODER; }
