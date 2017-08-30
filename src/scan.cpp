@@ -17,7 +17,9 @@ public:
         m_mode(Scan::ONELINE),
         m_scanAxis(new Axis),
         m_indexAxis(new Axis)
-    {}
+    {
+        m_indexAxis->set_driving(DrivingPointer(new Encoder(2)));
+    }
 
     double m_speed;     // 扫查速度(mm/s)
     Scan::Mode m_mode;  // 扫查模式
