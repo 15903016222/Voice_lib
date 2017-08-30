@@ -41,13 +41,13 @@ public:
      * @brief scan_axis 获取扫查轴
      * @return          扫查轴
      */
-    Axis *scan_axis() const;
+    const AxisPointer &scan_axis() const;
 
     /**
      * @brief index_axis    获取步进轴
      * @return              步进轴
      */
-    Axis *index_axis() const;
+    const AxisPointer &index_axis() const;
 
     /**
      * @brief speed 获取扫查速度

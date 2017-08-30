@@ -23,8 +23,8 @@ public:
 
     double m_speed;     // 扫查速度(mm/s)
     Scan::Mode m_mode;  // 扫查模式
-    Axis *m_scanAxis;   // 扫查轴
-    Axis *m_indexAxis;  // 步进轴
+    AxisPointer m_scanAxis;   // 扫查轴
+    AxisPointer m_indexAxis;  // 步进轴
 };
 
 Scan::Scan(QObject *parent) :
@@ -60,13 +60,13 @@ void Scan::set_mode(Scan::Mode mode)
     }
 }
 
-Axis *Scan::scan_axis() const
+const AxisPointer &Scan::scan_axis() const
 {
     Q_D(const Scan);
     return d->m_scanAxis;
 }
 
-Axis *Scan::index_axis() const
+const AxisPointer &Scan::index_axis() const
 {
     Q_D(const Scan);
     return d->m_indexAxis;
