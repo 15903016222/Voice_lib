@@ -36,7 +36,7 @@ public:
     void update_offset();
 
 public slots:
-    void update_dma_driving_type(Encoder::Mode mode);
+    void update_dma_driving_type(DplSource::Encoder::Mode mode);
     void update_dma_encoder_offset(int qty);
     void update_dma_steps_resolution();
     void update_dma_start_offset();
