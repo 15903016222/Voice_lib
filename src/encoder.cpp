@@ -15,7 +15,7 @@ public:
     EncoderPrivate(int id) :
         m_index(id),
         m_polarity(Encoder::NORMAL),
-        m_mode(Encoder::QUAD),
+        m_mode(Encoder::OFF),
         m_resolution(48.0),
         m_origin(0.0)
     {}
@@ -28,7 +28,7 @@ public:
 };
 
 Encoder::Encoder(int id, QObject *parent) :
-    Driving(parent),
+    QObject(parent),
     d_ptr(new EncoderPrivate(id))
 {
 

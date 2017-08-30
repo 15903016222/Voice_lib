@@ -2,8 +2,8 @@
 #define __SOURCE_P_H__
 
 #include "source.h"
+#include "encoder.h"
 #include "dma.h"
-#include "driving.h"
 
 #include <QThread>
 #include <QReadWriteLock>
@@ -36,7 +36,7 @@ public:
     void update_offset();
 
 public slots:
-    void update_dma_driving_type(const DrivingPointer &driving);
+    void update_dma_driving_type(Encoder::Mode mode);
     void update_dma_encoder_offset(int qty);
     void update_dma_steps_resolution();
     void update_dma_start_offset();

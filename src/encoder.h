@@ -8,8 +8,10 @@
 #ifndef __DPLSOURCE_ENCODER_H__
 #define __DPLSOURCE_ENCODER_H__
 
-#include <QObject>
 #include "source_global.h"
+
+#include <QObject>
+#include <QSharedPointer>
 
 namespace DplSource {
 

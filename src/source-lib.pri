@@ -6,7 +6,6 @@ PUBLIC_HEADERS += \
     $$PWD/source_global.h \
     $$PWD/encoder.h \
     $$PWD/scan.h \
-    $$PWD/driving.h \
     $$PWD/axis.h
 
 PRIVATE_HEADERS += \
@@ -19,7 +18,6 @@ SOURCES += \
     $$PWD/beams.cpp \
     $$PWD/encoder.cpp \
     $$PWD/scan.cpp \
-    $$PWD/driving.cpp \
     $$PWD/axis.cpp
 
 phascan {

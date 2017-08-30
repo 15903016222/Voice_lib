@@ -18,7 +18,7 @@ public:
         m_scanAxis(new Axis),
         m_indexAxis(new Axis)
     {
-        m_indexAxis->set_driving(DrivingPointer(new Encoder(2)));
+        m_indexAxis->encoder()->set_index(2);
     }
 
     double m_speed;     // 扫查速度(mm/s)
