@@ -85,7 +85,7 @@ public:
     void set_origin(float val);
 
 signals:
-    void mode_changed(int id, DplSource::Encoder::Mode mode);
+    void mode_changed(DplSource::Encoder::Mode mode);
     void resolution_changed(float val);
 
 private:

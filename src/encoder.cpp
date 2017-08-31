@@ -60,7 +60,7 @@ void Encoder::set_mode(Encoder::Mode mode)
     Q_D(Encoder);
     if (d->m_mode != mode) {
         d->m_mode = mode;
-        emit mode_changed(d->m_index, mode);
+        emit mode_changed(mode);
     }
 }
 

@@ -44,7 +44,7 @@ Axis::Driving Axis::driving() const
 
 void Axis::set_driving(Axis::Driving driving)
 {
-    Q_D(const Axis);
+    Q_D(Axis);
     if (d->m_drivingType != driving) {
         d->m_drivingType = driving;
         emit driving_changed(driving);
