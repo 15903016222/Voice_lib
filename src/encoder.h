@@ -21,25 +21,20 @@ class SOURCESHARED_EXPORT Encoder : public QObject
     Q_OBJECT
     Q_DECLARE_PRIVATE(Encoder)
 public:
-    enum Type {
-        X   = 1,
-        Y
-    };
-
-    explicit Encoder(Type type = X, QObject *parent = 0);
+    explicit Encoder(int id = 1, QObject *parent = 0);
     ~Encoder();
 
     /**
-     * @brief type  获取编码器类型
-     * @return      类型
+     * @brief index 获取编码器序号(1,2)
+     * @return      序号
      */
-    Type type() const;
+    int index() const;
 
     /**
-     * @brief set_type  设置编码器类型
-     * @param i         类型
+     * @brief set_index 设置编码器序号(1,2)
+     * @param i         序号
      */
-    void set_type(Type type);
+    void set_index(int i);
 
     enum Polarity {
         NORMAL,     // 正常

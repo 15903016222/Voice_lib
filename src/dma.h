@@ -32,8 +32,8 @@ public:
 
     enum DrivingType {
         TIMER,
-        ENCODER_X,
-        ENCODER_Y
+        ENCODER1,
+        ENCODER2
     };
 
     /**
