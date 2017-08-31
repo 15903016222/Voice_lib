@@ -123,10 +123,10 @@ const char *Dma::get_store_buffer()
     return d->m_storeBuffer+2;
 }
 
-unsigned int Dma::driving_type() const
+Dma::DrivingType Dma::driving_type() const
 {
 	QReadLocker l(&d->m_rwlock);
-    return d->m_param->drivingType;
+    return static_cast<DrivingType>(d->m_param->drivingType);
 }
 
 void Dma::set_driving_type(DrivingType type)

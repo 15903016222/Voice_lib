@@ -40,7 +40,7 @@ public:
      * @brief driving_type  获取激励类型
      * @return              激励类型
      */
-    unsigned int driving_type() const;
+    DrivingType driving_type() const;
 
     /**
      * @brief set_driving_type  设置激励类型
