@@ -22,12 +22,6 @@ public:
     ~Axis();
 
     /**
-     * @brief encoder 获取编码器
-     * @return        编码器
-     */
-    const EncoderPointer &encoder() const;
-
-    /**
      * @brief start 获取扫查起点
      * @return      位置(mm)
      */

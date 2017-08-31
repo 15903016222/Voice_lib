@@ -13,12 +13,10 @@ class AxisPrivate
 {
 public:
     AxisPrivate() :
-        m_encPtr(new Encoder),
         m_start(0.0),
         m_end(800.0),
         m_resolution(1.0) {}
 
-    EncoderPointer m_encPtr;
     float m_start;                  // 扫查起点(mm)
     float m_end;                    // 扫查终点(mm)
     float m_resolution;             // 扫查分辨率(mm)
@@ -34,12 +32,6 @@ Axis::Axis(QObject *parent) :
 Axis::~Axis()
 {
     delete d_ptr;
-}
-
-const EncoderPointer &Axis::encoder() const
-{
-    Q_D(const Axis);
-    return d->m_encPtr;
 }
 
 float Axis::start() const
