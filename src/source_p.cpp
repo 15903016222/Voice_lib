@@ -14,14 +14,14 @@ SourcePrivate::SourcePrivate(Source *source) : QThread(),
     connect(scanAxis, SIGNAL(resolution_changed(float)),
             this, SLOT(update_dma_steps_resolution()));
     connect(static_cast<Encoder *>(scanAxis->encoder().data()),
-            SIGNAL(mode_changed(DplSource::Encoder::Mode)),
-            this, SLOT(update_dma_driving_type(DplSource::Encoder::Mode)));
+            SIGNAL(mode_changed(int, DplSource::Encoder::Mode)),
+            this, SLOT(update_dma_driving_type(int, DplSource::Encoder::Mode)));
     connect(scanAxis, SIGNAL(start_changed(float)),
             this, SLOT(update_dma_start_offset()));
     connect(scanAxis, SIGNAL(resolution_changed(float)),
             this, SLOT(update_dma_start_offset()));
 
-    update_dma_driving_type(scanAxis->encoder()->mode());
+    update_dma_driving_type(scanAxis->encoder()->index(), scanAxis->encoder()->mode());
     update_dma_start_offset();
 }
 
@@ -51,18 +51,15 @@ void SourcePrivate::update_offset()
     m_frameSize = cnt * dma->frame_size();
 }
 
-void SourcePrivate::update_dma_driving_type(DplSource::Encoder::Mode mode)
+void SourcePrivate::update_dma_driving_type(int id, DplSource::Encoder::Mode mode)
 {
     if (Encoder::OFF == mode) {
         m_dma->set_driving_type(Dma::TIMER);
     } else {
         EncoderPointer enc = Scan::instance()->scan_axis()->encoder();
 
-        if (enc->index() == 1) {
-            m_dma->set_driving_type(Dma::ENCODER1);
-        } else if (enc->index() == 2) {
-            m_dma->set_driving_type(Dma::ENCODER2);
-        }
+        m_dma->set_driving_type(static_cast<Dma::DrivingType>(id));
+
         update_dma_steps_resolution();
         connect(static_cast<Encoder*>(enc.data()), SIGNAL(resolution_changed(float)),
                 this, SLOT(update_dma_steps_resolution()));
