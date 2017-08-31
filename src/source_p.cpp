@@ -58,10 +58,10 @@ void SourcePrivate::update_dma_driving_type(DplSource::Encoder::Mode mode)
     } else {
         EncoderPointer enc = Scan::instance()->scan_axis()->encoder();
 
-        if (enc->index() == 1) {
-            m_dma->set_driving_type(Dma::ENCODER1);
-        } else if (enc->index() == 2) {
-            m_dma->set_driving_type(Dma::ENCODER2);
+        if (enc->type() == Encoder::X) {
+            m_dma->set_driving_type(Dma::ENCODER_X);
+        } else if (enc->type() == Encoder::Y) {
+            m_dma->set_driving_type(Dma::ENCODER_Y);
         }
         update_dma_steps_resolution();
         connect(static_cast<Encoder*>(enc.data()), SIGNAL(resolution_changed(float)),
@@ -78,7 +78,7 @@ void SourcePrivate::update_dma_encoder_offset(int qty)
         return;
     }
 
-    if (enc->index() == 1) {
+    if (enc->type() == 1) {
         m_dma->set_encoder_offset(qty + 4*sizeof(int));
     } else {
         m_dma->set_encoder_offset(qty + 5*sizeof(int));
