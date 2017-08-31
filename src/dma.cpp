@@ -29,11 +29,11 @@ struct DmaParameter
     int counter;                // DMA传输次数
     int usedBufferFlag;         // 标志使用哪个缓冲区0～3
 
-    int drivingType;             // 扫查源: 0:定时器； 1:编码器1； 2:编码器2
+    int drivingType;            // 扫查源: 0:定时器； 1:编码器1； 2:编码器2
     int frameCount;             // DMA一次传输多少帧数据，一帧数据大小为1K（驱动设置为1K）
     int encoderOffset;          // 编码器在Beam中的偏移位置（Phascan只有X编码器）
     int stepResolution;         // 编码器分辩率
-    int startOffset;    // 编码器起点
+    int startOffset;            // 编码器起点
 
     int maxStoreQty;            // 最大保存数
     int scanTimmerCounter;      // 保存到storebuffer的次数
@@ -123,16 +123,27 @@ const char *Dma::get_store_buffer()
     return d->m_storeBuffer+2;
 }
 
-Dma::DrivingType Dma::driving_type() const
+Dma::DrivingType Dma::scan_axis_driving() const
 {
 	QReadLocker l(&d->m_rwlock);
     return static_cast<DrivingType>(d->m_param->drivingType);
 }
 
-void Dma::set_driving_type(DrivingType type)
+void Dma::set_scan_axis_driving(DrivingType type)
 {
 	QWriteLocker l(&d->m_rwlock);
     d->m_param->drivingType = type;
+}
+
+Dma::DrivingType Dma::index_axis_driving() const
+{
+    qDebug("%s[%d]: umimplement",__func__, __LINE__);
+    return  Dma::ENCODER2;
+}
+
+void Dma::set_index_axis_driving(Dma::DrivingType type)
+{
+    qDebug("%s[%d]: umimplement",__func__, __LINE__);
 }
 
 int Dma::frame_size() const

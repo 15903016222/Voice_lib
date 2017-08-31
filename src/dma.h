@@ -37,16 +37,28 @@ public:
     };
 
     /**
-     * @brief driving_type  获取激励类型
-     * @return              激励类型
+     * @brief scan_axis_driving_type    获取扫查轴激励
+     * @return                          激励
      */
-    DrivingType driving_type() const;
+    DrivingType scan_axis_driving() const;
 
     /**
-     * @brief set_driving_type  设置激励类型
-     * @param type              类型
+     * @brief set_driving_type  设置扫查轴激励
+     * @param type              激励
      */
-    void set_driving_type(DrivingType type);
+    void set_scan_axis_driving(DrivingType type);
+
+    /**
+     * @brief index_axis_driving    获取步进轴激励
+     * @return                      激励
+     */
+    DrivingType index_axis_driving() const;
+
+    /**
+     * @brief set_index_axis_driving   设置步进轴激励
+     * @param type                     激励
+     */
+    void set_index_axis_driving(DrivingType type);
 
     /**
      * @brief frame_size    获取一帧数据的大小
