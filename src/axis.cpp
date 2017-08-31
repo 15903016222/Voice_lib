@@ -13,10 +13,12 @@ class AxisPrivate
 {
 public:
     AxisPrivate() :
+        m_drivingType(Axis::NONE),
         m_start(0.0),
         m_end(800.0),
         m_resolution(1.0) {}
 
+    Axis::Driving m_drivingType;    // 激励类型
     float m_start;                  // 扫查起点(mm)
     float m_end;                    // 扫查终点(mm)
     float m_resolution;             // 扫查分辨率(mm)
@@ -32,6 +34,21 @@ Axis::Axis(QObject *parent) :
 Axis::~Axis()
 {
     delete d_ptr;
+}
+
+Axis::Driving Axis::driving() const
+{
+    Q_D(const Axis);
+    return d->m_drivingType;
+}
+
+void Axis::set_driving(Axis::Driving driving)
+{
+    Q_D(const Axis);
+    if (d->m_drivingType != driving) {
+        d->m_drivingType = driving;
+        emit driving_changed(driving);
+    }
 }
 
 float Axis::start() const

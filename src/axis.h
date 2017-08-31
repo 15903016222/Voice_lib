@@ -21,6 +21,25 @@ public:
     explicit Axis(QObject *parent = 0);
     ~Axis();
 
+    enum Driving {
+        TIMER,
+        ENCODER_X,
+        ENCODER_Y,
+        NONE
+    };
+
+    /**
+     * @brief driving  获取驱动类型
+     * @return
+     */
+    Driving driving() const;
+
+    /**
+     * @brief set_driving
+     * @param driving
+     */
+    void set_driving(Driving driving);
+
     /**
      * @brief start 获取扫查起点
      * @return      位置(mm)
@@ -60,8 +79,8 @@ public:
      */
     bool set_resolution(float val);
 
-
 signals:
+    void driving_changed(DplSource::Axis::Driving driving);
     void start_changed(float start);
     void resolution_changed(float val);
 
