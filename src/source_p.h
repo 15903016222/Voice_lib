@@ -36,10 +36,10 @@ public:
     void update_offset();
 
 public slots:
-    void update_dma_driving_type(int id, DplSource::Encoder::Mode mode);
+    void do_encoderX_mode_changed(DplSource::Encoder::Mode mode);
     void update_dma_encoder_offset(int qty);
-    void update_dma_steps_resolution();
-    void update_dma_start_offset();
+    void do_encoderX_resolution();
+    void do_scanAxis_changed();
 
 protected:
     void run();
