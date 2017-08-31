@@ -14,17 +14,20 @@ class ScanPrivate
 public:
     ScanPrivate() :
         m_speed(20.0),
+        m_encX(new Encoder),
+        m_encY(new Encoder),
         m_mode(Scan::ONELINE),
         m_scanAxis(new Axis),
         m_indexAxis(new Axis)
     {
-        m_indexAxis->encoder()->set_index(2);
     }
 
-    double m_speed;     // 扫查速度(mm/s)
-    Scan::Mode m_mode;  // 扫查模式
-    AxisPointer m_scanAxis;   // 扫查轴
-    AxisPointer m_indexAxis;  // 步进轴
+    double m_speed;             // 扫查速度(mm/s)
+    EncoderPointer m_encX;      // 编码器X
+    EncoderPointer m_encY;      // 编码器Y
+    Scan::Mode m_mode;          // 扫查模式
+    AxisPointer m_scanAxis;     // 扫查轴
+    AxisPointer m_indexAxis;    // 步进轴
 };
 
 Scan::Scan(QObject *parent) :
@@ -70,6 +73,18 @@ const AxisPointer &Scan::index_axis() const
 {
     Q_D(const Scan);
     return d->m_indexAxis;
+}
+
+const EncoderPointer &Scan::encoder_x() const
+{
+    Q_D(const Scan);
+    return d->m_encX;
+}
+
+const EncoderPointer &Scan::encoder_y() const
+{
+    Q_D(const Scan);
+    return d->m_encY;
 }
 
 double Scan::speed() const
