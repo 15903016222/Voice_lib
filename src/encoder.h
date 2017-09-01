@@ -30,6 +30,18 @@ public:
     };
 
     /**
+     * @brief is_enabled    获取编码器使能状态
+     * @return              状态
+     */
+    bool is_enabled() const;
+
+    /**
+     * @brief set_enabled   设置编码器使用状态
+     * @param enable        状态
+     */
+    void set_enabled(bool enable);
+
+    /**
      * @brief polarity  获取极性
      * @return          极性
      */
@@ -42,10 +54,9 @@ public:
     void set_polarity(Polarity val);
 
     enum Mode {
-        OFF     = 0b000,
-        DOWN    = 0b001,
-        UP      = 0b010,
-        QUAD    = 0b011
+        DOWN,
+        UP,
+        QUAD
     };
 
     /**
@@ -85,6 +96,7 @@ public:
     void set_origin(float val);
 
 signals:
+    void enabled_changed(bool enable);
     void mode_changed(DplSource::Encoder::Mode mode);
     void resolution_changed(float val);
 
