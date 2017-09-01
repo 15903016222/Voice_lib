@@ -15,7 +15,7 @@ public:
     EncoderPrivate() :
         m_enabled(false),
         m_polarity(Encoder::NORMAL),
-        m_mode(Encoder::OFF),
+        m_mode(Encoder::QUAD),
         m_resolution(48.0),
         m_origin(0.0)
     {}

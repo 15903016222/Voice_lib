@@ -2,7 +2,7 @@
 #define __SOURCE_P_H__
 
 #include "source.h"
-#include "encoder.h"
+#include "scan.h"
 #include "dma.h"
 
 #include <QThread>
@@ -36,7 +36,7 @@ public:
     void update_offset();
 
 public slots:
-    void do_encoderX_mode_changed(DplSource::Encoder::Mode mode);
+    void do_scanAxis_driving_changed(DplSource::Axis::Driving driving);
     void update_dma_encoder_offset(int qty);
     void do_encoderX_resolution();
     void do_scanAxis_changed();
