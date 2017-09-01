@@ -99,6 +99,7 @@ signals:
     void enabled_changed(bool enable);
     void mode_changed(DplSource::Encoder::Mode mode);
     void resolution_changed(float val);
+    void polarity_changed(DplSource::Encoder::Polarity polarity);
 
 private:
     EncoderPrivate *d_ptr;

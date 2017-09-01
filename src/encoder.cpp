@@ -63,7 +63,10 @@ Encoder::Polarity Encoder::polarity() const
 void Encoder::set_polarity(Encoder::Polarity val)
 {
     Q_D(Encoder);
-    d->m_polarity = val;
+    if (d->m_polarity != val) {
+        d->m_polarity = val;
+        emit polarity_changed(d->m_polarity);
+    }
 }
 
 Encoder::Mode Encoder::mode() const
