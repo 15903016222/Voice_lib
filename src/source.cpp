@@ -75,6 +75,15 @@ BeamsPointer Source::beams(int grp, int frameIndex) const
     return BeamsPointer();
 }
 
+BeamsPointer Source::beams(int grp, int x, int y) const
+{
+    Q_D(const Source);
+    if (grp < MAX_GROUP && d->m_groups[grp].valid) {
+        return beams(grp, x/DplSource::Scan::instance()->scan_axis()->resolution());
+    }
+    return BeamsPointer();
+}
+
 Source::Type Source::type() const
 {
     Q_D(const Source);
