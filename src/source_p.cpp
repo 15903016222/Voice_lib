@@ -41,7 +41,7 @@ void SourcePrivate::update_current_data()
 
 void SourcePrivate::update_offset()
 {
-    int offset = 0;
+    int offset = Dma::DMA_DATA_OFFSET;
     for (int i = 0; i < MAX_GROUP; ++i) {
         if (m_groups[i].valid) {
             m_groups[i].offset = offset;

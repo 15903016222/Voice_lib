@@ -20,7 +20,7 @@ static const int STORE_BUFFER_SIZE          = 256 * 1024 * 1024;    // 256M
 static const int CONFIG_OFFSET              = 0x00100000;
 static const int SCAN_DATA_MARK_OFFSET      = 0x00200000;
 static const int REGION_SIZE                = 0x00040000;
-static const int DMA_DATA_OFFSET            = 2;
+const int Dma::DMA_DATA_OFFSET              = 2;
 static const int FRAME_SIZE                 = 1024;
 
 struct DmaParameter
@@ -120,7 +120,7 @@ const char *Dma::read_data()
 const char *Dma::get_store_buffer()
 {
     QReadLocker l(&d->m_rwlock);
-    return d->m_storeBuffer+2;
+    return d->m_storeBuffer;
 }
 
 Dma::DrivingType Dma::scan_axis_driving() const
