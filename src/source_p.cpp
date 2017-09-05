@@ -34,14 +34,9 @@ SourcePrivate::SourcePrivate(Source *source) : QThread(),
     do_scanAxis_changed();
 }
 
-void SourcePrivate::update_current_data()
-{
-    m_curData = m_dma->read_data();
-}
-
 void SourcePrivate::update_offset()
 {
-    int offset = Dma::DMA_DATA_OFFSET;
+    int offset = 0;
     for (int i = 0; i < MAX_GROUP; ++i) {
         if (m_groups[i].valid) {
             m_groups[i].offset = offset;

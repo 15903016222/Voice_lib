@@ -10,11 +10,6 @@ class DmaPrivate;
 class Dma
 {
 public:
-    /**
-     * @brief DMA_DATA_OFFSET   DMA数据偏移值
-     */
-    static const int DMA_DATA_OFFSET;
-
     static Dma *instance();
 
     /**

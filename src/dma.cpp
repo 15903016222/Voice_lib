@@ -20,7 +20,7 @@ static const int STORE_BUFFER_SIZE          = 256 * 1024 * 1024;    // 256M
 static const int CONFIG_OFFSET              = 0x00100000;
 static const int SCAN_DATA_MARK_OFFSET      = 0x00200000;
 static const int REGION_SIZE                = 0x00040000;
-const int Dma::DMA_DATA_OFFSET              = 2;
+static const int DMA_DATA_OFFSET            = 2;
 static const int FRAME_SIZE                 = 1024;
 
 struct DmaParameter
@@ -72,7 +72,7 @@ DmaPrivate::DmaPrivate()
         qFatal("Mmap 0x%08x failed", DATA_BUFFER_ADDR);
     }
     for (int i = 0; i < 4; ++i) {
-        m_data[i] = m_dataBuffer + Dma::DMA_DATA_OFFSET + REGION_SIZE*i;
+        m_data[i] = m_dataBuffer + DMA_DATA_OFFSET + REGION_SIZE*i;
     }
 
     m_storeBuffer = (char *)::mmap (0, STORE_BUFFER_SIZE, PROT_READ | PROT_WRITE, MAP_SHARED, m_fd, STORE_BUFFER_ADDR);
@@ -120,7 +120,7 @@ const char *Dma::read_data()
 const char *Dma::get_store_buffer()
 {
     QReadLocker l(&d->m_rwlock);
-    return d->m_storeBuffer;
+    return d->m_storeBuffer+DMA_DATA_OFFSET;
 }
 
 Dma::DrivingType Dma::scan_axis_driving() const

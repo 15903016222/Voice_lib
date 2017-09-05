@@ -32,7 +32,6 @@ class SourcePrivate : public QThread
 public:
     SourcePrivate(Source *source);
 
-    void update_current_data();
     void update_offset();
 
 public slots:
