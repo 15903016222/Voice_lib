@@ -72,7 +72,7 @@ DmaPrivate::DmaPrivate()
         qFatal("Mmap 0x%08x failed", DATA_BUFFER_ADDR);
     }
     for (int i = 0; i < 4; ++i) {
-        m_data[i] = m_dataBuffer + DMA_DATA_OFFSET + REGION_SIZE*i;
+        m_data[i] = m_dataBuffer + Dma::DMA_DATA_OFFSET + REGION_SIZE*i;
     }
 
     m_storeBuffer = (char *)::mmap (0, STORE_BUFFER_SIZE, PROT_READ | PROT_WRITE, MAP_SHARED, m_fd, STORE_BUFFER_ADDR);
