@@ -73,6 +73,18 @@ public:
      */
     BeamsPointer beams(int grp, int x, int y) const;
 
+    /**
+     * @brief beams_size    获取所有Beam的大小
+     * @return              大小(Bytes)
+     */
+    int beams_size() const;
+
+    /**
+     * @brief frame_size    获取一帧数据大小
+     * @return              大小(Bytes)
+     */
+    int frame_size() const;
+
     enum Type {
         DMA,     /* DMA源 */
         FILE,    /* 文件源 */

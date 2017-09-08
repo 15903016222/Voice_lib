@@ -36,17 +36,17 @@ SourcePrivate::SourcePrivate(Source *source) : QThread(),
 
 void SourcePrivate::update_offset()
 {
-    int offset = 0;
+    m_beamsSize = 0;
     for (int i = 0; i < MAX_GROUP; ++i) {
         if (m_groups[i].valid) {
-            m_groups[i].offset = offset;
-            offset += m_groups[i].beamQty*(m_groups[i].pointQty + Beam::MEASURE_SIZE);
+            m_groups[i].offset = m_beamsSize;
+            m_beamsSize += m_groups[i].beamQty*(m_groups[i].pointQty + Beam::MEASURE_SIZE);
         }
     }
 
     Dma *dma = Dma::instance();
-    int cnt = offset / dma->frame_size();
-    if (offset % dma->frame_size()) {
+    int cnt = m_beamsSize / dma->frame_size();
+    if (m_beamsSize % dma->frame_size()) {
         ++cnt;
     }
 

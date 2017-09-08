@@ -84,6 +84,18 @@ BeamsPointer Source::beams(int grp, int x, int y) const
     return BeamsPointer();
 }
 
+int Source::beams_size() const
+{
+    Q_D(const Source);
+    return d->m_beamsSize;
+}
+
+int Source::frame_size() const
+{
+    Q_D(const Source);
+    return d->m_frameSize;
+}
+
 Source::Type Source::type() const
 {
     Q_D(const Source);
