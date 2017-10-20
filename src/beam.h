@@ -92,7 +92,7 @@ public:
     /**
      * @brief gate_peak_position    获取指定闸门内测得信号的峰值位置
      * @param gate                  闸门类型
-     * @return                      位置(ns)
+     * @return                      位置(采样精度)
      */
     int gate_peak_position(GateType gate);
 

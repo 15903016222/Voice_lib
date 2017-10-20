@@ -71,7 +71,11 @@ double Scan::speed() const
 void Scan::set_speed(double val)
 {
     Q_D(Scan);
-    d->m_speed = val;
+    if (!qFuzzyCompare(val, d->m_speed)) {
+        d->m_speed = val;
+        emit speed_changed(val);
+    }
+
 }
 
 }

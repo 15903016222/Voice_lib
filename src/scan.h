@@ -76,6 +76,7 @@ public slots:
 
 signals:
     void mode_changed(DplSource::Scan::Mode mode);
+    void speed_changed(double val);
 
 protected:
     explicit Scan(QObject *parent = 0);
