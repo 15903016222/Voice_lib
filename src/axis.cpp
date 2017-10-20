@@ -60,7 +60,7 @@ float Axis::start() const
 bool Axis::set_start(float val)
 {
     Q_D(Axis);
-    if (val < d->m_end) {
+    if (val < d->m_end && !qFuzzyCompare(val, d->m_start)) {
         d->m_start = val;
         emit start_changed(val);
         return true;
@@ -77,8 +77,9 @@ float Axis::end() const
 bool Axis::set_end(float val)
 {
     Q_D(Axis);
-    if (val > d->m_start) {
+    if (val > d->m_start && !qFuzzyCompare(val, d->m_end)) {
         d->m_end = val;
+        emit end_changed(val);
         return true;
     }
     return false;

@@ -81,7 +81,8 @@ public:
 
 signals:
     void driving_changed(DplSource::Axis::Driving driving);
-    void start_changed(float start);
+    void start_changed(float);
+    void end_changed(float);
     void resolution_changed(float val);
 
 private:
