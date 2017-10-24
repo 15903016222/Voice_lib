@@ -26,7 +26,14 @@ phascan {
     PRIVATE_HEADERS += \
         $$PWD/dma.h
     SOURCES += \
-        $$PWD/dma.cpp
+        $$PWD/dma_phascan.cpp
+}
+
+phascan_ii {
+    PRIVATE_HEADERS += \
+        $$PWD/dma.h
+    SOURCES += \
+        $$PWD/dma_phascan_ii.cpp
 }
 
 HEADERS += $$PUBLIC_HEADERS $$PRIVATE_HEADERS
