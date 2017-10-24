@@ -184,6 +184,7 @@ unsigned int Dma::steps_resolution() const
 	QReadLocker l(&d->m_rwlock);
     return d->m_param->stepResolution;
 }
+
 void Dma::set_steps_resolution(int value)
 {
 	QWriteLocker l(&d->m_rwlock);
